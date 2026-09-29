@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FundSleuth | Wealth Management Analytics Platform</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Chart.js & Vis.js Graph Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;"></div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                <div class="brand-icon-box p-2 rounded-3 text-white">
+                    <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <span class="fs-4 gradient-text fw-bold">FundSleuth</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill ms-2 px-3 py-1 font-monospace">Portfolio Intelligence</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
+                    <li class="nav-item"><a class="nav-link active text-primary fw-bold" href="#">Portfolio X-Ray</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="#section-analytics">Risk Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="#section-stocks">Stock Audit</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="#section-plan">Action Plan</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <button class="btn btn-soft btn-sm px-3 rounded-pill" onclick="toggleVoiceSummary()">
+                        <i class="fa-solid fa-volume-high me-1 text-primary"></i> <span id="voiceBtnText">Voice Summary</span>
+                    </button>
+                    <button class="btn btn-gradient btn-sm px-3 rounded-pill" onclick="window.print()">
+                        <i class="fa-solid fa-file-pdf me-1"></i> Export PDF Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container my-4">
+
+        <!-- Hero Banner -->
+        <section class="hero-container p-4 p-md-5 mb-4 animate__animated animate__fadeIn">
+            <div class="hero-glow"></div>
+            <div class="row align-items-center position-relative" style="z-index: 2;">
+                <div class="col-lg-8">
+                    <span class="badge bg-white text-indigo border shadow-sm px-3 py-2 rounded-pill fw-bold mb-3">
+                        <i class="fa-solid fa-wand-magic-sparkles text-primary me-1"></i> AI Financial Analytics Platform
+                    </span>
+                    <h1 class="display-6 fw-bold gradient-text mb-2">Mutual Fund X-Ray &amp; Stock Profitability Inspector</h1>
+                    <p class="text-secondary fs-5 mb-0">Expose hidden fund overlaps, detect loss-making toxic stocks, and eliminate 10-year distributor commission leakage in seconds.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3310/3310632.png" width="130" class="img-fluid animate__animated animate__pulse animate__infinite" alt="Hero Illustration">
+                </div>
+            </div>
+        </section>
+
+        <!-- Upload Dropzone Card -->
+        <section class="card card-custom p-4 mb-4 animate__animated animate__fadeInUp">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <div class="upload-dropzone p-4 text-center" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                        <div class="p-3 bg-light d-inline-block rounded-circle mb-2">
+                            <i class="fa-solid fa-cloud-arrow-up fs-2 text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-1">Upload CAS Statement (PDF) or App Screenshot</h5>
+                        <p class="text-secondary small m-0">Supports CAMS / KFintech PDFs, Zerodha Coin, Groww &amp; Paytm Money Screenshots</p>
+                        <input type="file" id="fileInput" class="d-none" onchange="handleFileSelect(event)">
+                    </div>
+                </div>
+                <div class="col-md-5 text-center mt-3 mt-md-0 border-start ps-md-4">
+                    <p class="text-secondary small fw-semibold mb-2">Want to test without uploading a file?</p>
+                    <button class="btn btn-gradient btn-lg w-100 py-3 rounded-3" onclick="runDemoAnalysis()">
+                        <i class="fa-solid fa-bolt-lightning me-2"></i> Run Instant Interactive X-Ray
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skeleton Loading State -->
+        <div id="loadingSpinner" class="text-center my-5 d-none animate__animated animate__fadeIn">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+            <p class="mt-3 text-primary fw-bold fs-5">Extracting Holdings, Graphing Overlaps &amp; Auditing Stock Fundamentals...</p>
+        </div>
+
+        <!-- Dashboard Analysis Results Container -->
+        <div id="resultsContainer" class="d-none animate__animated animate__fadeInUp">
+
+            <!-- Recommendation Alert Banner -->
+            <section id="recommendationBanner" class="alert card-custom bg-white border-warning d-flex align-items-center gap-3 p-4 mb-4 shadow-sm">
+                <div class="kpi-icon-badge kpi-icon-amber fs-3">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1 text-dark" id="recTitle">Portfolio Action Required</h5>
+                    <span id="recText" class="text-secondary fs-6">Actionable recommendation details will appear here.</span>
+                </div>
+            </section>
+
+            <!-- Executive KPI Metric Cards -->
+            <section class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card card-custom kpi-card p-3 text-center h-100 border-primary">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="text-secondary small font-monospace fw-bold">HEALTH SCORE</span>
+                            <div class="kpi-icon-badge kpi-icon-emerald"><i class="fa-solid fa-heart-pulse"></i></div>
+                        </div>
+                        <h2 class="fw-bold text-success my-1" id="metricHealthScore">100/100</h2>
+                        <span class="small fw-semibold text-success" id="metricHealthLabel">EXCELLENT</span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card card-custom kpi-card p-3 text-center h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="text-secondary small font-monospace fw-bold">OVERLAP SCORE</span>
+                            <div class="kpi-icon-badge kpi-icon-indigo"><i class="fa-solid fa-layer-group"></i></div>
+                        </div>
+                        <h2 class="fw-bold text-primary my-1" id="metricOverlap">0%</h2>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div id="overlapProgressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <span class="small text-secondary mt-1 d-block" id="metricOverlapSub">0 Overlapping Holdings</span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card card-custom kpi-card p-3 text-center h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="text-secondary small font-monospace fw-bold">5-YR COST DRAG</span>
+                            <div class="kpi-icon-badge kpi-icon-red"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                        </div>
+                        <h2 class="fw-bold text-danger my-1" id="metricCostDrag">₹0</h2>
+                        <span class="small text-secondary mt-1 d-block">Compounded Fee Loss</span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card card-custom kpi-card p-3 text-center h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="text-secondary small font-monospace fw-bold">COMMISSION LEAKAGE</span>
+                            <div class="kpi-icon-badge kpi-icon-amber"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                        </div>
+                        <h2 class="fw-bold text-warning my-1" id="metricCommission">₹0</h2>
+                        <span class="small text-secondary mt-1 d-block" id="metricPlansCount">0 Regular Plans</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visual Charts Section (Sector Donut + Compounding Area Chart) -->
+            <section id="section-analytics" class="row g-4 mb-4">
+                <div class="col-lg-5">
+                    <div class="card card-custom h-100">
+                        <div class="card-header-gradient">
+                            <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-pie-chart text-primary me-2"></i> Sector Exposure Breakdown</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="sectorWarningsContainer" class="mb-2"></div>
+                            <div style="height: 290px; position: relative;">
+                                <canvas id="sectorChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7" id="section-compounding">
+                    <div class="card card-custom h-100">
+                        <div class="card-header-gradient d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-chart-line text-primary me-2"></i> 10-Year Compounding Expense Drag Projection</h5>
+                            <span class="badge bg-success-subtle text-success border rounded-pill px-3">Direct Plan Advantage</span>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 320px; position: relative;">
+                                <canvas id="compoundingChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step-by-Step Restructuring Action Plan -->
+            <section id="section-plan" class="card card-custom p-4 mb-4">
+                <h5 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-list-check text-primary me-2"></i> Step-by-Step Portfolio Optimization Action Plan</h5>
+                <div id="actionPlanContainer" class="vstack gap-2">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+
+            <!-- Cost Drag Simulation Slider -->
+            <section class="card card-custom p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-sliders text-primary me-2"></i> Interactive Cost Drag &amp; Return Restructuring Simulator</h5>
+                    <span class="badge bg-primary-subtle text-primary border rounded-pill px-3">Dynamic Math</span>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <label for="returnSlider" class="form-label text-secondary fw-semibold">Assumed Market Annual Return Rate: <span id="returnRateVal" class="text-primary fw-bold">12.0%</span></label>
+                        <input type="range" class="form-range" id="returnSlider" min="8" max="18" step="0.5" value="12" oninput="updateReturnSimulation(this.value)">
+                    </div>
+                    <div class="col-md-6 bg-light p-3 rounded-3 border">
+                        <div class="d-flex justify-content-between small text-secondary">
+                            <span>Simulated 5-Yr Fee Drag Loss:</span>
+                            <span class="fw-bold text-danger" id="simulatedExpenseFee">₹0</span>
+                        </div>
+                        <div class="d-flex justify-content-between small text-secondary mt-1">
+                            <span>Distributor Commission Savings (If Switched to Direct):</span>
+                            <span class="fw-bold text-success" id="simulatedCommissionSavings">₹0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Graph Skeleton and Toxic Stock Alert Row -->
+            <section class="row g-4 mb-4">
+                <div class="col-lg-7">
+                    <div class="card card-custom h-100">
+                        <div class="card-header-gradient d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-circle-nodes text-primary me-2"></i> Interactive Overlap Graph Skeleton</h5>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-soft" onclick="togglePhysics()">Freeze Graph</button>
+                                <button class="btn btn-soft" onclick="resetGraphView()">Reset View</button>
+                            </div>
+                        </div>
+                        <div class="card-body p-3">
+                            <div id="network-graph"></div>
+                            <div class="d-flex gap-3 justify-content-center small text-secondary mt-2">
+                                <span><i class="fa-solid fa-circle text-primary me-1"></i> Mutual Fund Node</span>
+                                <span><i class="fa-solid fa-square text-success me-1"></i> Unique Stock Node</span>
+                                <span><i class="fa-solid fa-square text-danger me-1"></i> Overlapping Stock</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card card-custom h-100">
+                        <div class="card-header-gradient">
+                            <h5 class="fw-bold m-0 text-danger"><i class="fa-solid fa-shield-cat me-2"></i> Toxic / Loss-Making Stock Alerts</h5>
+                        </div>
+                        <div class="card-body p-3">
+                            <div id="toxicStockList" class="vstack gap-2" style="max-height: 420px; overflow-y: auto;">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stock Health Audit Table Section -->
+            <section id="section-stocks" class="card card-custom p-4 mb-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                    <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-chart-line text-primary me-2"></i> Extracted Stock Holdings Profitability Audit</h5>
+                    
+                    <!-- Search & Filter Controls -->
+                    <div class="d-flex gap-2">
+                        <input type="text" id="stockSearchInput" class="form-control form-control-sm rounded-pill px-3" placeholder="Search stock symbol..." onkeyup="filterStockTable()">
+                        <select id="stockFilterSelect" class="form-select form-select-sm rounded-pill px-3" onchange="filterStockTable()">
+                            <option value="ALL">All Statuses</option>
+                            <option value="HIGH_RISK">🔴 Loss-Making / High Risk</option>
+                            <option value="STAGNANT">🟡 Stagnant / High P/E</option>
+                            <option value="PROFITABLE">🟢 Profitable &amp; Growing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-premium align-middle" id="stockTable">
+                        <thead>
+                            <tr>
+                                <th>Stock Symbol</th>
+                                <th>Company Name</th>
+                                <th>Sector</th>
+                                <th>Health Status</th>
+                                <th>1Y PAT Growth</th>
+                                <th>P/E Ratio</th>
+                                <th>1Y Price Return</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockHealthTableBody">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Table Pagination Controls -->
+                <div class="d-flex justify-content-end align-items-center mt-3" id="paginationControls">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+
+            <!-- Mutual Funds Portfolio Cards Breakdown -->
+            <section class="card card-custom p-4 mb-4">
+                <h5 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-wallet text-primary me-2"></i> Mutual Fund Schemes Portfolio Breakdown</h5>
+                <div id="fundList" class="row g-3">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-5">
+        <div class="container text-center text-secondary small">
+            <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
+            <p class="mb-0 text-muted">Designed with a pure white &amp; subtle pastel gradient system for high-performance financial analytics.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Visualizations & Application Logic -->
+    <script src="/js/charts.js"></script>
+    <script src="/js/app.js"></script>
+
+</body>
+</html>
