@@ -98,7 +98,7 @@ body {
 }
 
 .bg-slide.active {
-    opacity: 0.22;
+    opacity: 0.85;
     transform: scale(1.09) translate(-8px, -4px);
 }
 
@@ -107,7 +107,8 @@ body {
     position: fixed;
     inset: 0;
     z-index: -2;
-    background: linear-gradient(180deg, rgba(245, 244, 242, 0.84) 0%, rgba(250, 249, 246, 0.88) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.40) 0%, rgba(245, 244, 242, 0.50) 100%);
+    backdrop-filter: blur(1px);
     pointer-events: none;
 }
 
