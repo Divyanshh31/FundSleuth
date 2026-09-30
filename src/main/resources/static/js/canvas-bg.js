@@ -1,13 +1,13 @@
 /* ==========================================================================
-   FUNDSLEUTH - INTERACTIVE MOUSE-MOTION SHOWCASE & THREE.JS ENGINE
-   Real Financial Photography with 3D Mouse & Touchpad Physics
+   FUNDSLEUTH - INTERACTIVE TOUCHPAD & MOUSE 3D MOTION PICTURE ENGINE
+   Real Financial Photography with Smooth Touchpad / Trackpad Physics
    ========================================================================== */
 
 (function () {
-    // 1. Live Running Financial Photography Slide Rotation & Touchpad/Mouse Physics
-    initMouseMotionShowcase();
+    // 1. Touchpad & Mouse Driven 3D Motion Picture Frame Engine
+    initTouchpadMotionShowcase();
 
-    // 2. Three.js / Canvas 3D Soft Background Nodes
+    // 2. Soft Background Particles Layer
     const canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
 
@@ -17,7 +17,7 @@
         initCanvas2DFallback(canvas);
     }
 
-    function initMouseMotionShowcase() {
+    function initTouchpadMotionShowcase() {
         const labels = [
             "Stock Candlestick & Technical Analysis",
             "Stock Exchange Order Book & Ticker Screen",
@@ -41,8 +41,12 @@
             if (labelElem) labelElem.innerText = labels[currentIdx];
         }, 5000);
 
-        // Mouse & Touchpad Physics Interaction
-        window.addEventListener('mousemove', (e) => {
+        let targetRotateX = 0, targetRotateY = 0;
+        let targetTransX = 0, targetTransY = 0;
+        let currentRotateX = 0, currentRotateY = 0;
+        let currentTransX = 0, currentTransY = 0;
+
+        function updatePhysics(clientX, clientY) {
             const card = document.getElementById('interactive-mouse-showcase');
             if (!card) return;
 
@@ -50,30 +54,45 @@
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
 
-            const percentX = (e.clientX - centerX) / (window.innerWidth / 2);
-            const percentY = (e.clientY - centerY) / (window.innerHeight / 2);
+            const percentX = (clientX - centerX) / (window.innerWidth / 2);
+            const percentY = (clientY - centerY) / (window.innerHeight / 2);
 
-            const rotateX = -percentY * 12; // tilt up / down
-            const rotateY = percentX * 12;  // tilt left / right
-            const translateX = percentX * 10;
-            const translateY = percentY * 10;
+            targetRotateX = -percentY * 16; // Tilt up / down
+            targetRotateY = percentX * 16;  // Tilt left / right
+            targetTransX = percentX * 14;
+            targetTransY = percentY * 14;
+        }
 
-            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translate3d(${translateX}px, ${translateY}px, 15px)`;
+        // Mouse, Trackpad & Pointer Movement Listeners
+        window.addEventListener('pointermove', (e) => {
+            updatePhysics(e.clientX, e.clientY);
         });
 
-        // Touchpad / Mobile Swiping
+        window.addEventListener('mousemove', (e) => {
+            updatePhysics(e.clientX, e.clientY);
+        });
+
         window.addEventListener('touchmove', (e) => {
             if (e.touches.length > 0) {
-                const touch = e.touches[0];
-                const card = document.getElementById('interactive-mouse-showcase');
-                if (!card) return;
-
-                const percentX = (touch.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-                const percentY = (touch.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-
-                card.style.transform = `rotateX(${-percentY * 8}deg) rotateY(${percentX * 8}deg)`;
+                updatePhysics(e.touches[0].clientX, e.touches[0].clientY);
             }
         });
+
+        // Smooth Animation Frame Loop for Silky Touchpad Physics
+        function animatePhysics() {
+            const card = document.getElementById('interactive-mouse-showcase');
+            if (card) {
+                currentRotateX += (targetRotateX - currentRotateX) * 0.1;
+                currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+                currentTransX += (targetTransX - currentTransX) * 0.1;
+                currentTransY += (targetTransY - currentTransY) * 0.1;
+
+                card.style.transform = `rotateX(${currentRotateX.toFixed(2)}deg) rotateY(${currentRotateY.toFixed(2)}deg) translate3d(${currentTransX.toFixed(2)}px, ${currentTransY.toFixed(2)}px, 20px)`;
+            }
+            requestAnimationFrame(animatePhysics);
+        }
+
+        animatePhysics();
     }
 
     function initThreeJS(canvas) {
@@ -85,8 +104,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // Subtle 3D Particles WebGL Cloud
-        const particleCount = 140;
+        const particleCount = 100;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -111,10 +129,10 @@
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const pMaterial = new THREE.PointsMaterial({
-            size: 0.6,
+            size: 0.5,
             vertexColors: true,
             transparent: true,
-            opacity: 0.35,
+            opacity: 0.25,
             blending: THREE.NormalBlending
         });
 
@@ -125,8 +143,8 @@
         let targetX = 0, targetY = 0;
 
         window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.0005;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.0005;
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0004;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0004;
         });
 
         window.addEventListener('resize', () => {
@@ -141,7 +159,7 @@
             requestAnimationFrame(animate);
             const elapsedTime = clock.getElapsedTime();
 
-            particleSystem.rotation.y = elapsedTime * 0.02;
+            particleSystem.rotation.y = elapsedTime * 0.015;
 
             targetX += (mouseX - targetX) * 0.04;
             targetY += (mouseY - targetY) * 0.04;
@@ -172,15 +190,15 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
                 this.r = Math.random() * 2 + 1;
                 this.color = Math.random() > 0.5 ? 'rgba(255, 107, 0, ' : 'rgba(79, 70, 229, ';
             }
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                ctx.fillStyle = this.color + '0.15)';
+                ctx.fillStyle = this.color + '0.12)';
                 ctx.fill();
             }
             update() {
@@ -193,7 +211,7 @@
 
         function init() {
             particles = [];
-            for (let i = 0; i < 40; i++) particles.push(new P());
+            for (let i = 0; i < 30; i++) particles.push(new P());
         }
 
         function loop() {
