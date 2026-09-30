@@ -21,7 +21,6 @@
     <!-- Three.js (3D WebGL Engine) & GSAP Animation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
     <!-- Chart.js & Vis.js Graph Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -32,7 +31,7 @@
     <!-- Taste Skill Tactile Grain Noise Overlay -->
     <div class="noise-overlay" aria-hidden="true"></div>
 
-    <!-- ThreeUI Interactive 3D WebGL Canvas Layer -->
+    <!-- Soft Ambient WebGL Canvas -->
     <canvas id="hero-canvas"></canvas>
 
     <!-- Toast Notification Container -->
@@ -81,7 +80,7 @@
                 <div class="col-lg-10">
                     
                     <!-- Taste Skill Live Release Pill Badge -->
-                    <div class="mb-4 gsap-hero-element">
+                    <div class="mb-4">
                         <a href="#xray-tool-section" class="v2-pill-badge">
                             <span class="v2-dot"></span>
                             <span>v2.0 Anti-Slop AI Engine Just Shipped</span>
@@ -90,16 +89,16 @@
                     </div>
 
                     <!-- Editorial Headlines -->
-                    <h1 class="hero-heading mb-3 gsap-hero-element">
+                    <h1 class="hero-heading mb-3">
                         Master Your Mutual Funds.<br>
                         <span class="font-serif fst-italic orange-highlight fw-normal">Eliminate Overlap &amp; Cost Drag.</span>
                     </h1>
 
-                    <p class="text-secondary fs-5 mb-4 mx-auto gsap-hero-element" style="max-width: 760px;">
+                    <p class="text-secondary fs-5 mb-4 mx-auto" style="max-width: 760px;">
                         Expose hidden stock-level overlaps, audit loss-making toxic holdings, detect distributor commission traps, and optimize your portfolio with mathematical precision.
                     </p>
 
-                    <div class="d-flex flex-wrap justify-content-center gap-3 mb-4 gsap-hero-element">
+                    <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
                         <a href="#xray-tool-section" class="btn btn-taste-primary btn-lg px-4 py-3">
                             <i class="fa-solid fa-microscope me-2 orange-highlight"></i> Launch Interactive X-Ray Tool
                         </a>
@@ -108,25 +107,25 @@
                         </a>
                     </div>
 
-                    <!-- Interactive Mouse & Touchpad Driven Running Photography Showcase -->
-                    <div class="hero-image-showcase-wrapper gsap-hero-element">
+                    <!-- Interactive Touchpad & Mouse Driven Running Photography Showcase -->
+                    <div class="hero-image-showcase-wrapper">
                         <div id="interactive-mouse-showcase" class="interactive-photo-card shadow-lg">
                             <div class="d-flex align-items-center justify-content-between px-3 py-2 border-bottom bg-white rounded-top-4">
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="dot-btn bg-danger"></span>
                                     <span class="dot-btn bg-warning"></span>
                                     <span class="dot-btn bg-success"></span>
-                                    <span class="small font-mono text-muted ms-2"><i class="fa-solid fa-chart-line orange-highlight me-1"></i> Live Running Market Analytics — Mouse Physics Active</span>
+                                    <span class="small font-mono text-muted ms-2"><i class="fa-solid fa-chart-line orange-highlight me-1"></i> Live Market Feeds — Move Mouse / Touchpad for 3D Motion</span>
                                 </div>
-                                <span class="badge bg-dark text-white rounded-pill px-3 font-mono small">Interactive 3D Motion</span>
+                                <span class="badge bg-dark text-white rounded-pill px-3 font-mono small">3D Motion Active</span>
                             </div>
-                            <div class="position-relative overflow-hidden rounded-bottom-4" style="height: 380px;">
+                            <div class="position-relative overflow-hidden rounded-bottom-4" style="height: 400px;">
                                 <div id="mouse-slide-0" class="showcase-slide active" style="background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80');"></div>
                                 <div id="mouse-slide-1" class="showcase-slide" style="background-image: url('https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80');"></div>
                                 <div id="mouse-slide-2" class="showcase-slide" style="background-image: url('https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=1200&q=80');"></div>
                                 <div id="mouse-slide-3" class="showcase-slide" style="background-image: url('https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&w=1200&q=80');"></div>
 
-                                <!-- Floating Glass Status Pill Overlay -->
+                                <!-- Floating Status Pill Overlay inside the card -->
                                 <div class="position-absolute bottom-0 start-0 m-3 p-3 bg-white bg-opacity-90 rounded-3 border shadow-sm backdrop-blur" style="z-index: 10;">
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="v2-dot"></span>
@@ -137,19 +136,19 @@
                         </div>
                     </div>
 
-                    <!-- GSAP Animated Impact Counter Badges -->
-                    <div class="row g-3 justify-content-center gsap-hero-element">
+                    <!-- Impact Counter Badges -->
+                    <div class="row g-3 justify-content-center">
                         <div class="col-md-4">
                             <div class="bento-card p-3 text-center">
                                 <span class="small text-muted font-mono">AVG. DIRECT PLAN SAVINGS</span>
-                                <h3 class="fw-bold text-success my-1 counter-num" data-target="14200">₹0</h3>
+                                <h3 class="fw-bold text-success my-1">₹14,200</h3>
                                 <span class="small text-secondary">Eliminates Distributor Fees / 5-Yr</span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="bento-card p-3 text-center">
                                 <span class="small text-muted font-mono">TYPICAL OVERLAP DETECTED</span>
-                                <h3 class="fw-bold orange-highlight my-1 counter-num" data-target="42.5" data-suffix="%">0%</h3>
+                                <h3 class="fw-bold orange-highlight my-1">42.5%</h3>
                                 <span class="small text-secondary">Across Large Cap Funds</span>
                             </div>
                         </div>
@@ -170,7 +169,7 @@
     <!-- EDUCATIONAL GUIDE SECTION: WHAT ARE MUTUAL FUNDS? -->
     <section id="education-section" class="py-5 border-top border-bottom bg-white">
         <div class="container">
-            <div class="text-center mb-5 gsap-reveal">
+            <div class="text-center mb-5">
                 <span class="v2-pill-badge mb-2">
                     <i class="fa-solid fa-graduation-cap"></i> EDUCATIONAL INSIGHTS
                 </span>
@@ -180,7 +179,7 @@
 
             <div class="row g-4">
                 <!-- Card 1 -->
-                <div class="col-md-6 col-lg-3 gsap-reveal">
+                <div class="col-md-6 col-lg-3">
                     <div class="bento-card p-4 h-100">
                         <div class="icon-box-lg bg-dark text-white mb-3">
                             <i class="fa-solid fa-piggy-bank orange-highlight"></i>
@@ -193,7 +192,7 @@
                 </div>
 
                 <!-- Card 2 -->
-                <div class="col-md-6 col-lg-3 gsap-reveal">
+                <div class="col-md-6 col-lg-3">
                     <div class="bento-card p-4 h-100">
                         <div class="icon-box-lg bg-warning text-dark mb-3">
                             <i class="fa-solid fa-hand-holding-dollar"></i>
@@ -206,7 +205,7 @@
                 </div>
 
                 <!-- Card 3 -->
-                <div class="col-md-6 col-lg-3 gsap-reveal">
+                <div class="col-md-6 col-lg-3">
                     <div class="bento-card p-4 h-100">
                         <div class="icon-box-lg bg-primary text-white mb-3">
                             <i class="fa-solid fa-layer-group"></i>
@@ -219,7 +218,7 @@
                 </div>
 
                 <!-- Card 4 -->
-                <div class="col-md-6 col-lg-3 gsap-reveal">
+                <div class="col-md-6 col-lg-3">
                     <div class="bento-card p-4 h-100">
                         <div class="icon-box-lg bg-danger text-white mb-3">
                             <i class="fa-solid fa-biohazard"></i>
@@ -237,27 +236,27 @@
     <!-- BENTO FEATURES SHOWCASE SECTION -->
     <section id="bento-features" class="py-5">
         <div class="container">
-            <div class="text-center mb-5 gsap-reveal">
+            <div class="text-center mb-5">
                 <span class="badge bg-dark text-white px-3 py-2 rounded-pill font-mono mb-2">PLATFORM CAPABILITIES</span>
                 <h2 class="hero-heading text-dark fs-1 mt-2">Engineered for Maximum Financial Clarity</h2>
             </div>
 
             <div class="row g-4">
-                <div class="col-lg-4 gsap-reveal">
+                <div class="col-lg-4">
                     <div class="bento-card p-4 h-100">
                         <i class="fa-solid fa-circle-nodes fs-1 orange-highlight mb-3"></i>
                         <h4 class="fw-bold text-dark">Graph Node Skeleton View</h4>
                         <p class="text-secondary small mb-0">Visualizes connections between mutual fund schemes and underlying stock holdings using Vis.js force-directed physics graphs.</p>
                     </div>
                 </div>
-                <div class="col-lg-4 gsap-reveal">
+                <div class="col-lg-4">
                     <div class="bento-card p-4 h-100">
                         <i class="fa-solid fa-heart-pulse fs-1 text-success mb-3"></i>
                         <h4 class="fw-bold text-dark">0-100 Portfolio Health Score</h4>
                         <p class="text-secondary small mb-0">Automated health rating algorithm penalizing overlap percentage, high expense ratios, and toxic asset ratios.</p>
                     </div>
                 </div>
-                <div class="col-lg-4 gsap-reveal">
+                <div class="col-lg-4">
                     <div class="bento-card p-4 h-100">
                         <i class="fa-solid fa-list-check fs-1 text-primary mb-3"></i>
                         <h4 class="fw-bold text-dark">Step-by-Step Restructuring</h4>
@@ -271,7 +270,7 @@
     <!-- THE LIVE X-RAY TOOL SECTION -->
     <section id="xray-tool-section" class="py-5 bg-white border-top">
         <div class="container">
-            <div class="text-center mb-4 gsap-reveal">
+            <div class="text-center mb-4">
                 <span class="v2-pill-badge mb-2">
                     <i class="fa-solid fa-bolt"></i> LIVE ANALYTICS ENGINE
                 </span>
@@ -280,7 +279,7 @@
             </div>
 
             <!-- Upload Dropzone Card -->
-            <div class="card card-custom p-4 mb-4 gsap-reveal">
+            <div class="card card-custom p-4 mb-4">
                 <div class="row align-items-center">
                     <div class="col-md-7">
                         <div class="upload-dropzone p-4 text-center" id="dropZone" onclick="document.getElementById('fileInput').click()">
@@ -526,12 +525,12 @@
     <!-- FREQUENTLY ASKED QUESTIONS (FAQ) SECTION -->
     <section id="faq-section" class="py-5">
         <div class="container" style="max-width: 800px;">
-            <div class="text-center mb-4 gsap-reveal">
+            <div class="text-center mb-4">
                 <span class="v2-pill-badge mb-2">GOT QUESTIONS?</span>
                 <h2 class="hero-heading text-dark fs-1 mt-2">Frequently Asked Questions</h2>
             </div>
 
-            <div class="accordion accordion-custom gsap-reveal" id="faqAccordion">
+            <div class="accordion accordion-custom" id="faqAccordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
@@ -578,77 +577,18 @@
     <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
         <div class="container">
             <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
-            <p class="mb-0 text-muted">Inspired by Taste-Skill, GSAP ScrollTrigger, and ThreeUI WebGL Shader Engine.</p>
+            <p class="mb-0 text-muted">Inspired by Taste-Skill, GSAP, and ThreeUI WebGL Engine.</p>
         </div>
     </footer>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- ThreeUI 3D WebGL Shader Engine -->
+    <!-- 3D Touchpad & Motion Engine -->
     <script src="/js/canvas-bg.js"></script>
 
     <!-- Custom Visualizations & Application Logic -->
     <script src="/js/charts.js"></script>
     <script src="/js/app.js"></script>
-
-    <!-- GSAP Animations & Counters Initialization -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof gsap !== 'undefined') {
-                gsap.registerPlugin(ScrollTrigger);
-
-                // Hero Load Animation Stagger
-                gsap.from('.gsap-hero-element', {
-                    opacity: 0,
-                    y: 30,
-                    duration: 1,
-                    stagger: 0.15,
-                    ease: 'power3.out'
-                });
-
-                // Scroll Trigger Reveal Animations
-                gsap.utils.toArray('.gsap-reveal').forEach(element => {
-                    gsap.from(element, {
-                        scrollTrigger: {
-                            trigger: element,
-                            start: 'top 85%'
-                        },
-                        opacity: 0,
-                        y: 35,
-                        duration: 0.8,
-                        ease: 'power3.out'
-                    });
-                });
-
-                // GSAP Animated Counters
-                document.querySelectorAll('.counter-num').forEach(counter => {
-                    const target = parseFloat(counter.getAttribute('data-target'));
-                    const suffix = counter.getAttribute('data-suffix') || '';
-                    const isCurrency = counter.innerText.includes('₹') || target > 100;
-
-                    ScrollTrigger.create({
-                        trigger: counter,
-                        start: 'top 90%',
-                        onEnter: () => {
-                            gsap.to(counter, {
-                                duration: 2,
-                                ease: 'power2.out',
-                                onUpdate: function() {
-                                    const progress = this.progress();
-                                    const current = Math.floor(target * progress);
-                                    if (isCurrency) {
-                                        counter.innerText = '₹' + current.toLocaleString('en-IN') + suffix;
-                                    } else {
-                                        counter.innerText = (target * progress).toFixed(1) + suffix;
-                                    }
-                                }
-                            });
-                        }
-                    });
-                });
-            }
-        });
-    </script>
 </body>
 </html>
