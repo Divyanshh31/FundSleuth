@@ -13,7 +13,8 @@
     --bg-main: #FAF9F6;
     --bg-surface: #FFFFFF;
     --bg-alt: #EFECE6;
-    --bg-glass: rgba(255, 255, 255, 0.90);
+    --bg-glass: rgba(255, 255, 255, 0.65);
+    --border-glass: rgba(255, 255, 255, 0.85);
 
     --grad-hero: linear-gradient(135deg, #FFF7ED 0%, #EFF6FF 50%, #FAF9F6 100%);
     --grad-primary: linear-gradient(135deg, #151515 0%, #2A2A2A 100%);
@@ -34,9 +35,9 @@
     --border-light: rgba(0, 0, 0, 0.08);
     --border-hover: rgba(255, 107, 0, 0.35);
 
-    --shadow-subtle: 0 4px 18px -6px rgba(15, 15, 15, 0.12), 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-card: 0 10px 30px -10px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
-    --shadow-hover: 0 20px 40px -12px rgba(15, 15, 15, 0.18), 0 4px 12px rgba(0, 0, 0, 0.06);
+    --shadow-subtle: 0 10px 30px -8px rgba(15, 15, 15, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+    --shadow-card: 0 16px 40px -12px rgba(15, 15, 15, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+    --shadow-hover: 0 24px 50px -12px rgba(15, 15, 15, 0.16), inset 0 1px 1.5px 0 rgba(255, 255, 255, 1);
 
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-serif: 'Playfair Display', Georgia, serif;
@@ -97,12 +98,14 @@ body {
 }
 
 .interactive-photo-card {
-    background: #FFFFFF;
-    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: var(--radius-xl);
     transform-style: preserve-3d;
     transition: transform 0.12s cubic-bezier(0.1, 0.9, 0.2, 1);
-    box-shadow: 0 30px 70px -15px rgba(15, 15, 15, 0.22), 0 6px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 30px 70px -15px rgba(15, 15, 15, 0.18), 0 6px 20px rgba(0, 0, 0, 0.04), inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
     will-change: transform;
 }
 
@@ -139,13 +142,13 @@ body {
 
 /* Glassmorphic Top Floating Nav */
 .navbar-custom {
-    background: var(--bg-glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-light);
-    box-shadow: var(--shadow-subtle);
+    background: rgba(255, 255, 255, 0.65) !important;
+    backdrop-filter: blur(24px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.85) !important;
+    box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.09), inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
     border-radius: 999px;
-    margin: 8px auto 0 auto;
+    margin: 12px auto 0 auto;
     max-width: 1200px;
     padding: 6px 20px;
     transition: var(--ease-taste) 0.4s;
@@ -177,7 +180,9 @@ body {
     align-items: center;
     gap: 8px;
     background: rgba(255, 107, 0, 0.08);
-    border: 1px solid rgba(255, 107, 0, 0.3);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border: 1px solid rgba(255, 107, 0, 0.35);
     color: #CC5400;
     font-size: 13px;
     font-weight: 600;
@@ -185,6 +190,7 @@ body {
     border-radius: 999px;
     text-decoration: none;
     transition: all 0.3s var(--ease-taste);
+    box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .v2-pill-badge:hover {
@@ -265,21 +271,23 @@ body {
 }
 
 .btn-taste-soft {
-    background-color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     color: #0A0A0A !important;
-    border: 1px solid var(--border-light);
+    border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 999px;
     padding: 12px 28px;
     font-weight: 600;
-    box-shadow: var(--shadow-subtle);
+    box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
     transition: all 0.3s var(--ease-taste);
 }
 
 .btn-taste-soft:hover {
-    background-color: #FAF9F6;
-    border-color: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 1);
     transform: translateY(-1px);
-    box-shadow: var(--shadow-card);
+    box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.12), inset 0 1px 1.5px 0 rgba(255, 255, 255, 1);
 }
 
 /* Micro Sheen Animation */
@@ -300,12 +308,12 @@ body {
 
 /* Bento Grid Cards (Taste Skill & GSAP Physics) */
 .bento-card {
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.80);
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-card);
+    box-shadow: 0 16px 40px -12px rgba(15, 15, 15, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
     transition: transform 0.4s var(--ease-taste), box-shadow 0.4s var(--ease-taste), border-color 0.4s var(--ease-taste);
     transform-style: preserve-3d;
     perspective: 1000px;
@@ -313,8 +321,8 @@ body {
 
 .bento-card:hover {
     transform: translateY(-6px) scale(1.01);
-    box-shadow: var(--shadow-hover);
-    border-color: rgba(255, 107, 0, 0.3);
+    box-shadow: 0 24px 50px -12px rgba(15, 15, 15, 0.16), inset 0 1px 1.5px 0 rgba(255, 255, 255, 1);
+    border-color: rgba(255, 107, 0, 0.4);
 }
 
 .icon-box-lg {
@@ -334,16 +342,19 @@ body {
 
 /* Custom Section Card Glass */
 .card-custom {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.82);
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-card);
+    box-shadow: 0 16px 40px -12px rgba(15, 15, 15, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .card-header-gradient {
-    background: linear-gradient(180deg, #FFFFFF 0%, #FAF9F6 100%);
-    border-bottom: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     padding: 1rem 1.25rem;
     border-top-left-radius: var(--radius-xl);
     border-top-right-radius: var(--radius-xl);
@@ -351,12 +362,16 @@ body {
 
 /* KPI Badges & Cards */
 .kpi-card {
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(18px) saturate(170%);
+    -webkit-backdrop-filter: blur(18px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.80);
     transition: all 0.3s var(--ease-taste);
 }
 
 .kpi-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
+    box-shadow: 0 20px 45px -10px rgba(15, 15, 15, 0.14), inset 0 1px 1.5px 0 rgba(255, 255, 255, 1);
 }
 
 .kpi-icon-badge {
@@ -376,16 +391,19 @@ body {
 
 /* Upload Dropzone */
 .upload-dropzone {
-    border: 2px dashed rgba(0, 0, 0, 0.15);
+    border: 2px dashed rgba(0, 0, 0, 0.14);
     border-radius: var(--radius-lg);
-    background: #FAF9F6;
+    background: rgba(250, 249, 246, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     cursor: pointer;
     transition: all 0.3s var(--ease-taste);
+    box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .upload-dropzone:hover {
     border-color: var(--accent-orange);
-    background: rgba(255, 107, 0, 0.03);
+    background: rgba(255, 107, 0, 0.05);
 }
 
 /* Vis.js Graph Styling */
