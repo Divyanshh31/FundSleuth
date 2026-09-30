@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FundSleuth | AI Portfolio Intelligence &amp; Mutual Fund X-Ray</title>
+    <title>FundSleuth | Anti-Slop AI Portfolio Intelligence &amp; Mutual Fund X-Ray</title>
 
-    <!-- Google Fonts: Plus Jakarta Sans -->
+    <!-- Google Fonts: Plus Jakarta Sans, Playfair Display (Editorial Serif), IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- Custom Design System Stylesheet -->
+    <!-- Custom Design System Stylesheet (Taste Skill / GSAP / ThreeUI Inspired) -->
     <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Three.js (3D WebGL Engine) & GSAP Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
     <!-- Chart.js & Vis.js Graph Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -26,97 +29,106 @@
 </head>
 <body>
 
-    <!-- Interactive 3D WebGL Canvas Layer -->
+    <!-- Taste Skill Tactile Grain Noise Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- ThreeUI Interactive 3D WebGL Canvas Layer -->
     <canvas id="hero-canvas"></canvas>
 
     <!-- Toast Notification Container -->
     <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;"></div>
 
-    <!-- Navigation Header -->
+    <!-- Taste Skill Glassmorphic Top Floating Nav -->
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
-        <div class="container">
+        <div class="container-fluid px-2 px-md-3">
             <a class="navbar-brand d-flex align-items-center gap-2" href="#">
                 <div class="brand-icon-box p-2 rounded-3 text-white">
                     <i class="fa-solid fa-chart-pie fs-5"></i>
                 </div>
-                <span class="fs-4 gradient-text fw-bold">FundSleuth</span>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill ms-2 px-3 py-1 font-monospace">Portfolio Intelligence</span>
+                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
+                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
-                    <li class="nav-item"><a class="nav-link active text-primary fw-bold" href="#landing-hero">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="#education-section">What are Mutual Funds?</a></li>
+                    <li class="nav-item"><a class="nav-link active text-dark fw-bold" href="#landing-hero">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="#education-section">Guides</a></li>
                     <li class="nav-item"><a class="nav-link text-secondary" href="#bento-features">Capabilities</a></li>
                     <li class="nav-item"><a class="nav-link text-secondary" href="#xray-tool-section">Launch Tool</a></li>
                     <li class="nav-item"><a class="nav-link text-secondary" href="#faq-section">FAQ</a></li>
                 </ul>
 
                 <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
-                    <button class="btn btn-soft btn-sm px-3 rounded-pill" onclick="toggleVoiceSummary()">
-                        <i class="fa-solid fa-volume-high me-1 text-primary"></i> <span id="voiceBtnText">Voice Summary</span>
+                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill" onclick="toggleVoiceSummary()">
+                        <i class="fa-solid fa-volume-high me-1 orange-highlight"></i> <span id="voiceBtnText">Audio Overview</span>
                     </button>
-                    <a class="btn btn-gradient btn-sm px-4 rounded-pill fw-bold" href="#xray-tool-section">
-                        <i class="fa-solid fa-bolt me-1"></i> Launch X-Ray
+                    <a class="btn btn-taste-primary btn-sm px-4 rounded-pill fw-bold" href="#xray-tool-section">
+                        <i class="fa-solid fa-bolt me-1 orange-highlight"></i> Launch X-Ray
                     </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- LANDING HERO SECTION -->
+    <!-- LANDING HERO SECTION (Taste-Skill / GSAP Aesthetic) -->
     <section id="landing-hero" class="landing-hero-section text-center position-relative">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="mb-4">
-                        <span class="badge-pill-glow">
-                            <i class="fa-solid fa-sparkles text-primary"></i> Next-Gen AI Financial Intelligence
-                        </span>
+                    
+                    <!-- Taste Skill Live Release Pill Badge -->
+                    <div class="mb-4 gsap-hero-element">
+                        <a href="#xray-tool-section" class="v2-pill-badge">
+                            <span class="v2-dot"></span>
+                            <span>v2.0 Anti-Slop AI Engine Just Shipped</span>
+                            <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
                     </div>
 
-                    <h1 class="display-4 fw-extrabold gradient-text mb-3 lh-sm">
-                        Master Your Mutual Funds.<br>Eliminate Overlap &amp; Commission Drag.
+                    <!-- Editorial Headlines -->
+                    <h1 class="hero-heading mb-3 gsap-hero-element">
+                        Master Your Mutual Funds.<br>
+                        <span class="font-serif fst-italic orange-highlight fw-normal">Eliminate Overlap &amp; Cost Drag.</span>
                     </h1>
 
-                    <p class="text-secondary fs-5 mb-4 mx-auto" style="max-width: 780px;">
-                        Expose hidden stock-level overlaps, audit loss-making toxic holdings, detect distributor commission traps, and optimize your wealth with mathematical precision.
+                    <p class="text-secondary fs-5 mb-4 mx-auto gsap-hero-element" style="max-width: 760px;">
+                        Expose hidden stock-level overlaps, audit loss-making toxic holdings, detect distributor commission traps, and optimize your portfolio with mathematical precision.
                     </p>
 
-                    <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
-                        <a href="#xray-tool-section" class="btn btn-gradient btn-lg px-4 py-3 rounded-pill shadow-lg">
-                            <i class="fa-solid fa-microscope me-2"></i> Launch Interactive X-Ray Tool
+                    <div class="d-flex flex-wrap justify-content-center gap-3 mb-5 gsap-hero-element">
+                        <a href="#xray-tool-section" class="btn btn-taste-primary btn-lg px-4 py-3">
+                            <i class="fa-solid fa-microscope me-2 orange-highlight"></i> Launch Interactive X-Ray Tool
                         </a>
-                        <a href="#education-section" class="btn btn-soft btn-lg px-4 py-3 rounded-pill">
-                            <i class="fa-solid fa-book-open me-2 text-primary"></i> Learn Mutual Funds
+                        <a href="#education-section" class="btn btn-taste-soft btn-lg px-4 py-3">
+                            <i class="fa-solid fa-book-open me-2 text-dark"></i> Read Guides
                         </a>
                     </div>
 
-                    <!-- Impact Counter Badges -->
-                    <div class="row g-3 justify-content-center">
+                    <!-- GSAP Animated Impact Counter Badges -->
+                    <div class="row g-3 justify-content-center gsap-hero-element">
                         <div class="col-md-4">
                             <div class="bento-card p-3 text-center">
-                                <span class="small text-secondary font-monospace">AVG. DIRECT PLAN SAVINGS</span>
-                                <h3 class="fw-bold text-success my-1">₹14,200 / 5-Yr</h3>
-                                <span class="small text-muted">Eliminates Distributor Fees</span>
+                                <span class="small text-muted font-mono">AVG. DIRECT PLAN SAVINGS</span>
+                                <h3 class="fw-bold text-success my-1 counter-num" data-target="14200">₹0</h3>
+                                <span class="small text-secondary">Eliminates Distributor Fees / 5-Yr</span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="bento-card p-3 text-center">
-                                <span class="small text-secondary font-monospace">TYPICAL OVERLAP DETECTED</span>
-                                <h3 class="fw-bold text-primary my-1">42.5% Stock Risk</h3>
-                                <span class="small text-muted">Across Large Cap Funds</span>
+                                <span class="small text-muted font-mono">TYPICAL OVERLAP DETECTED</span>
+                                <h3 class="fw-bold orange-highlight my-1 counter-num" data-target="42.5" data-suffix="%">0%</h3>
+                                <span class="small text-secondary">Across Large Cap Funds</span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="bento-card p-3 text-center">
-                                <span class="small text-secondary font-monospace">DATA PRIVACY</span>
-                                <h3 class="fw-bold text-indigo my-1" style="color: #4F46E5;">100% Client-Side</h3>
-                                <span class="small text-muted">Zero Personal Data Stored</span>
+                                <span class="small text-muted font-mono">DATA PRIVACY</span>
+                                <h3 class="fw-bold text-dark my-1">100% Client-Side</h3>
+                                <span class="small text-secondary">Zero Personal Data Stored</span>
                             </div>
                         </div>
                     </div>
@@ -127,20 +139,22 @@
     </section>
 
     <!-- EDUCATIONAL GUIDE SECTION: WHAT ARE MUTUAL FUNDS? -->
-    <section id="education-section" class="py-5 bg-white border-top border-bottom">
+    <section id="education-section" class="py-5 border-top border-bottom bg-white">
         <div class="container">
-            <div class="text-center mb-5">
-                <span class="badge bg-primary-subtle text-primary border rounded-pill px-3 py-2 font-monospace fw-bold mb-2">EDUCATIONAL INSIGHTS</span>
-                <h2 class="fw-extrabold text-dark">Understanding Mutual Funds &amp; Financial Traps</h2>
-                <p class="text-secondary" style="max-width: 650px; margin: 0 auto;">Everything you need to know about Net Asset Value, portfolio duplication, and hidden distributor costs.</p>
+            <div class="text-center mb-5 gsap-reveal">
+                <span class="v2-pill-badge mb-2">
+                    <i class="fa-solid fa-graduation-cap"></i> EDUCATIONAL INSIGHTS
+                </span>
+                <h2 class="hero-heading text-dark fs-1 mt-2">Understanding Mutual Funds &amp; Financial Traps</h2>
+                <p class="text-secondary font-serif fs-5" style="max-width: 650px; margin: 0 auto;">Everything you need to know about Net Asset Value, portfolio duplication, and hidden distributor fees.</p>
             </div>
 
             <div class="row g-4">
                 <!-- Card 1 -->
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-3 gsap-reveal">
                     <div class="bento-card p-4 h-100">
-                        <div class="icon-box-lg bg-indigo text-white mb-3" style="background: #4F46E5;">
-                            <i class="fa-solid fa-piggy-bank"></i>
+                        <div class="icon-box-lg bg-dark text-white mb-3">
+                            <i class="fa-solid fa-piggy-bank orange-highlight"></i>
                         </div>
                         <h5 class="fw-bold text-dark">1. What is a Mutual Fund?</h5>
                         <p class="text-secondary small mb-0">
@@ -150,40 +164,40 @@
                 </div>
 
                 <!-- Card 2 -->
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-3 gsap-reveal">
                     <div class="bento-card p-4 h-100">
                         <div class="icon-box-lg bg-warning text-dark mb-3">
                             <i class="fa-solid fa-hand-holding-dollar"></i>
                         </div>
                         <h5 class="fw-bold text-dark">2. Direct vs Regular Plans</h5>
                         <p class="text-secondary small mb-0">
-                            **Regular Plans** pay 1% to 1.5% annual distributor commissions to brokers. **Direct Plans** have zero commission, saving you tens of thousands in compounded wealth over 10 years!
+                            <strong>Regular Plans</strong> pay 1% to 1.5% annual distributor commissions to brokers. <strong>Direct Plans</strong> have zero commission, saving you tens of thousands in compounded wealth!
                         </p>
                     </div>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-3 gsap-reveal">
                     <div class="bento-card p-4 h-100">
                         <div class="icon-box-lg bg-primary text-white mb-3">
                             <i class="fa-solid fa-layer-group"></i>
                         </div>
                         <h5 class="fw-bold text-dark">3. The Overlap Trap</h5>
                         <p class="text-secondary small mb-0">
-                            Buying 5 different large-cap or flexi-cap funds often gives false diversification. Most managers buy the exact same top 10 stocks (HDFC Bank, Reliance, ICICI Bank), doubling your risk!
+                            Buying 5 different large-cap funds often gives false diversification. Most fund managers buy the exact same top 10 stocks (HDFC Bank, Reliance, ICICI Bank), doubling your risk!
                         </p>
                     </div>
                 </div>
 
                 <!-- Card 4 -->
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-3 gsap-reveal">
                     <div class="bento-card p-4 h-100">
                         <div class="icon-box-lg bg-danger text-white mb-3">
                             <i class="fa-solid fa-biohazard"></i>
                         </div>
                         <h5 class="fw-bold text-dark">4. Toxic Stock Holdings</h5>
                         <p class="text-secondary small mb-0">
-                            Fund managers sometimes hold underperforming, loss-making, or debt-ridden companies. FundSleuth audits underlying stock P/L metrics to alert you immediately.
+                            Fund managers sometimes hold underperforming or loss-making companies. FundSleuth audits underlying stock P/L metrics to alert you immediately.
                         </p>
                     </div>
                 </div>
@@ -194,29 +208,29 @@
     <!-- BENTO FEATURES SHOWCASE SECTION -->
     <section id="bento-features" class="py-5">
         <div class="container">
-            <div class="text-center mb-5">
-                <span class="badge bg-indigo text-white px-3 py-2 rounded-pill font-monospace fw-bold mb-2" style="background:#4F46E5;">PLATFORM CAPABILITIES</span>
-                <h2 class="fw-extrabold text-dark">Engineered for Maximum Financial Clarity</h2>
+            <div class="text-center mb-5 gsap-reveal">
+                <span class="badge bg-dark text-white px-3 py-2 rounded-pill font-mono mb-2">PLATFORM CAPABILITIES</span>
+                <h2 class="hero-heading text-dark fs-1 mt-2">Engineered for Maximum Financial Clarity</h2>
             </div>
 
             <div class="row g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-4 gsap-reveal">
                     <div class="bento-card p-4 h-100">
-                        <i class="fa-solid fa-circle-nodes fs-1 text-primary mb-3"></i>
+                        <i class="fa-solid fa-circle-nodes fs-1 orange-highlight mb-3"></i>
                         <h4 class="fw-bold text-dark">Graph Node Skeleton View</h4>
                         <p class="text-secondary small mb-0">Visualizes connections between mutual fund schemes and underlying stock holdings using Vis.js force-directed physics graphs.</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 gsap-reveal">
                     <div class="bento-card p-4 h-100">
                         <i class="fa-solid fa-heart-pulse fs-1 text-success mb-3"></i>
                         <h4 class="fw-bold text-dark">0-100 Portfolio Health Score</h4>
                         <p class="text-secondary small mb-0">Automated health rating algorithm penalizing overlap percentage, high expense ratios, and toxic asset ratios.</p>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 gsap-reveal">
                     <div class="bento-card p-4 h-100">
-                        <i class="fa-solid fa-list-check fs-1 text-warning mb-3"></i>
+                        <i class="fa-solid fa-list-check fs-1 text-primary mb-3"></i>
                         <h4 class="fw-bold text-dark">Step-by-Step Restructuring</h4>
                         <p class="text-secondary small mb-0">Actionable 1-2-3 checklist telling you which schemes to switch, consolidate, or exit to maximize returns.</p>
                     </div>
@@ -228,19 +242,21 @@
     <!-- THE LIVE X-RAY TOOL SECTION -->
     <section id="xray-tool-section" class="py-5 bg-white border-top">
         <div class="container">
-            <div class="text-center mb-4">
-                <span class="badge bg-primary text-white px-3 py-2 rounded-pill font-monospace fw-bold mb-2">LIVE ANALYTICS ENGINE</span>
-                <h2 class="fw-extrabold text-dark">Upload Portfolio &amp; Run Instant X-Ray</h2>
-                <p class="text-secondary">Upload your CAMS / KFintech PDF or a screenshot from Groww / Zerodha Coin.</p>
+            <div class="text-center mb-4 gsap-reveal">
+                <span class="v2-pill-badge mb-2">
+                    <i class="fa-solid fa-bolt"></i> LIVE ANALYTICS ENGINE
+                </span>
+                <h2 class="hero-heading text-dark fs-1 mt-2">Upload Portfolio &amp; Run Instant X-Ray</h2>
+                <p class="text-secondary font-serif fs-5">Upload your CAMS / KFintech PDF or a screenshot from Groww / Zerodha Coin.</p>
             </div>
 
             <!-- Upload Dropzone Card -->
-            <div class="card card-custom p-4 mb-4">
+            <div class="card card-custom p-4 mb-4 gsap-reveal">
                 <div class="row align-items-center">
                     <div class="col-md-7">
                         <div class="upload-dropzone p-4 text-center" id="dropZone" onclick="document.getElementById('fileInput').click()">
-                            <div class="p-3 bg-light d-inline-block rounded-circle mb-2">
-                                <i class="fa-solid fa-cloud-arrow-up fs-2 text-primary"></i>
+                            <div class="p-3 bg-white d-inline-block rounded-circle shadow-sm mb-2">
+                                <i class="fa-solid fa-cloud-arrow-up fs-2 orange-highlight"></i>
                             </div>
                             <h5 class="fw-bold text-dark mb-1">Upload CAS Statement (PDF) or App Screenshot</h5>
                             <p class="text-secondary small m-0">Supports CAMS / KFintech PDFs, Zerodha Coin, Groww &amp; Paytm Money Screenshots</p>
@@ -249,8 +265,8 @@
                     </div>
                     <div class="col-md-5 text-center mt-3 mt-md-0 border-start ps-md-4">
                         <p class="text-secondary small fw-semibold mb-2">Want to test without uploading a file?</p>
-                        <button class="btn btn-gradient btn-lg w-100 py-3 rounded-3" onclick="runDemoAnalysis()">
-                            <i class="fa-solid fa-bolt-lightning me-2"></i> Run Instant Interactive X-Ray
+                        <button class="btn btn-taste-primary btn-lg w-100 py-3" onclick="runDemoAnalysis()">
+                            <i class="fa-solid fa-bolt-lightning me-2 orange-highlight"></i> Run Instant Interactive X-Ray
                         </button>
                     </div>
                 </div>
@@ -258,8 +274,8 @@
 
             <!-- Skeleton Loading State -->
             <div id="loadingSpinner" class="text-center my-5 d-none animate__animated animate__fadeIn">
-                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
-                <p class="mt-3 text-primary fw-bold fs-5">Extracting Holdings, Graphing Overlaps &amp; Auditing Stock Fundamentals...</p>
+                <div class="spinner-border orange-highlight" style="width: 3rem; height: 3rem;" role="status"></div>
+                <p class="mt-3 text-dark fw-bold fs-5">Extracting Holdings, Graphing Overlaps &amp; Auditing Stock Fundamentals...</p>
             </div>
 
             <!-- Dashboard Analysis Results Container -->
@@ -281,7 +297,7 @@
                     <div class="col-md-3">
                         <div class="card card-custom kpi-card p-3 text-center h-100 border-primary">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-secondary small font-monospace fw-bold">HEALTH SCORE</span>
+                                <span class="text-muted small font-mono fw-bold">HEALTH SCORE</span>
                                 <div class="kpi-icon-badge kpi-icon-emerald"><i class="fa-solid fa-heart-pulse"></i></div>
                             </div>
                             <h2 class="fw-bold text-success my-1" id="metricHealthScore">100/100</h2>
@@ -292,12 +308,12 @@
                     <div class="col-md-3">
                         <div class="card card-custom kpi-card p-3 text-center h-100">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-secondary small font-monospace fw-bold">OVERLAP SCORE</span>
+                                <span class="text-muted small font-mono fw-bold">OVERLAP SCORE</span>
                                 <div class="kpi-icon-badge kpi-icon-indigo"><i class="fa-solid fa-layer-group"></i></div>
                             </div>
-                            <h2 class="fw-bold text-primary my-1" id="metricOverlap">0%</h2>
+                            <h2 class="fw-bold orange-highlight my-1" id="metricOverlap">0%</h2>
                             <div class="progress mt-2" style="height: 6px;">
-                                <div id="overlapProgressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                                <div id="overlapProgressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
                             </div>
                             <span class="small text-secondary mt-1 d-block" id="metricOverlapSub">0 Overlapping Holdings</span>
                         </div>
@@ -306,7 +322,7 @@
                     <div class="col-md-3">
                         <div class="card card-custom kpi-card p-3 text-center h-100">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-secondary small font-monospace fw-bold">5-YR COST DRAG</span>
+                                <span class="text-muted small font-mono fw-bold">5-YR COST DRAG</span>
                                 <div class="kpi-icon-badge kpi-icon-red"><i class="fa-solid fa-money-bill-trend-up"></i></div>
                             </div>
                             <h2 class="fw-bold text-danger my-1" id="metricCostDrag">₹0</h2>
@@ -317,7 +333,7 @@
                     <div class="col-md-3">
                         <div class="card card-custom kpi-card p-3 text-center h-100">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-secondary small font-monospace fw-bold">COMMISSION LEAKAGE</span>
+                                <span class="text-muted small font-mono fw-bold">COMMISSION LEAKAGE</span>
                                 <div class="kpi-icon-badge kpi-icon-amber"><i class="fa-solid fa-hand-holding-dollar"></i></div>
                             </div>
                             <h2 class="fw-bold text-warning my-1" id="metricCommission">₹0</h2>
@@ -331,7 +347,7 @@
                     <div class="col-lg-5">
                         <div class="card card-custom h-100">
                             <div class="card-header-gradient">
-                                <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-pie-chart text-primary me-2"></i> Sector Exposure Breakdown</h5>
+                                <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-pie-chart orange-highlight me-2"></i> Sector Exposure Breakdown</h5>
                             </div>
                             <div class="card-body">
                                 <div id="sectorWarningsContainer" class="mb-2"></div>
@@ -345,7 +361,7 @@
                     <div class="col-lg-7" id="section-compounding">
                         <div class="card card-custom h-100">
                             <div class="card-header-gradient d-flex justify-content-between align-items-center">
-                                <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-chart-line text-primary me-2"></i> 10-Year Compounding Expense Drag Projection</h5>
+                                <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-chart-line orange-highlight me-2"></i> 10-Year Compounding Expense Drag</h5>
                                 <span class="badge bg-success-subtle text-success border rounded-pill px-3">Direct Plan Advantage</span>
                             </div>
                             <div class="card-body">
@@ -359,7 +375,7 @@
 
                 <!-- Step-by-Step Restructuring Action Plan -->
                 <section id="section-plan" class="card card-custom p-4 mb-4">
-                    <h5 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-list-check text-primary me-2"></i> Step-by-Step Portfolio Optimization Action Plan</h5>
+                    <h5 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-list-check orange-highlight me-2"></i> Step-by-Step Portfolio Optimization Action Plan</h5>
                     <div id="actionPlanContainer" class="vstack gap-2">
                         <!-- Dynamically populated -->
                     </div>
@@ -368,12 +384,12 @@
                 <!-- Cost Drag Simulation Slider -->
                 <section class="card card-custom p-4 mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-sliders text-primary me-2"></i> Interactive Cost Drag &amp; Return Restructuring Simulator</h5>
-                        <span class="badge bg-primary-subtle text-primary border rounded-pill px-3">Dynamic Math</span>
+                        <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-sliders orange-highlight me-2"></i> Interactive Cost Drag &amp; Return Simulator</h5>
+                        <span class="badge bg-dark text-white rounded-pill px-3 font-mono">Dynamic Math</span>
                     </div>
                     <div class="row align-items-center">
                         <div class="col-md-6">
-                            <label for="returnSlider" class="form-label text-secondary fw-semibold">Assumed Market Annual Return Rate: <span id="returnRateVal" class="text-primary fw-bold">12.0%</span></label>
+                            <label for="returnSlider" class="form-label text-secondary fw-semibold">Assumed Market Annual Return Rate: <span id="returnRateVal" class="orange-highlight fw-bold">12.0%</span></label>
                             <input type="range" class="form-range" id="returnSlider" min="8" max="18" step="0.5" value="12" oninput="updateReturnSimulation(this.value)">
                         </div>
                         <div class="col-md-6 bg-light p-3 rounded-3 border">
@@ -394,18 +410,18 @@
                     <div class="col-lg-7">
                         <div class="card card-custom h-100">
                             <div class="card-header-gradient d-flex justify-content-between align-items-center">
-                                <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-circle-nodes text-primary me-2"></i> Interactive Overlap Graph Skeleton</h5>
+                                <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-circle-nodes orange-highlight me-2"></i> Overlap Graph Skeleton View</h5>
                                 <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-soft" onclick="togglePhysics()">Freeze Graph</button>
-                                    <button class="btn btn-soft" onclick="resetGraphView()">Reset View</button>
+                                    <button class="btn btn-taste-soft btn-sm" onclick="togglePhysics()">Freeze Graph</button>
+                                    <button class="btn btn-taste-soft btn-sm" onclick="resetGraphView()">Reset View</button>
                                 </div>
                             </div>
                             <div class="card-body p-3">
                                 <div id="network-graph"></div>
                                 <div class="d-flex gap-3 justify-content-center small text-secondary mt-2">
-                                    <span><i class="fa-solid fa-circle text-primary me-1"></i> Mutual Fund Node</span>
-                                    <span><i class="fa-solid fa-square text-success me-1"></i> Unique Stock Node</span>
-                                    <span><i class="fa-solid fa-square text-danger me-1"></i> Overlapping Stock</span>
+                                    <span><i class="fa-solid fa-circle text-dark me-1"></i> Mutual Fund Node</span>
+                                    <span><i class="fa-solid fa-square text-success me-1"></i> Unique Stock</span>
+                                    <span><i class="fa-solid fa-square orange-highlight me-1"></i> Overlapping Stock</span>
                                 </div>
                             </div>
                         </div>
@@ -428,7 +444,7 @@
                 <!-- Stock Health Audit Table Section -->
                 <section id="section-stocks" class="card card-custom p-4 mb-4">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
-                        <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-chart-line text-primary me-2"></i> Extracted Stock Holdings Profitability Audit</h5>
+                        <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-chart-line orange-highlight me-2"></i> Extracted Stock Holdings Profitability Audit</h5>
                         
                         <!-- Search & Filter Controls -->
                         <div class="d-flex gap-2">
@@ -461,7 +477,6 @@
                         </table>
                     </div>
 
-                    <!-- Table Pagination Controls -->
                     <div class="d-flex justify-content-end align-items-center mt-3" id="paginationControls">
                         <!-- Dynamically populated -->
                     </div>
@@ -469,7 +484,7 @@
 
                 <!-- Mutual Funds Portfolio Cards Breakdown -->
                 <section class="card card-custom p-4 mb-4">
-                    <h5 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-wallet text-primary me-2"></i> Mutual Fund Schemes Portfolio Breakdown</h5>
+                    <h5 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-wallet orange-highlight me-2"></i> Mutual Fund Schemes Portfolio Breakdown</h5>
                     <div id="fundList" class="row g-3">
                         <!-- Dynamically populated -->
                     </div>
@@ -482,12 +497,12 @@
     <!-- FREQUENTLY ASKED QUESTIONS (FAQ) SECTION -->
     <section id="faq-section" class="py-5">
         <div class="container" style="max-width: 800px;">
-            <div class="text-center mb-4">
-                <span class="badge bg-light text-primary border rounded-pill px-3 py-1 font-monospace fw-bold mb-2">GOT QUESTIONS?</span>
-                <h2 class="fw-extrabold text-dark">Frequently Asked Questions</h2>
+            <div class="text-center mb-4 gsap-reveal">
+                <span class="v2-pill-badge mb-2">GOT QUESTIONS?</span>
+                <h2 class="hero-heading text-dark fs-1 mt-2">Frequently Asked Questions</h2>
             </div>
 
-            <div class="accordion accordion-custom" id="faqAccordion">
+            <div class="accordion accordion-custom gsap-reveal" id="faqAccordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
@@ -531,22 +546,80 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-white border-top py-4 mt-5">
-        <div class="container text-center text-secondary small">
+    <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
+        <div class="container">
             <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
-            <p class="mb-0 text-muted">Designed with a 3D WebGL particle engine &amp; modern anti-slop design system.</p>
+            <p class="mb-0 text-muted">Inspired by Taste-Skill, GSAP ScrollTrigger, and ThreeUI WebGL Shader Engine.</p>
         </div>
     </footer>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- 3D WebGL Canvas Shader Background -->
+    <!-- ThreeUI 3D WebGL Shader Engine -->
     <script src="/js/canvas-bg.js"></script>
 
     <!-- Custom Visualizations & Application Logic -->
     <script src="/js/charts.js"></script>
     <script src="/js/app.js"></script>
 
+    <!-- GSAP Animations & Counters Initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof gsap !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+
+                // Hero Load Animation Stagger
+                gsap.from('.gsap-hero-element', {
+                    opacity: 0,
+                    y: 30,
+                    duration: 1,
+                    stagger: 0.15,
+                    ease: 'power3.out'
+                });
+
+                // Scroll Trigger Reveal Animations
+                gsap.utils.toArray('.gsap-reveal').forEach(element => {
+                    gsap.from(element, {
+                        scrollTrigger: {
+                            trigger: element,
+                            start: 'top 85%'
+                        },
+                        opacity: 0,
+                        y: 35,
+                        duration: 0.8,
+                        ease: 'power3.out'
+                    });
+                });
+
+                // GSAP Animated Counters
+                document.querySelectorAll('.counter-num').forEach(counter => {
+                    const target = parseFloat(counter.getAttribute('data-target'));
+                    const suffix = counter.getAttribute('data-suffix') || '';
+                    const isCurrency = counter.innerText.includes('₹') || target > 100;
+
+                    ScrollTrigger.create({
+                        trigger: counter,
+                        start: 'top 90%',
+                        onEnter: () => {
+                            gsap.to(counter, {
+                                duration: 2,
+                                ease: 'power2.out',
+                                onUpdate: function() {
+                                    const progress = this.progress();
+                                    const current = Math.floor(target * progress);
+                                    if (isCurrency) {
+                                        counter.innerText = '₹' + current.toLocaleString('en-IN') + suffix;
+                                    } else {
+                                        counter.innerText = (target * progress).toFixed(1) + suffix;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
