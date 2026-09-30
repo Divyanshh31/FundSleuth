@@ -354,9 +354,9 @@ function renderStockTablePage() {
                 <td class="fw-medium">${stock.companyName}</td>
                 <td class="text-secondary">${stock.sector}</td>
                 <td><span class="badge ${badgeClass}">${stock.healthStatus}</span></td>
-                <td class="${stock.netProfitGrowthYr >= 0 ? 'text-success' : 'text-danger'} fw-bold">${stock.netProfitGrowthYr}%</td>
-                <td>${stock.peRatio}x</td>
-                <td class="${stock.oneYrReturnPercentage >= 0 ? 'text-success' : 'text-danger'} fw-bold">${stock.oneYrReturnPercentage}%</td>
+                <td class="text-end ${stock.netProfitGrowthYr >= 0 ? 'text-success' : 'text-danger'} fw-bold font-mono">${stock.netProfitGrowthYr}%</td>
+                <td class="text-end font-mono">${stock.peRatio}x</td>
+                <td class="text-end ${stock.oneYrReturnPercentage >= 0 ? 'text-success' : 'text-danger'} fw-bold font-mono">${stock.oneYrReturnPercentage}%</td>
             </tr>
         `;
     });
@@ -388,9 +388,9 @@ function renderPaginationControls() {
     if (!container) return;
 
     container.innerHTML = `
-        <button class="btn btn-sm btn-soft me-2" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(-1)">Previous</button>
-        <span class="small text-secondary font-monospace">Page ${currentPage} of ${totalPages}</span>
-        <button class="btn btn-sm btn-soft ms-2" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(1)">Next</button>
+        <button class="btn btn-sm btn-taste-soft me-2" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(-1)"><i class="fa-solid fa-chevron-left me-1"></i> Previous</button>
+        <span class="small text-secondary font-mono px-2">Page ${currentPage} of ${totalPages}</span>
+        <button class="btn btn-sm btn-taste-soft ms-2" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(1)">Next <i class="fa-solid fa-chevron-right ms-1"></i></button>
     `;
 }
 
