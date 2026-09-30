@@ -75,6 +75,42 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
+/* Live Running Real Financial Photography Background Engine */
+#bg-slideshow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -3;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.bg-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out, transform 9s ease-out;
+    transform: scale(1);
+}
+
+.bg-slide.active {
+    opacity: 0.22;
+    transform: scale(1.09) translate(-8px, -4px);
+}
+
+/* Soft Glass Tint & Gradient Overlay for Contrast */
+.bg-overlay-tint {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(180deg, rgba(245, 244, 242, 0.84) 0%, rgba(250, 249, 246, 0.88) 100%);
+    pointer-events: none;
+}
+
 /* 3D WebGL Canvas Layer */
 #hero-canvas {
     position: fixed;

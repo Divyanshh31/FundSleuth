@@ -1,20 +1,64 @@
 /* ==========================================================================
-   FUNDSLEUTH - THREE.JS & THREEUI WEBGL 3D SHADER ENGINE
-   Taste Skill + GSAP + ThreeUI Interactive Background
+   FUNDSLEUTH - LIVE RUNNING REAL FINANCIAL PHOTOGRAPHY & THREE.JS ENGINE
+   Real Non-AI Financial Market Imagery + WebGL 3D Particle Cloud
    ========================================================================== */
 
 (function () {
+    // 1. Live Running Real Financial Photography Slideshow Engine
+    initLivePhotographySlideshow();
+
+    // 2. Three.js / Canvas 3D Interactive WebGL Layer
     const canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
 
-    // Check if Three.js is available
     if (typeof THREE !== 'undefined') {
-        initThreeJS();
+        initThreeJS(canvas);
     } else {
-        initCanvas2DFallback();
+        initCanvas2DFallback(canvas);
     }
 
-    function initThreeJS() {
+    function initLivePhotographySlideshow() {
+        let container = document.getElementById('bg-slideshow-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'bg-slideshow-container';
+            document.body.prepend(container);
+        }
+
+        let tintOverlay = document.getElementById('bg-overlay-tint');
+        if (!tintOverlay) {
+            tintOverlay = document.createElement('div');
+            tintOverlay.className = 'bg-overlay-tint';
+            document.body.prepend(tintOverlay);
+        }
+
+        // Authentic, real-world photography (non-AI generated) of stock markets, charts, and trading data
+        const realFinancePhotos = [
+            'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1920&q=80', // Real candlestick stock chart
+            'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1920&q=80', // Real stock market ticker board
+            'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&w=1920&q=80', // Financial analytics workstation
+            'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=1920&q=80', // Real trading graph monitor
+            'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1920&q=80'  // Currency & wealth growth
+        ];
+
+        const slideElements = [];
+        realFinancePhotos.forEach((url, idx) => {
+            const slide = document.createElement('div');
+            slide.className = 'bg-slide' + (idx === 0 ? ' active' : '');
+            slide.style.backgroundImage = `url('${url}')`;
+            container.appendChild(slide);
+            slideElements.push(slide);
+        });
+
+        let currentIdx = 0;
+        setInterval(() => {
+            slideElements[currentIdx].classList.remove('active');
+            currentIdx = (currentIdx + 1) % slideElements.length;
+            slideElements[currentIdx].classList.add('active');
+        }, 6500);
+    }
+
+    function initThreeJS(canvas) {
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 40;
@@ -23,17 +67,16 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // 1. Interactive 3D Particles WebGL Cloud
-        const particleCount = 280;
+        // Interactive 3D Particles WebGL Cloud
+        const particleCount = 200;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
 
         const colorPalette = [
-            new THREE.Color('#FF6B00'), // Orange highlight
-            new THREE.Color('#4F46E5'), // Indigo accent
-            new THREE.Color('#0D9488'), // Teal accent
-            new THREE.Color('#D97706')  // Amber accent
+            new THREE.Color('#FF6B00'),
+            new THREE.Color('#4F46E5'),
+            new THREE.Color('#0D9488')
         ];
 
         for (let i = 0; i < particleCount; i++) {
@@ -51,26 +94,26 @@
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const pMaterial = new THREE.PointsMaterial({
-            size: 0.8,
+            size: 0.75,
             vertexColors: true,
             transparent: true,
-            opacity: 0.7,
+            opacity: 0.55,
             blending: THREE.NormalBlending
         });
 
         const particleSystem = new THREE.Points(geometry, pMaterial);
         scene.add(particleSystem);
 
-        // 2. Floating 3D Geometric Nodes (ThreeUI Style)
+        // Floating 3D Geometric Nodes
         const nodesGroup = new THREE.Group();
-        const nodeGeom = new THREE.IcosahedronGeometry(1.8, 1);
+        const nodeGeom = new THREE.IcosahedronGeometry(1.6, 1);
 
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 8; i++) {
             const wireframeMat = new THREE.MeshBasicMaterial({
                 color: i % 2 === 0 ? 0x4F46E5 : 0xFF6B00,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.35
+                opacity: 0.25
             });
 
             const mesh = new THREE.Mesh(nodeGeom, wireframeMat);
@@ -79,10 +122,9 @@
                 (Math.random() - 0.5) * 60,
                 (Math.random() - 0.5) * 30
             );
-            mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
             mesh.userData = {
-                rotSpeedX: (Math.random() - 0.5) * 0.015,
-                rotSpeedY: (Math.random() - 0.5) * 0.015
+                rotSpeedX: (Math.random() - 0.5) * 0.012,
+                rotSpeedY: (Math.random() - 0.5) * 0.012
             };
 
             nodesGroup.add(mesh);
@@ -90,13 +132,12 @@
 
         scene.add(nodesGroup);
 
-        // Mouse Parallax & Interaction
         let mouseX = 0, mouseY = 0;
         let targetX = 0, targetY = 0;
 
         window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.0008;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.0008;
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0006;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0006;
         });
 
         window.addEventListener('resize', () => {
@@ -105,27 +146,23 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Render Loop
         let clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
             const elapsedTime = clock.getElapsedTime();
 
-            // Wave motion for particle system
-            particleSystem.rotation.y = elapsedTime * 0.03;
-            particleSystem.rotation.x = Math.sin(elapsedTime * 0.02) * 0.1;
+            particleSystem.rotation.y = elapsedTime * 0.025;
+            particleSystem.rotation.x = Math.sin(elapsedTime * 0.015) * 0.08;
 
-            // Rotate 3D wireframe nodes
             nodesGroup.children.forEach(node => {
                 node.rotation.x += node.userData.rotSpeedX;
                 node.rotation.y += node.userData.rotSpeedY;
-                node.position.y += Math.sin(elapsedTime + node.position.x) * 0.01;
+                node.position.y += Math.sin(elapsedTime + node.position.x) * 0.008;
             });
 
-            // Mouse parallax easing
-            targetX += (mouseX - targetX) * 0.05;
-            targetY += (mouseY - targetY) * 0.05;
+            targetX += (mouseX - targetX) * 0.04;
+            targetY += (mouseY - targetY) * 0.04;
 
             camera.rotation.y = -targetX;
             camera.rotation.x = -targetY;
@@ -136,8 +173,7 @@
         animate();
     }
 
-    // 2D Canvas Fallback if WebGL isn't loaded
-    function initCanvas2DFallback() {
+    function initCanvas2DFallback(canvas) {
         const ctx = canvas.getContext('2d');
         let width, height;
         let particles = [];
@@ -154,15 +190,15 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.6;
-                this.vy = (Math.random() - 0.5) * 0.6;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
                 this.r = Math.random() * 2 + 1;
                 this.color = Math.random() > 0.5 ? 'rgba(255, 107, 0, ' : 'rgba(79, 70, 229, ';
             }
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                ctx.fillStyle = this.color + '0.3)';
+                ctx.fillStyle = this.color + '0.25)';
                 ctx.fill();
             }
             update() {
@@ -175,7 +211,7 @@
 
         function init() {
             particles = [];
-            for (let i = 0; i < 70; i++) particles.push(new P());
+            for (let i = 0; i < 50; i++) particles.push(new P());
         }
 
         function loop() {
