@@ -12,8 +12,44 @@ const pageSize = 5;
 let filteredStocks = [];
 
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     setupDragAndDrop();
 });
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('fundsleuth-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('fundsleuth-theme', theme);
+
+    const btnText = document.getElementById('themeToggleText');
+    const btnIcon = document.getElementById('themeToggleIcon');
+
+    if (theme === 'dark') {
+        if (btnText) btnText.innerText = 'Light';
+        if (btnIcon) btnIcon.className = 'fa-solid fa-sun orange-highlight';
+    } else {
+        if (btnText) btnText.innerText = 'Dark';
+        if (btnIcon) btnIcon.className = 'fa-solid fa-moon';
+    }
+
+    if (currentAnalysisData) {
+        if (typeof renderSectorChart === 'function') renderSectorChart(currentAnalysisData.allExtractedStocks || []);
+        const totalVal = (currentAnalysisData.expenseAnalytics || {}).totalPortfolioValue || 500000;
+        const slider = document.getElementById('returnSlider');
+        const returnRate = slider ? parseFloat(slider.value) : 12.0;
+        if (typeof renderCompoundingChart === 'function') renderCompoundingChart(totalVal, returnRate, 1.65, 0.90);
+    }
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+}
 
 function setupDragAndDrop() {
     const dropZone = document.getElementById('dropZone');
