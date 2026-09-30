@@ -1,13 +1,13 @@
 /* ==========================================================================
-   FUNDSLEUTH - LIVE RUNNING REAL FINANCIAL PHOTOGRAPHY & THREE.JS ENGINE
-   Real Non-AI Financial Market Imagery + WebGL 3D Particle Cloud
+   FUNDSLEUTH - INTERACTIVE MOUSE-MOTION SHOWCASE & THREE.JS ENGINE
+   Real Financial Photography with 3D Mouse & Touchpad Physics
    ========================================================================== */
 
 (function () {
-    // 1. Live Running Real Financial Photography Slideshow Engine
-    initLivePhotographySlideshow();
+    // 1. Live Running Financial Photography Slide Rotation & Touchpad/Mouse Physics
+    initMouseMotionShowcase();
 
-    // 2. Three.js / Canvas 3D Interactive WebGL Layer
+    // 2. Three.js / Canvas 3D Soft Background Nodes
     const canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
 
@@ -17,45 +17,63 @@
         initCanvas2DFallback(canvas);
     }
 
-    function initLivePhotographySlideshow() {
-        let container = document.getElementById('bg-slideshow-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.id = 'bg-slideshow-container';
-            document.body.prepend(container);
-        }
-
-        let tintOverlay = document.getElementById('bg-overlay-tint');
-        if (!tintOverlay) {
-            tintOverlay = document.createElement('div');
-            tintOverlay.className = 'bg-overlay-tint';
-            document.body.prepend(tintOverlay);
-        }
-
-        // Authentic, real-world photography (non-AI generated) of stock markets, charts, and trading data
-        const realFinancePhotos = [
-            'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1920&q=80', // Real candlestick stock chart
-            'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1920&q=80', // Real stock market ticker board
-            'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&w=1920&q=80', // Financial analytics workstation
-            'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=1920&q=80', // Real trading graph monitor
-            'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1920&q=80'  // Currency & wealth growth
+    function initMouseMotionShowcase() {
+        const labels = [
+            "Stock Candlestick & Technical Analysis",
+            "Stock Exchange Order Book & Ticker Screen",
+            "Live Technical Trading Graph Monitors",
+            "Financial Data & Analytics Workstation"
         ];
 
-        const slideElements = [];
-        realFinancePhotos.forEach((url, idx) => {
-            const slide = document.createElement('div');
-            slide.className = 'bg-slide' + (idx === 0 ? ' active' : '');
-            slide.style.backgroundImage = `url('${url}')`;
-            container.appendChild(slide);
-            slideElements.push(slide);
+        let currentIdx = 0;
+        const totalSlides = 4;
+
+        // Auto-rotate running pictures every 5 seconds
+        setInterval(() => {
+            const currentSlide = document.getElementById(`mouse-slide-${currentIdx}`);
+            if (currentSlide) currentSlide.classList.remove('active');
+
+            currentIdx = (currentIdx + 1) % totalSlides;
+            const nextSlide = document.getElementById(`mouse-slide-${currentIdx}`);
+            if (nextSlide) nextSlide.classList.add('active');
+
+            const labelElem = document.getElementById('showcase-label');
+            if (labelElem) labelElem.innerText = labels[currentIdx];
+        }, 5000);
+
+        // Mouse & Touchpad Physics Interaction
+        window.addEventListener('mousemove', (e) => {
+            const card = document.getElementById('interactive-mouse-showcase');
+            if (!card) return;
+
+            const rect = card.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const percentX = (e.clientX - centerX) / (window.innerWidth / 2);
+            const percentY = (e.clientY - centerY) / (window.innerHeight / 2);
+
+            const rotateX = -percentY * 12; // tilt up / down
+            const rotateY = percentX * 12;  // tilt left / right
+            const translateX = percentX * 10;
+            const translateY = percentY * 10;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translate3d(${translateX}px, ${translateY}px, 15px)`;
         });
 
-        let currentIdx = 0;
-        setInterval(() => {
-            slideElements[currentIdx].classList.remove('active');
-            currentIdx = (currentIdx + 1) % slideElements.length;
-            slideElements[currentIdx].classList.add('active');
-        }, 6500);
+        // Touchpad / Mobile Swiping
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                const card = document.getElementById('interactive-mouse-showcase');
+                if (!card) return;
+
+                const percentX = (touch.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+                const percentY = (touch.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+                card.style.transform = `rotateX(${-percentY * 8}deg) rotateY(${percentX * 8}deg)`;
+            }
+        });
     }
 
     function initThreeJS(canvas) {
@@ -67,16 +85,15 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // Interactive 3D Particles WebGL Cloud
-        const particleCount = 200;
+        // Subtle 3D Particles WebGL Cloud
+        const particleCount = 140;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
 
         const colorPalette = [
             new THREE.Color('#FF6B00'),
-            new THREE.Color('#4F46E5'),
-            new THREE.Color('#0D9488')
+            new THREE.Color('#4F46E5')
         ];
 
         for (let i = 0; i < particleCount; i++) {
@@ -94,50 +111,22 @@
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const pMaterial = new THREE.PointsMaterial({
-            size: 0.75,
+            size: 0.6,
             vertexColors: true,
             transparent: true,
-            opacity: 0.55,
+            opacity: 0.35,
             blending: THREE.NormalBlending
         });
 
         const particleSystem = new THREE.Points(geometry, pMaterial);
         scene.add(particleSystem);
 
-        // Floating 3D Geometric Nodes
-        const nodesGroup = new THREE.Group();
-        const nodeGeom = new THREE.IcosahedronGeometry(1.6, 1);
-
-        for (let i = 0; i < 8; i++) {
-            const wireframeMat = new THREE.MeshBasicMaterial({
-                color: i % 2 === 0 ? 0x4F46E5 : 0xFF6B00,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.25
-            });
-
-            const mesh = new THREE.Mesh(nodeGeom, wireframeMat);
-            mesh.position.set(
-                (Math.random() - 0.5) * 70,
-                (Math.random() - 0.5) * 60,
-                (Math.random() - 0.5) * 30
-            );
-            mesh.userData = {
-                rotSpeedX: (Math.random() - 0.5) * 0.012,
-                rotSpeedY: (Math.random() - 0.5) * 0.012
-            };
-
-            nodesGroup.add(mesh);
-        }
-
-        scene.add(nodesGroup);
-
         let mouseX = 0, mouseY = 0;
         let targetX = 0, targetY = 0;
 
         window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.0006;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.0006;
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0005;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0005;
         });
 
         window.addEventListener('resize', () => {
@@ -152,14 +141,7 @@
             requestAnimationFrame(animate);
             const elapsedTime = clock.getElapsedTime();
 
-            particleSystem.rotation.y = elapsedTime * 0.025;
-            particleSystem.rotation.x = Math.sin(elapsedTime * 0.015) * 0.08;
-
-            nodesGroup.children.forEach(node => {
-                node.rotation.x += node.userData.rotSpeedX;
-                node.rotation.y += node.userData.rotSpeedY;
-                node.position.y += Math.sin(elapsedTime + node.position.x) * 0.008;
-            });
+            particleSystem.rotation.y = elapsedTime * 0.02;
 
             targetX += (mouseX - targetX) * 0.04;
             targetY += (mouseY - targetY) * 0.04;
@@ -190,15 +172,15 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
                 this.r = Math.random() * 2 + 1;
                 this.color = Math.random() > 0.5 ? 'rgba(255, 107, 0, ' : 'rgba(79, 70, 229, ';
             }
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                ctx.fillStyle = this.color + '0.25)';
+                ctx.fillStyle = this.color + '0.15)';
                 ctx.fill();
             }
             update() {
@@ -211,7 +193,7 @@
 
         function init() {
             particles = [];
-            for (let i = 0; i < 50; i++) particles.push(new P());
+            for (let i = 0; i < 40; i++) particles.push(new P());
         }
 
         function loop() {

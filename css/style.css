@@ -13,7 +13,7 @@
     --bg-main: #FAF9F6;
     --bg-surface: #FFFFFF;
     --bg-alt: #EFECE6;
-    --bg-glass: rgba(255, 255, 255, 0.82);
+    --bg-glass: rgba(255, 255, 255, 0.88);
 
     --grad-hero: linear-gradient(135deg, #FFF7ED 0%, #EFF6FF 50%, #FAF9F6 100%);
     --grad-primary: linear-gradient(135deg, #151515 0%, #2A2A2A 100%);
@@ -75,44 +75,7 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Live Running Real Financial Photography Background Engine */
-#bg-slideshow-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -3;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.bg-slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 2s ease-in-out, transform 9s ease-out;
-    transform: scale(1);
-}
-
-.bg-slide.active {
-    opacity: 0.85;
-    transform: scale(1.09) translate(-8px, -4px);
-}
-
-/* Soft Glass Tint & Gradient Overlay for Contrast */
-.bg-overlay-tint {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.40) 0%, rgba(245, 244, 242, 0.50) 100%);
-    backdrop-filter: blur(1px);
-    pointer-events: none;
-}
-
-/* 3D WebGL Canvas Layer */
+/* 3D WebGL Canvas Layer (Clean & Soft) */
 #hero-canvas {
     position: fixed;
     top: 0;
@@ -121,6 +84,45 @@ body {
     height: 100vh;
     z-index: -1;
     pointer-events: none;
+}
+
+/* Interactive Mouse-Following Photo Showcase Styling */
+.hero-image-showcase-wrapper {
+    perspective: 1200px;
+    max-width: 860px;
+    margin: 2rem auto 3rem auto;
+}
+
+.interactive-photo-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out;
+    box-shadow: 0 24px 60px -12px rgba(15, 15, 15, 0.16), 0 4px 16px rgba(0, 0, 0, 0.04);
+    will-change: transform;
+}
+
+.showcase-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out, transform 6s ease-out;
+    transform: scale(1.02);
+}
+
+.showcase-slide.active {
+    opacity: 1;
+    transform: scale(1.07);
+}
+
+.dot-btn {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
 }
 
 /* Editorial Typography */
@@ -215,7 +217,7 @@ body {
 
 /* Landing Section Hero Styling */
 .landing-hero-section {
-    padding: 6rem 0 4rem 0;
+    padding: 5rem 0 3rem 0;
 }
 
 .hero-heading {
@@ -295,7 +297,7 @@ body {
 
 /* Bento Grid Cards (Taste Skill & GSAP Physics) */
 .bento-card {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border-light);
