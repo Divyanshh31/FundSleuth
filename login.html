@@ -141,11 +141,18 @@
                                 </div>
                             </div>
 
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                                <label class="form-check-label text-secondary small" for="rememberMe">
-                                    Remember this device for 30 days
-                                </label>
+                            <!-- Remember Me Toggle Card -->
+                            <div class="d-flex align-items-center justify-content-between p-3 bg-light bg-opacity-75 rounded-3 border mb-4">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-clock-rotate-left orange-highlight"></i>
+                                    <div>
+                                        <label class="form-check-label text-dark fw-semibold small d-block mb-0" for="rememberMe">Remember me</label>
+                                        <span class="small text-muted" style="font-size: 0.75rem;">Keep session active on this device</span>
+                                    </div>
+                                </div>
+                                <div class="form-check form-switch m-0">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe" role="switch" checked>
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-taste-primary btn-lg w-100 py-3 mb-3 fw-bold" id="submitBtn">
