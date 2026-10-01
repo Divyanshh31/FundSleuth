@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long-Term Fund Research | FundSleuth</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- WebGL Background -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Floating Nav -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
+        <div class="container-fluid px-2 px-md-3">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <div class="brand-icon-box p-2 rounded-3 text-white">
+                    <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
+                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
+                    <li class="nav-item"><a class="nav-link text-secondary" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="funds.html">Explore Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-funds.html">Compare Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html">Compare Platforms</a></li>
+                    <li class="nav-item"><a class="nav-link active text-dark fw-bold" href="top-funds.html">Top Research</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="fund-finder.html">Fund Finder</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn">
+                        <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
+                    </button>
+                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="login.html" id="navAuthBtn">
+                        <span id="navAuthText"><i class="fa-solid fa-right-to-bracket text-primary me-1"></i> Sign In</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container py-4">
+        
+        <div class="text-center mb-4">
+            <div class="v2-pill-badge mb-2">
+                <i class="fa-solid fa-award me-1"></i> TRANSPARENT METHODOLOGY LIST
+            </div>
+            <h1 class="hero-heading fs-1 mb-2">Long-Term Fund Research Candidates</h1>
+            <p class="text-secondary font-serif fs-5 mx-auto" style="max-width: 680px;">
+                Quantitative research candidates evaluated on 5Y/10Y CAGR, Sharpe ratio, downside volatility, and expense efficiency.
+            </p>
+        </div>
+
+        <!-- Transparent Methodology & Factor Weighting Card -->
+        <div class="card card-custom p-4 mb-4 shadow-sm">
+            <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-sliders orange-highlight me-2"></i> Transparent Scoring Methodology &amp; Weightings</h5>
+            <p class="small text-secondary mb-3">Adjust the research model weights below to see how schemes rank based on your investment preferences.</p>
+            
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label for="weightReturn" class="form-label text-dark fw-semibold small">Return Weight: <span id="valReturn" class="orange-highlight">40%</span></label>
+                    <input type="range" class="form-range" id="weightReturn" min="10" max="60" value="40" oninput="updateScoring()">
+                </div>
+                <div class="col-md-3">
+                    <label for="weightSharpe" class="form-label text-dark fw-semibold small">Sharpe Weight: <span id="valSharpe" class="orange-highlight">30%</span></label>
+                    <input type="range" class="form-range" id="weightSharpe" min="10" max="50" value="30" oninput="updateScoring()">
+                </div>
+                <div class="col-md-3">
+                    <label for="weightExpense" class="form-label text-dark fw-semibold small">Expense Efficiency: <span id="valExpense" class="orange-highlight">20%</span></label>
+                    <input type="range" class="form-range" id="weightExpense" min="0" max="40" value="20" oninput="updateScoring()">
+                </div>
+                <div class="col-md-3">
+                    <label for="weightAlpha" class="form-label text-dark fw-semibold small">Alpha Weight: <span id="valAlpha" class="orange-highlight">10%</span></label>
+                    <input type="range" class="form-range" id="weightAlpha" min="0" max="30" value="10" oninput="updateScoring()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Ranked Research List -->
+        <div class="vstack gap-3" id="topListContainer">
+            <!-- Dynamically populated -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
+        <div class="container">
+            <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
+            <p class="mb-0 text-muted small"><i class="fa-solid fa-shield-halved me-1"></i> Disclaimer: Research rankings are generated using the transparent multi-factor scoring model above and do not constitute financial advice.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/db.js"></script>
+    <script src="/js/auth.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateScoring();
+        });
+
+        function updateScoring() {
+            const wReturn = parseInt(document.getElementById('weightReturn').value);
+            const wSharpe = parseInt(document.getElementById('weightSharpe').value);
+            const wExpense = parseInt(document.getElementById('weightExpense').value);
+            const wAlpha = parseInt(document.getElementById('weightAlpha').value);
+
+            document.getElementById('valReturn').innerText = wReturn + '%';
+            document.getElementById('valSharpe').innerText = wSharpe + '%';
+            document.getElementById('valExpense').innerText = wExpense + '%';
+            document.getElementById('valAlpha').innerText = wAlpha + '%';
+
+            const funds = FundDB.funds || [];
+
+            const scored = funds.map(f => {
+                const returnScore = Math.min((f.return5Y || f.return3Y || 15) * 3, 100);
+                const sharpeScore = Math.min((f.sharpeRatio || 1.0) * 60, 100);
+                const expenseScore = Math.max(100 - (f.expenseRatio * 60), 10);
+                const alphaScore = Math.min((f.alpha || 1.0) * 15 + 40, 100);
+
+                const finalScore = Math.round(
+                    (returnScore * wReturn + sharpeScore * wSharpe + expenseScore * wExpense + alphaScore * wAlpha) / 100
+                );
+
+                return { fund: f, score: finalScore };
+            }).sort((a, b) => b.score - a.score);
+
+            const container = document.getElementById('topListContainer');
+            if (!container) return;
+
+            container.innerHTML = scored.map((item, idx) => `
+                <div class="card card-custom p-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="brand-icon-box p-3 rounded-4 text-white font-mono fw-bold fs-4">
+                                #${idx + 1}
+                            </div>
+                            <div>
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="badge bg-light text-primary border font-mono small">${item.fund.subCategory}</span>
+                                    <span class="badge bg-success-subtle text-success border rounded-pill small">Score: ${item.score}/100</span>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-1">${item.fund.schemeName}</h5>
+                                <span class="small text-secondary font-mono">${item.fund.amc} • Expense Ratio: ${item.fund.expenseRatio}%</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-4 text-end">
+                            <div>
+                                <span class="small text-muted font-mono d-block">5Y CAGR</span>
+                                <span class="fw-bold text-success font-mono">+${item.fund.return5Y}%</span>
+                            </div>
+                            <div>
+                                <span class="small text-muted font-mono d-block">SHARPE</span>
+                                <span class="fw-bold text-dark font-mono">${item.fund.sharpeRatio}</span>
+                            </div>
+                            <a href="fund-detail.html?id=${item.fund.id}" class="btn btn-taste-primary btn-sm px-4 fw-bold">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

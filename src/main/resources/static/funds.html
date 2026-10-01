@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Mutual Funds | FundSleuth Intelligence Platform</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- WebGL Ambient Canvas -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Floating Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
+        <div class="container-fluid px-2 px-md-3">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <div class="brand-icon-box p-2 rounded-3 text-white">
+                    <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
+                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
+                    <li class="nav-item"><a class="nav-link text-secondary" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active text-dark fw-bold" href="funds.html">Explore Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-funds.html">Compare Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html">Compare Platforms</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="top-funds.html">Top Research</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="fund-finder.html">Fund Finder</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn">
+                        <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
+                    </button>
+                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="login.html" id="navAuthBtn">
+                        <span id="navAuthText"><i class="fa-solid fa-right-to-bracket text-primary me-1"></i> Sign In</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container py-4">
+        
+        <!-- Header Banner -->
+        <div class="text-center mb-4">
+            <div class="v2-pill-badge mb-2">
+                <i class="fa-solid fa-magnifying-glass me-1"></i> MUTUAL FUND UNIVERSE
+            </div>
+            <h1 class="hero-heading fs-1 mb-2">Explore Mutual Funds</h1>
+            <p class="text-secondary font-serif fs-5 mx-auto" style="max-width: 680px;">
+                Search, filter, and analyze Indian mutual funds using transparent AMFI &amp; AMC disclosures.
+            </p>
+        </div>
+
+        <!-- Search & Filtering Card -->
+        <div class="card card-custom p-4 mb-4 shadow-sm">
+            <div class="row g-3 align-items-center">
+                
+                <!-- Global Live Autocomplete Search Bar -->
+                <div class="col-lg-6">
+                    <label for="searchInput" class="form-label text-dark fw-semibold small">Search Fund Name, AMC, ISIN or Manager</label>
+                    <div class="global-search-container position-relative">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" id="searchInput" class="form-control global-search-input border-start-0 ps-0 text-dark" placeholder="e.g. Parag Parikh, HDFC Large Cap, INF879O01027..." onkeyup="filterUniverse()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="col-md-4 col-lg-2">
+                    <label for="categorySelect" class="form-label text-dark fw-semibold small">Category</label>
+                    <select id="categorySelect" class="form-select text-dark" onchange="filterUniverse()">
+                        <option value="ALL">All Categories</option>
+                        <option value="Equity">Equity Funds</option>
+                        <option value="Hybrid">Hybrid Funds</option>
+                        <option value="Debt">Debt Funds</option>
+                    </select>
+                </div>
+
+                <!-- Sub-Category Filter -->
+                <div class="col-md-4 col-lg-2">
+                    <label for="subCategorySelect" class="form-label text-dark fw-semibold small">Sub-Category</label>
+                    <select id="subCategorySelect" class="form-select text-dark" onchange="filterUniverse()">
+                        <option value="ALL">All Sub-Categories</option>
+                        <option value="Flexi Cap">Flexi Cap</option>
+                        <option value="Large Cap">Large Cap</option>
+                        <option value="Small Cap">Small Cap</option>
+                        <option value="Index">Index Funds</option>
+                        <option value="ELSS">ELSS Tax Saver</option>
+                        <option value="Equity Savings">Equity Savings</option>
+                    </select>
+                </div>
+
+                <!-- Sorting Metric -->
+                <div class="col-md-4 col-lg-2">
+                    <label for="sortBySelect" class="form-label text-dark fw-semibold small">Sort By Criterion</label>
+                    <select id="sortBySelect" class="form-select text-dark" onchange="filterUniverse()">
+                        <option value="return3Y">3Y CAGR Return</option>
+                        <option value="return5Y">5Y CAGR Return</option>
+                        <option value="return1Y">1Y Return</option>
+                        <option value="aum">AUM Size (₹ Cr)</option>
+                        <option value="expenseRatio">Lowest Expense Ratio</option>
+                        <option value="sharpeRatio">Sharpe Ratio</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Active Results Info Bar -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="small text-secondary font-mono" id="resultsCount">Showing 0 Schemes</span>
+            <span class="small text-muted"><i class="fa-solid fa-clock-rotate-left me-1"></i> Data as of 30 Sep 2026 • Source: AMFI / AMC Disclosures</span>
+        </div>
+
+        <!-- Mutual Fund Cards Grid Container -->
+        <div class="row g-4" id="fundCardsGrid">
+            <!-- Dynamically populated by js/db.js -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
+        <div class="container">
+            <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
+            <p class="mb-0 text-muted small"><i class="fa-solid fa-shield-halved me-1"></i> Disclaimer: FundSleuth provides informational research &amp; comparison analysis and is not financial advice.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/db.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/global-search.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            filterUniverse();
+        });
+
+        function filterUniverse() {
+            const query = document.getElementById('searchInput').value;
+            const category = document.getElementById('categorySelect').value;
+            const subCategory = document.getElementById('subCategorySelect').value;
+            const sortBy = document.getElementById('sortBySelect').value;
+
+            const sortOrder = sortBy === 'expenseRatio' ? 'asc' : 'desc';
+
+            const funds = FundDB.searchFunds(query, { category, subCategory }, sortBy, sortOrder);
+            
+            const countEl = document.getElementById('resultsCount');
+            if (countEl) countEl.innerText = `Showing ${funds.length} Schemes Sorted by ${getSortLabel(sortBy)}`;
+
+            const grid = document.getElementById('fundCardsGrid');
+            if (!grid) return;
+
+            if (funds.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fa-solid fa-circle-exclamation fs-1 text-muted mb-3"></i>
+                        <h5 class="fw-bold text-dark">No schemes match your selected criteria</h5>
+                        <p class="text-secondary small">Try adjusting your search query or filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const user = AuthManager.getUser();
+
+            grid.innerHTML = funds.map(f => {
+                const isSaved = user ? FundDB.isWatchlisted(user.id, f.id) : false;
+                return `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="bento-card p-4 h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-light text-primary border font-mono small">${f.subCategory}</span>
+                                    <span class="badge bg-danger-subtle text-danger border rounded-pill small">${f.riskLevel} Risk</span>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-1">${f.schemeName}</h5>
+                                <span class="small text-secondary font-mono d-block mb-3">${f.amc} • ISIN: ${f.isin}</span>
+
+                                <!-- Key Data Grid -->
+                                <div class="row g-2 p-2 bg-light rounded-3 mb-3 border">
+                                    <div class="col-6">
+                                        <span class="small text-muted font-mono d-block">NAV</span>
+                                        <span class="fw-bold text-dark font-mono">₹${f.nav}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="small text-muted font-mono d-block">AUM</span>
+                                        <span class="fw-bold text-dark font-mono">₹${f.aum.toLocaleString('en-IN')} Cr</span>
+                                    </div>
+                                    <div class="col-6 mt-2">
+                                        <span class="small text-muted font-mono d-block">EXPENSE RATIO</span>
+                                        <span class="fw-bold text-dark font-mono">${f.expenseRatio}%</span>
+                                    </div>
+                                    <div class="col-6 mt-2">
+                                        <span class="small text-muted font-mono d-block">3Y CAGR</span>
+                                        <span class="fw-bold text-success font-mono">+${f.return3Y}%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2 pt-2 border-top">
+                                <a href="fund-detail.html?id=${f.id}" class="btn btn-taste-primary btn-sm flex-grow-1 fw-bold">
+                                    <i class="fa-solid fa-microscope me-1"></i> Research Terminal
+                                </a>
+                                <button class="btn btn-taste-soft btn-sm px-3" onclick="toggleWatchlist('${f.id}', this)" title="Add to Watchlist">
+                                    <i class="${isSaved ? 'fa-solid text-danger' : 'fa-regular'} fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getSortLabel(key) {
+            const map = {
+                return3Y: '3Y CAGR Return',
+                return5Y: '5Y CAGR Return',
+                return1Y: '1Y Return',
+                aum: 'AUM Size',
+                expenseRatio: 'Lowest Expense Ratio',
+                sharpeRatio: 'Sharpe Ratio'
+            };
+            return map[key] || key;
+        }
+
+        function toggleWatchlist(fundId, btn) {
+            const user = AuthManager.getUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const isAdded = FundDB.toggleWatchlist(user.id, fundId);
+            const icon = btn.querySelector('i');
+            if (icon) {
+                icon.className = isAdded ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart';
+            }
+        }
+    </script>
+</body>
+</html>

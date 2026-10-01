@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Funds That Match Your Goals | FundSleuth</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- WebGL Background -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Floating Nav -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
+        <div class="container-fluid px-2 px-md-3">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <div class="brand-icon-box p-2 rounded-3 text-white">
+                    <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
+                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
+                    <li class="nav-item"><a class="nav-link text-secondary" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="funds.html">Explore Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-funds.html">Compare Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html">Compare Platforms</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="top-funds.html">Top Research</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link active text-dark fw-bold" href="fund-finder.html">Fund Finder</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn">
+                        <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
+                    </button>
+                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="login.html" id="navAuthBtn">
+                        <span id="navAuthText"><i class="fa-solid fa-right-to-bracket text-primary me-1"></i> Sign In</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container py-4">
+        
+        <div class="text-center mb-4">
+            <div class="v2-pill-badge mb-2">
+                <i class="fa-solid fa-wand-magic-sparkles me-1"></i> GOAL MATCHING QUESTIONNAIRE
+            </div>
+            <h1 class="hero-heading fs-1 mb-2">Find Funds That Match Your Goals</h1>
+            <p class="text-secondary font-serif fs-5 mx-auto" style="max-width: 680px;">
+                Answer 5 quick questions to receive explainable, goal-aligned fund research recommendations.
+            </p>
+        </div>
+
+        <!-- Questionnaire Wizard Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                <div id="questionnaireCard" class="card card-custom p-4 p-md-5 shadow-lg mb-4">
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                        <span class="badge bg-light text-primary border font-mono" id="stepIndicator">Step 1 of 5</span>
+                        <div class="progress w-50" style="height: 6px;">
+                            <div id="wizardProgressBar" class="progress-bar bg-dark" role="progressbar" style="width: 20%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 -->
+                    <div class="wizard-step" id="step1">
+                        <h4 class="fw-bold text-dark mb-3">1. What is your primary investment goal?</h4>
+                        <div class="vstack gap-2">
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('goal', 'Wealth creation', 2)">
+                                <i class="fa-solid fa-seedling text-success me-2"></i> Wealth Creation &amp; Long-Term Growth
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('goal', 'Retirement', 2)">
+                                <i class="fa-solid fa-piggy-bank orange-highlight me-2"></i> Retirement Corpus Building
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('goal', 'Tax planning', 2)">
+                                <i class="fa-solid fa-shield-halved text-primary me-2"></i> Tax Planning (Section 80C ELSS)
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('goal', 'Short-term', 2)">
+                                <i class="fa-solid fa-clock text-warning me-2"></i> Short-Term Parking / Emergency Fund
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="wizard-step d-none" id="step2">
+                        <h4 class="fw-bold text-dark mb-3">2. How long do you plan to stay invested?</h4>
+                        <div class="vstack gap-2">
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('horizon', '10+ years', 3)">
+                                <i class="fa-solid fa-calendar-days text-success me-2"></i> 10+ Years (Long Horizon)
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('horizon', '5-10 years', 3)">
+                                <i class="fa-solid fa-calendar-check text-primary me-2"></i> 5 to 10 Years (Medium-Long)
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('horizon', '1-3 years', 3)">
+                                <i class="fa-solid fa-calendar text-warning me-2"></i> 1 to 3 Years (Conservative)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="wizard-step d-none" id="step3">
+                        <h4 class="fw-bold text-dark mb-3">3. How would you react if your investment temporarily fell 20%?</h4>
+                        <div class="vstack gap-2">
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('risk', 'High', 4)">
+                                <i class="fa-solid fa-circle-plus text-success me-2"></i> Invest more at lower prices
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('risk', 'Moderate', 4)">
+                                <i class="fa-solid fa-hourglass-half text-primary me-2"></i> Wait patiently for recovery
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('risk', 'Low', 4)">
+                                <i class="fa-solid fa-triangle-exclamation text-danger me-2"></i> Feel uncomfortable and exit
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="wizard-step d-none" id="step4">
+                        <h4 class="fw-bold text-dark mb-3">4. What matters most to you in a fund?</h4>
+                        <div class="vstack gap-2">
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('priority', 'Growth potential', 5)">
+                                <i class="fa-solid fa-chart-line text-success me-2"></i> Highest Growth Potential
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('priority', 'Lower cost', 5)">
+                                <i class="fa-solid fa-percent orange-highlight me-2"></i> Lowest Expense Ratio (Low Fee Drag)
+                            </button>
+                            <button class="btn btn-taste-soft text-start p-3 fw-bold border" onclick="selectAnswer('priority', 'Stability', 5)">
+                                <i class="fa-solid fa-shield text-primary me-2"></i> Low Volatility &amp; Downside Stability
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="wizard-step d-none" id="step5">
+                        <h4 class="fw-bold text-dark mb-3">5. How frequently will you invest?</h4>
+                        <div class="vstack gap-2">
+                            <button class="btn btn-taste-primary text-center p-3 fw-bold" onclick="finishQuestionnaire('Monthly SIP')">
+                                <i class="fa-solid fa-bolt me-2 orange-highlight"></i> Monthly SIP (Systematic Investment Plan)
+                            </button>
+                            <button class="btn btn-taste-soft text-center p-3 fw-bold" onclick="finishQuestionnaire('Lumpsum')">
+                                One-Time Lumpsum Investment
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Results Recommendations Container -->
+                <div id="resultsContainer" class="d-none">
+                    <div class="text-center mb-4">
+                        <span class="badge bg-success text-white px-3 py-2 rounded-pill font-mono mb-2">MATCHING COMPLETE</span>
+                        <h3 class="fw-bold text-dark">Explainable Research Candidates</h3>
+                    </div>
+
+                    <div class="vstack gap-3" id="recommendationsList">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
+        <div class="container">
+            <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
+            <p class="mb-0 text-muted small"><i class="fa-solid fa-shield-halved me-1"></i> Disclaimer: Fund suggestions are generated using transparent preference scoring and do not constitute personalized financial advice.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/db.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/recommendation-engine.js"></script>
+
+    <script>
+        const answers = {};
+
+        function selectAnswer(key, val, nextStep) {
+            answers[key] = val;
+            
+            document.querySelectorAll('.wizard-step').forEach(s => s.classList.add('d-none'));
+            const nextEl = document.getElementById(`step${nextStep}`);
+            if (nextEl) nextEl.classList.remove('d-none');
+
+            document.getElementById('stepIndicator').innerText = `Step ${nextStep} of 5`;
+            document.getElementById('wizardProgressBar').style.width = `${nextStep * 20}%`;
+        }
+
+        function finishQuestionnaire(freq) {
+            answers['frequency'] = freq;
+
+            const user = AuthManager.getUser();
+            if (user) {
+                FundDB.saveUserPreferences(user.id, answers);
+            }
+
+            document.getElementById('questionnaireCard').classList.add('d-none');
+            const resCard = document.getElementById('resultsContainer');
+            if (resCard) resCard.classList.remove('d-none');
+
+            const matches = RecommendationEngine.generateRecommendations(answers);
+            const listEl = document.getElementById('recommendationsList');
+
+            if (listEl) {
+                listEl.innerHTML = matches.map(m => `
+                    <div class="card card-custom p-4 shadow-sm">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-3">
+                            <div>
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="badge bg-success text-white font-mono">${m.score}% Match Score</span>
+                                    <span class="badge bg-light text-primary border font-mono">${m.fund.subCategory}</span>
+                                </div>
+                                <h4 class="fw-bold text-dark mb-1">${m.fund.schemeName}</h4>
+                                <span class="small text-secondary font-mono">${m.fund.amc} • TER: ${m.fund.expenseRatio}%</span>
+                            </div>
+                            <a href="fund-detail.html?id=${m.fund.id}" class="btn btn-taste-primary btn-sm px-4 fw-bold">
+                                View Research Terminal
+                            </a>
+                        </div>
+
+                        <div class="bg-light p-3 rounded-3 border">
+                            <h6 class="fw-bold text-dark small mb-2"><i class="fa-solid fa-circle-check text-success me-1"></i> Why This Candidate Matched Your Goals:</h6>
+                            <ul class="list-unstyled small text-secondary vstack gap-1 mb-2">
+                                ${m.matchReasons.map(r => `<li class="text-success fw-semibold">${r}</li>`).join('')}
+                            </ul>
+                            <div class="border-top pt-2 mt-2">
+                                <span class="small text-muted font-mono fw-bold">Risk Consideration:</span>
+                                <ul class="list-unstyled small text-muted mb-0">
+                                    ${m.considerations.map(c => `<li>${c}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Dashboard | FundSleuth</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- WebGL Background -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Floating Nav -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
+        <div class="container-fluid px-2 px-md-3">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <div class="brand-icon-box p-2 rounded-3 text-white">
+                    <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
+                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
+                    <li class="nav-item"><a class="nav-link active text-dark fw-bold" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="funds.html">Explore Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-funds.html">Compare Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html">Compare Platforms</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="top-funds.html">Top Research</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="fund-finder.html">Fund Finder</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn">
+                        <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
+                    </button>
+                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="#" id="navAuthBtn">
+                        <span id="navAuthText"><i class="fa-solid fa-circle-user text-success me-1"></i> Account</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container py-4">
+        
+        <!-- Welcome Banner Card -->
+        <div class="bento-card p-4 p-md-5 mb-4 shadow-sm">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div>
+                    <span class="v2-pill-badge mb-2"><i class="fa-solid fa-circle-user"></i> PERSONALIZED RESEARCH HUB</span>
+                    <h1 class="hero-heading fs-2 text-dark mb-1" id="dashWelcomeTitle">Welcome Back</h1>
+                    <p class="text-secondary small mb-0">Track your watchlisted schemes, portfolio X-Ray status, and goal recommendations.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="index.html#xray-tool-section" class="btn btn-taste-primary btn-sm px-4 fw-bold">
+                        <i class="fa-solid fa-bolt orange-highlight me-1"></i> Launch Portfolio X-Ray
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- LEFT COLUMN: Watchlist & Research Activity -->
+            <div class="col-lg-7">
+                
+                <!-- Watchlist Card -->
+                <div class="card card-custom p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-heart text-danger me-2"></i> Saved Watchlist Schemes</h5>
+                        <a href="funds.html" class="small orange-highlight fw-bold text-decoration-none">+ Add Funds</a>
+                    </div>
+                    <div id="dashboardWatchlist">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Recent Searches & View History -->
+                <div class="card card-custom p-4">
+                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-clock-rotate-left orange-highlight me-2"></i> Recent Search &amp; Research History</h5>
+                    <div id="dashboardHistory">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Personalized Discovery Feed -->
+            <div class="col-lg-5">
+                <div class="card card-custom p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-wand-magic-sparkles text-primary me-2"></i> For You: Goal Research</h5>
+                        <a href="fund-finder.html" class="small text-secondary fw-semibold">Retake Questionnaire</a>
+                    </div>
+
+                    <div id="dashboardForYouFeed">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
+        <div class="container">
+            <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
+            <p class="mb-0 text-muted small"><i class="fa-solid fa-shield-halved me-1"></i> Isolated user session &amp; data privacy guaranteed.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/db.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/recommendation-engine.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = AuthManager.getUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('dashWelcomeTitle').innerText = `Welcome back, ${user.name || user.email}`;
+
+            renderWatchlist(user.id);
+            renderHistory(user.id);
+            renderForYou(user.id);
+        });
+
+        function renderWatchlist(userId) {
+            const container = document.getElementById('dashboardWatchlist');
+            if (!container) return;
+
+            const funds = FundDB.getUserWatchlistFunds(userId);
+            if (funds.length === 0) {
+                container.innerHTML = `
+                    <div class="p-3 text-center text-muted small bg-light rounded-3">
+                        You have no saved funds in your watchlist yet. <a href="funds.html" class="orange-highlight fw-bold">Explore Funds</a> to add schemes.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `<div class="vstack gap-2">` + funds.map(f => `
+                <div class="p-3 bg-white rounded-3 border d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="fw-bold text-dark mb-0">${f.schemeName}</h6>
+                        <span class="small text-secondary font-mono">${f.subCategory} • Expense: ${f.expenseRatio}%</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="fw-bold text-success font-mono">+${f.return3Y}% 3Y</span>
+                        <a href="fund-detail.html?id=${f.id}" class="btn btn-taste-soft btn-sm px-3 fw-bold">Research</a>
+                    </div>
+                </div>
+            `).join('') + `</div>`;
+        }
+
+        function renderHistory(userId) {
+            const container = document.getElementById('dashboardHistory');
+            if (!container) return;
+
+            const searches = FundDB.getUserSearches(userId);
+            if (searches.length === 0) {
+                container.innerHTML = `<p class="small text-muted m-0">No recent search activity logged yet.</p>`;
+                return;
+            }
+
+            container.innerHTML = `<div class="list-group list-group-flush">` + searches.map(s => `
+                <div class="list-group-item d-flex justify-content-between align-items-center py-2 px-0 bg-transparent border-bottom">
+                    <span class="small text-dark font-mono"><i class="fa-solid fa-magnifying-glass text-muted me-2"></i> ${s.query}</span>
+                    <span class="small text-muted font-mono" style="font-size: 0.75rem;">${new Date(s.searchedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+            `).join('') + `</div>`;
+        }
+
+        function renderForYou(userId) {
+            const container = document.getElementById('dashboardForYouFeed');
+            if (!container) return;
+
+            const prefs = FundDB.getUserPreferences(userId) || { goal: 'Wealth creation', horizon: '5-10 years', risk: 'High' };
+            const matches = RecommendationEngine.generateRecommendations(prefs).slice(0, 3);
+
+            container.innerHTML = matches.map(m => `
+                <div class="p-3 bg-light rounded-3 border mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="badge bg-success text-white font-mono">${m.score}% Match</span>
+                        <span class="badge bg-white text-dark border font-mono small">${m.fund.subCategory}</span>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">${m.fund.schemeName}</h6>
+                    <p class="small text-secondary mb-2">${m.matchReasons[0] || 'Matches long-term portfolio horizon'}</p>
+                    <a href="fund-detail.html?id=${m.fund.id}" class="small orange-highlight fw-bold text-decoration-none">
+                        Open Research Terminal <i class="fa-solid fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

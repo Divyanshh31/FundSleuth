@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Mutual Fund News Center | FundSleuth</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- WebGL Background -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Floating Nav -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
+        <div class="container-fluid px-2 px-md-3">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <div class="brand-icon-box p-2 rounded-3 text-white">
+                    <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
+                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
+                    <li class="nav-item"><a class="nav-link text-secondary" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="funds.html">Explore Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-funds.html">Compare Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html">Compare Platforms</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="top-funds.html">Top Research</a></li>
+                    <li class="nav-item"><a class="nav-link active text-dark fw-bold" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="fund-finder.html">Fund Finder</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn">
+                        <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
+                    </button>
+                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="login.html" id="navAuthBtn">
+                        <span id="navAuthText"><i class="fa-solid fa-right-to-bracket text-primary me-1"></i> Sign In</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container py-4">
+        
+        <div class="text-center mb-4">
+            <div class="v2-pill-badge mb-2">
+                <i class="fa-solid fa-newspaper me-1"></i> DAILY FINANCIAL INTELLIGENCE
+            </div>
+            <h1 class="hero-heading fs-1 mb-2">Mutual Fund News Center</h1>
+            <p class="text-secondary font-serif fs-5 mx-auto" style="max-width: 680px;">
+                Verified industry updates from SEBI, AMFI, AMC disclosures, and licensed financial news feeds.
+            </p>
+        </div>
+
+        <!-- Today's Mutual Fund Brief Banner -->
+        <div class="card card-custom p-4 mb-4 bg-white border-warning shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-box-lg bg-warning text-dark rounded-3 p-2 fs-4">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div>
+                    <span class="badge bg-warning text-dark font-mono mb-1">TODAY'S MUTUAL FUND BRIEF</span>
+                    <h5 class="fw-bold text-dark mb-1">SEBI Mandates Enhanced Flexi-Cap Sector Concentration Disclosures</h5>
+                    <p class="text-secondary small mb-0">
+                        Fund houses must now publish bi-weekly asset allocation shifts for large, mid, and small-cap stocks in flexi-cap schemes.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Feed Container -->
+        <div class="row g-4" id="newsFeedGrid">
+            <!-- Dynamically populated from js/db.js -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
+        <div class="container">
+            <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
+            <p class="mb-0 text-muted small"><i class="fa-solid fa-shield-halved me-1"></i> Disclaimer: News items aggregated from verified regulatory disclosures and financial news providers.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/db.js"></script>
+    <script src="/js/auth.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNews();
+        });
+
+        function renderNews() {
+            const news = FundDB.news || [];
+            const grid = document.getElementById('newsFeedGrid');
+            if (!grid) return;
+
+            grid.innerHTML = news.map(item => `
+                <div class="col-md-6 col-lg-4">
+                    <div class="bento-card p-4 h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-light text-primary border font-mono small">${item.category}</span>
+                                <span class="small text-muted font-mono">${new Date(item.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-2">${item.title}</h5>
+                            <p class="small text-secondary mb-3">${item.summary}</p>
+                        </div>
+                        <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+                            <span class="small text-muted font-mono">${item.source}</span>
+                            <a href="${item.sourceUrl}" target="_blank" rel="noopener" class="btn btn-taste-soft btn-sm fw-bold">
+                                Read Source <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

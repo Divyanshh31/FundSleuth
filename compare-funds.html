@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Fund Comparison Engine | FundSleuth</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 CSS & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Chart.js & Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- WebGL Background -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Floating Nav -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
+        <div class="container-fluid px-2 px-md-3">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <div class="brand-icon-box p-2 rounded-3 text-white">
+                    <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
+                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
+                    <li class="nav-item"><a class="nav-link text-secondary" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="funds.html">Explore Funds</a></li>
+                    <li class="nav-item"><a class="nav-link active text-dark fw-bold" href="compare-funds.html">Compare Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html">Compare Platforms</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="top-funds.html">Top Research</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="fund-finder.html">Fund Finder</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn">
+                        <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
+                    </button>
+                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="login.html" id="navAuthBtn">
+                        <span id="navAuthText"><i class="fa-solid fa-right-to-bracket text-primary me-1"></i> Sign In</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container py-4">
+        
+        <div class="text-center mb-4">
+            <div class="v2-pill-badge mb-2">
+                <i class="fa-solid fa-scale-balanced me-1"></i> SIDE-BY-SIDE ANALYTICS
+            </div>
+            <h1 class="hero-heading fs-1 mb-2">Compare Mutual Funds</h1>
+            <p class="text-secondary font-serif fs-5 mx-auto" style="max-width: 680px;">
+                Analyze returns, fee drag, risk ratios, and sector exposure across schemes.
+            </p>
+        </div>
+
+        <!-- Scheme Pickers Header Card -->
+        <div class="card card-custom p-4 mb-4 shadow-sm">
+            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-plus orange-highlight me-2"></i> Select Schemes to Compare (2 to 4)</h5>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3">
+                    <label class="form-label text-dark fw-semibold small">Scheme 1</label>
+                    <select id="selectFund1" class="form-select text-dark" onchange="runComparison()">
+                        <!-- Options -->
+                    </select>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <label class="form-label text-dark fw-semibold small">Scheme 2</label>
+                    <select id="selectFund2" class="form-select text-dark" onchange="runComparison()">
+                        <!-- Options -->
+                    </select>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <label class="form-label text-dark fw-semibold small">Scheme 3 (Optional)</label>
+                    <select id="selectFund3" class="form-select text-dark" onchange="runComparison()">
+                        <option value="NONE">-- Select None --</option>
+                    </select>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <label class="form-label text-dark fw-semibold small">Scheme 4 (Optional)</label>
+                    <select id="selectFund4" class="form-select text-dark" onchange="runComparison()">
+                        <option value="NONE">-- Select None --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explainable Comparison Commentary Card -->
+        <div class="card card-custom p-4 mb-4 bg-light border-primary">
+            <div class="d-flex align-items-start gap-3">
+                <div class="icon-box-lg bg-primary text-white rounded-3 p-2 fs-5">
+                    <i class="fa-solid fa-lightbulb orange-highlight"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold text-dark mb-1">Analytical Comparison Insights</h5>
+                    <p class="text-secondary small mb-0" id="comparisonInsightText">
+                        Select funds above to view objective risk and return trade-off insights.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side-by-Side Metrics Matrix Table -->
+        <div class="card card-custom p-4 mb-4">
+            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-table orange-highlight me-2"></i> Side-by-Side Fundamentals Comparison Matrix</h5>
+            <div class="table-responsive">
+                <table class="table table-premium align-middle" id="comparisonMatrixTable">
+                    <!-- Populated dynamically -->
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
+        <div class="container">
+            <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
+            <p class="mb-0 text-muted small"><i class="fa-solid fa-shield-halved me-1"></i> Disclaimer: FundSleuth provides informational research &amp; comparison analysis and is not financial advice.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/db.js"></script>
+    <script src="/js/auth.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            populateDropdowns();
+            runComparison();
+        });
+
+        function populateDropdowns() {
+            const funds = FundDB.funds || [];
+            const ids = ['selectFund1', 'selectFund2', 'selectFund3', 'selectFund4'];
+
+            ids.forEach((id, idx) => {
+                const sel = document.getElementById(id);
+                if (!sel) return;
+
+                if (idx >= 2) {
+                    sel.innerHTML = '<option value="NONE">-- None --</option>';
+                } else {
+                    sel.innerHTML = '';
+                }
+
+                funds.forEach((f, i) => {
+                    const opt = document.createElement('option');
+                    opt.value = f.id;
+                    opt.innerText = `${f.schemeName} (${f.subCategory})`;
+                    if (idx === 0 && i === 0) opt.selected = true;
+                    if (idx === 1 && i === 1) opt.selected = true;
+                    if (idx === 2 && i === 2) opt.selected = true;
+                    sel.appendChild(opt);
+                });
+            });
+        }
+
+        function runComparison() {
+            const id1 = document.getElementById('selectFund1').value;
+            const id2 = document.getElementById('selectFund2').value;
+            const id3 = document.getElementById('selectFund3').value;
+            const id4 = document.getElementById('selectFund4').value;
+
+            const selectedIds = [id1, id2, id3, id4].filter(id => id && id !== 'NONE');
+            const selectedFunds = selectedIds.map(id => FundDB.getFundById(id)).filter(Boolean);
+
+            if (selectedFunds.length === 0) return;
+
+            // Generate Insights
+            const insightEl = document.getElementById('comparisonInsightText');
+            if (insightEl && selectedFunds.length >= 2) {
+                const f1 = selectedFunds[0];
+                const f2 = selectedFunds[1];
+                let text = `<strong>${f1.schemeName}</strong> has a 3Y CAGR of <strong>+${f1.return3Y}%</strong> with an expense ratio of <strong>${f1.expenseRatio}%</strong>. `;
+                text += `In comparison, <strong>${f2.schemeName}</strong> offers a 3Y CAGR of <strong>+${f2.return3Y}%</strong> with an expense ratio of <strong>${f2.expenseRatio}%</strong>. `;
+                if (f1.stdDev < f2.stdDev) {
+                    text += `<u>${f1.schemeName}</u> has displayed lower annualized volatility (Std Dev: ${f1.stdDev}%) compared to <u>${f2.schemeName}</u> (${f2.stdDev}%).`;
+                } else {
+                    text += `<u>${f2.schemeName}</u> has displayed lower annualized volatility (Std Dev: ${f2.stdDev}%) compared to <u>${f1.schemeName}</u> (${f1.stdDev}%).`;
+                }
+                insightEl.innerHTML = text;
+            }
+
+            // Build Matrix Table
+            const table = document.getElementById('comparisonMatrixTable');
+            if (!table) return;
+
+            const metrics = [
+                { label: 'Scheme Name', key: 'schemeName', format: v => `<strong class="text-dark">${v}</strong>` },
+                { label: 'Category & Sub-Category', key: 'subCategory', format: (v, f) => `<span class="badge bg-light text-primary border">${f.category} - ${v}</span>` },
+                { label: 'AMC', key: 'amc', format: v => v },
+                { label: 'Expense Ratio (TER)', key: 'expenseRatio', format: v => `<strong class="orange-highlight font-mono">${v}%</strong>` },
+                { label: 'AUM (₹ Cr)', key: 'aum', format: v => `<span class="font-mono">₹${v.toLocaleString('en-IN')} Cr</span>` },
+                { label: '1Y Return', key: 'return1Y', format: v => `<strong class="text-success font-mono">+${v}%</strong>` },
+                { label: '3Y CAGR', key: 'return3Y', format: v => `<strong class="text-success font-mono">+${v}%</strong>` },
+                { label: '5Y CAGR', key: 'return5Y', format: v => `<strong class="text-success font-mono">+${v}%</strong>` },
+                { label: 'Sharpe Ratio', key: 'sharpeRatio', format: v => `<span class="font-mono">${v}</span>` },
+                { label: 'Alpha', key: 'alpha', format: v => `<span class="text-success font-mono">+${v}%</span>` },
+                { label: 'Beta', key: 'beta', format: v => `<span class="font-mono">${v}</span>` },
+                { label: 'Standard Deviation', key: 'stdDev', format: v => `<span class="font-mono">${v}%</span>` },
+                { label: 'Exit Load', key: 'exitLoad', format: v => `<span class="small text-secondary">${v}</span>` }
+            ];
+
+            let html = `<thead><tr><th>Metric / Metric Description</th>`;
+            selectedFunds.forEach(f => {
+                html += `<th>${f.schemeName}</th>`;
+            });
+            html += `</tr></thead><tbody>`;
+
+            metrics.forEach(m => {
+                html += `<tr><td class="fw-bold text-muted small uppercase">${m.label}</td>`;
+                selectedFunds.forEach(f => {
+                    const raw = f[m.key];
+                    html += `<td>${m.format(raw, f)}</td>`;
+                });
+                html += `</tr>`;
+            });
+
+            html += `</tbody>`;
+            table.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
