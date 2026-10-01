@@ -203,13 +203,26 @@ function applyTheme(theme) {
 
     const btnText = document.getElementById('themeToggleText');
     const btnIcon = document.getElementById('themeToggleIcon');
+    const checkbox = document.getElementById('themeSwitchCheckbox');
 
     if (theme === 'dark') {
         if (btnText) btnText.innerText = 'Light';
         if (btnIcon) btnIcon.className = 'fa-solid fa-sun orange-highlight';
+        if (checkbox) checkbox.checked = true;
     } else {
         if (btnText) btnText.innerText = 'Dark';
         if (btnIcon) btnIcon.className = 'fa-solid fa-moon';
+        if (checkbox) checkbox.checked = false;
+    }
+
+    if (window.syncSidebarThemeState) window.syncSidebarThemeState();
+
+    // Refresh active charts/graphs if available
+    if (typeof currentAnalysisData !== 'undefined' && currentAnalysisData) {
+        if (typeof renderSectorChart === 'function') renderSectorChart(currentAnalysisData.allExtractedStocks || []);
+        const totalVal = (currentAnalysisData.expenseAnalytics || {}).totalPortfolioValue || 500000;
+        if (typeof renderCompoundingChart === 'function') renderCompoundingChart(totalVal, 12.0, 1.65, 0.90);
+        if (typeof renderNetworkGraph === 'function') renderNetworkGraph(currentAnalysisData.funds || [], (currentAnalysisData.overlapAnalytics || {}).overlappingStocks || []);
     }
 }
 
@@ -219,7 +232,7 @@ function toggleTheme() {
     applyTheme(newTheme);
 }
 
-// Immediately set attribute on parse to avoid flash
+// Immediately set attribute on parse to avoid FOUC
 initTheme();
 
 document.addEventListener('DOMContentLoaded', () => {

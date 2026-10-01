@@ -482,11 +482,14 @@ function renderNetworkGraph(funds, overlappingStocks) {
     const container = document.getElementById('network-graph');
     if (!container) return;
 
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const edgeColor = isDark ? '#334155' : '#CBD5E1';
+
     const nodes = [];
     const edges = [];
 
     funds.forEach((fund, index) => {
-        nodes.push({ id: 'F_' + index, label: fund.schemeName, shape: 'ellipse', color: '#4F46E5', font: { color: '#FFFFFF', size: 14 } });
+        nodes.push({ id: 'F_' + index, label: fund.schemeName, shape: 'ellipse', color: '#FF6B00', font: { color: '#FFFFFF', size: 14, face: 'Plus Jakarta Sans' } });
         (fund.topHoldings || []).forEach(stock => {
             const stockId = 'S_' + stock.symbol;
             if (!nodes.some(n => n.id === stockId)) {
@@ -496,10 +499,10 @@ function renderNetworkGraph(funds, overlappingStocks) {
                     label: stock.symbol,
                     shape: 'box',
                     color: isOverlap ? '#EF4444' : '#10B981',
-                    font: { color: '#FFFFFF', size: 12 }
+                    font: { color: '#FFFFFF', size: 12, face: 'IBM Plex Mono' }
                 });
             }
-            edges.push({ from: 'F_' + index, to: stockId, color: { color: '#CBD5E1' } });
+            edges.push({ from: 'F_' + index, to: stockId, color: { color: edgeColor } });
         });
     });
 
