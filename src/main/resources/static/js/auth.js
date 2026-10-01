@@ -62,25 +62,39 @@ const AuthManager = {
     updateNavUI() {
         const navAuthBtn = document.getElementById('navAuthBtn');
         const navAuthText = document.getElementById('navAuthText');
+        const accountName = document.getElementById('sidebarAccountName');
+        const accountStatus = document.getElementById('sidebarAccountStatus');
         const user = this.getUser();
-
-        if (!navAuthBtn) return;
 
         if (user) {
             const displayName = user.name || user.email.split('@')[0];
-            navAuthBtn.href = '#';
-            navAuthBtn.onclick = (e) => {
-                e.preventDefault();
-                this.logout();
-            };
+            if (accountName) accountName.innerText = displayName;
+            if (accountStatus) {
+                accountStatus.innerHTML = '<span class="online-indicator"></span> Signed in';
+            }
+            if (navAuthBtn) {
+                navAuthBtn.href = '#';
+                navAuthBtn.title = 'Sign Out';
+                navAuthBtn.onclick = (e) => {
+                    e.preventDefault();
+                    this.logout();
+                };
+            }
             if (navAuthText) {
-                navAuthText.innerHTML = `<i class="fa-solid fa-circle-user text-success me-1"></i> ${displayName} (Sign Out)`;
+                navAuthText.innerHTML = '<i class="fa-solid fa-right-from-bracket text-danger small"></i>';
             }
         } else {
-            navAuthBtn.href = 'login.html';
-            navAuthBtn.onclick = null;
+            if (accountName) accountName.innerText = 'Guest Investor';
+            if (accountStatus) {
+                accountStatus.innerHTML = '<span class="online-indicator bg-secondary"></span> Sign In';
+            }
+            if (navAuthBtn) {
+                navAuthBtn.href = 'login.html';
+                navAuthBtn.title = 'Sign In';
+                navAuthBtn.onclick = null;
+            }
             if (navAuthText) {
-                navAuthText.innerHTML = '<i class="fa-solid fa-right-to-bracket text-primary me-1"></i> Sign In';
+                navAuthText.innerHTML = '<i class="fa-solid fa-right-to-bracket text-primary small"></i>';
             }
         }
     },
