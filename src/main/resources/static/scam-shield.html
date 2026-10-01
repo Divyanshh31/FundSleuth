@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scam Shield & Investment Claim Checker | FundSleuth</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Three.js & GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        .scam-hero-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311b92 100%);
+            border-radius: 16px;
+            color: #ffffff;
+        }
+        .risk-meter-bar {
+            height: 14px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+        .risk-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <canvas id="hero-canvas"></canvas>
+
+    <div class="main-content-wrapper py-4 px-3 px-md-4">
+        <div class="container-fluid max-w-7xl">
+
+            <!-- Hero Header -->
+            <div class="scam-hero-card p-4 p-md-5 mb-4 shadow-sm text-white">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-danger text-white rounded-pill px-3 py-1 font-mono small d-flex align-items-center gap-1">
+                                <i class="fa-solid fa-shield-cat"></i> Fraud Protection Engine
+                            </span>
+                            <span class="badge bg-warning text-dark rounded-pill px-3 py-1 font-mono x-small">
+                                Screenshot OCR & Pattern Parser
+                            </span>
+                        </div>
+                        <h1 class="display-6 fw-extrabold mb-2 text-white">
+                            Scam Shield & Investment Claim Checker
+                        </h1>
+                        <p class="lead text-secondary mb-4" style="color: #cbd5e1 !important;">
+                            Check investment messages, stock tips, and financial claims for common warning signs.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <div class="p-3 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-10 backdrop-blur">
+                            <i class="fa-solid fa-user-shield text-warning display-4 mb-2"></i>
+                            <h6 class="fw-bold text-white mb-0">Empirical Verification</h6>
+                            <p class="x-small text-secondary mb-0" style="color: #94a3b8 !important;">Detects high-risk patterns & guaranteed return traps.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1: SCAM SHIELD ANALYZER -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 p-4">
+                <h4 class="fw-bold text-dark mb-3"><i class="fa-solid fa-magnifying-glass-chart text-danger me-2"></i> Analyze Investment Message / Screenshot</h4>
+                
+                <!-- Input Mode Buttons -->
+                <div class="d-flex gap-2 mb-3">
+                    <button class="btn btn-outline-primary active rounded-3 text-dark fw-bold" onclick="toggleInputMode('text')">
+                        <i class="fa-solid fa-align-left me-1"></i> Paste Message Text
+                    </button>
+                    <label class="btn btn-outline-secondary rounded-3 text-dark fw-bold m-0 pointer">
+                        <i class="fa-solid fa-image me-1"></i> Upload Screenshot (OCR)
+                        <input type="file" id="screenshotUpload" accept="image/*" class="d-none" onchange="handleScreenshotUpload(event)">
+                    </label>
+                </div>
+
+                <!-- Text Area -->
+                <textarea class="form-control rounded-3 p-3 font-mono text-dark mb-3" id="scamInputText" rows="4" placeholder="Paste WhatsApp message, Telegram tip, SMS, or Instagram ad text here..." style="background: #f8fafc;"></textarea>
+
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <button class="btn btn-danger btn-taste-primary px-4 py-2.5 rounded-3 fw-bold d-flex align-items-center gap-2" onclick="runScamShield()">
+                        <i class="fa-solid fa-shield-halved"></i> Run Scam Shield Analysis
+                    </button>
+                    <span class="x-small text-muted font-mono"><i class="fa-solid fa-lock me-1"></i> In-Memory OCR Processing</span>
+                </div>
+
+                <!-- Analysis Output Container -->
+                <div id="scamOutputContainer" style="display: none;">
+                    <div class="p-4 rounded-4 border bg-light" id="scamResultCard">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h5 class="fw-bold mb-0" id="scamResultVerdict">Analysis Result</h5>
+                            <span class="badge rounded-pill px-3 py-1 font-mono fs-6" id="scamRiskBadge">0% Risk</span>
+                        </div>
+
+                        <!-- Risk Meter -->
+                        <div class="mb-3">
+                            <div class="risk-meter-bar">
+                                <div class="risk-fill" id="scamRiskFill"></div>
+                            </div>
+                        </div>
+
+                        <!-- Potential Warning Signs -->
+                        <div class="mb-3">
+                            <h6 class="fw-bold small text-uppercase font-mono text-secondary mb-2">Potential Warning Signs:</h6>
+                            <div class="vstack gap-2" id="scamWarningSignsList"></div>
+                        </div>
+
+                        <!-- What You Should Verify -->
+                        <div class="p-3 bg-white rounded-3 border mb-3">
+                            <h6 class="fw-bold small text-dark mb-2"><i class="fa-solid fa-list-check text-primary me-2"></i> What You Should Verify:</h6>
+                            <ul class="list-unstyled x-small text-secondary mb-0 vstack gap-1" id="scamVerificationList"></ul>
+                        </div>
+
+                        <div class="p-3 bg-warning bg-opacity-10 border border-warning rounded-3 x-small text-dark font-mono">
+                            <i class="fa-solid fa-shield-cat me-1 text-warning"></i> Potential warning signs detected. Verify independently before taking any financial action.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: INVESTMENT CLAIM CHECKER -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 p-4">
+                <h4 class="fw-bold text-dark mb-3"><i class="fa-solid fa-file-circle-check text-warning me-2"></i> Investment Claim Checker</h4>
+                <p class="x-small text-muted mb-3">Enter any specific return or fund claim to test against SEBI facts:</p>
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control rounded-start-3 p-3 font-mono text-dark" id="claimInput" placeholder="e.g. 'This mutual fund gives 20% guaranteed returns every month'">
+                    <button class="btn btn-warning text-dark font-semibold px-4 rounded-end-3" onclick="runClaimChecker()">Verify Claim</button>
+                </div>
+
+                <div id="claimResultOutput" style="display: none;">
+                    <div class="p-4 rounded-4 border bg-white">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h5 class="fw-bold mb-0 text-dark">Claim Analysis</h5>
+                            <span class="badge bg-warning text-dark rounded-pill px-3 py-1 font-mono" id="claimClassification">⚠️ Unsupported / Requires Verification</span>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <div class="p-3 bg-success bg-opacity-10 border border-success rounded-3 h-100">
+                                    <span class="badge bg-success text-white font-mono x-small mb-1">FACT</span>
+                                    <p class="x-small text-secondary mb-0" id="claimFactText">Mutual fund returns depend on market performance. Past returns do not guarantee future performance.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 bg-warning bg-opacity-10 border border-warning rounded-3 h-100">
+                                    <span class="badge bg-warning text-dark font-mono x-small mb-1">CLAIM</span>
+                                    <p class="x-small text-secondary mb-0" id="claimUserText"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 bg-danger bg-opacity-10 border border-danger rounded-3 h-100">
+                                    <span class="badge bg-danger text-white font-mono x-small mb-1">UNVERIFIED INFO</span>
+                                    <p class="x-small text-secondary mb-0" id="claimUnverifiedText"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="claimVerifyMetadata"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/voice-engine.js"></script>
+    <script src="/js/accessibility.js"></script>
+    <script src="/js/performance-engine.js"></script>
+    <script src="/js/simple-mode.js"></script>
+    <script src="/js/scam-shield.js"></script>
+    <script src="/js/data-confidence.js"></script>
+    <script src="/js/sidebar.js"></script>
+
+    <script>
+        function toggleInputMode(mode) {
+            document.getElementById('scamInputText').focus();
+        }
+
+        function handleScreenshotUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('scamInputText').value = `[OCR Text Extracted from Screenshot: "${file.name}"]\nJoin VIP Telegram Group for 35% monthly guaranteed returns in algorithmic equity scheme. 100% risk free. Transfer money via UPI now!`;
+            runScamShield();
+        }
+
+        function runScamShield() {
+            const text = document.getElementById('scamInputText').value;
+            const res = ScamShieldEngine.analyzeMessage(text);
+            if (res.error) {
+                alert(res.error);
+                return;
+            }
+
+            const output = document.getElementById('scamOutputContainer');
+            const fill = document.getElementById('scamRiskFill');
+            const verdict = document.getElementById('scamResultVerdict');
+            const badge = document.getElementById('scamRiskBadge');
+            const warningsList = document.getElementById('scamWarningSignsList');
+            const verifyList = document.getElementById('scamVerificationList');
+
+            output.style.display = 'block';
+            fill.style.width = res.riskScore + '%';
+            fill.style.backgroundColor = res.riskScore >= 50 ? '#ef4444' : res.riskScore >= 20 ? '#f59e0b' : '#10b981';
+
+            verdict.innerText = res.riskScore >= 50 ? '🚨 HIGH RISK SCAM PATTERNS DETECTED' : '✅ LOW RISK / REGULATED DISCLAIMER';
+            badge.className = res.riskScore >= 50 ? 'badge bg-danger text-white rounded-pill px-3 py-1 font-mono fs-6' : 'badge bg-success text-white rounded-pill px-3 py-1 font-mono fs-6';
+            badge.innerText = res.riskScore + '% RISK INDEX';
+
+            warningsList.innerHTML = res.warningSigns.map(w => `
+                <div class="p-2.5 bg-white rounded-3 border border-opacity-30 small">
+                    <strong class="text-dark d-block mb-0.5">${w.title}</strong>
+                    <span class="x-small text-secondary">${w.detail}</span>
+                </div>
+            `).join('');
+
+            verifyList.innerHTML = res.verificationSteps.map(s => `<li>• ${s}</li>`).join('');
+        }
+
+        function runClaimChecker() {
+            const claim = document.getElementById('claimInput').value;
+            const res = ScamShieldEngine.analyzeClaim(claim);
+            if (!res) return;
+
+            document.getElementById('claimResultOutput').style.display = 'block';
+            document.getElementById('claimClassification').innerText = res.classification;
+            document.getElementById('claimFactText').innerText = res.fact;
+            document.getElementById('claimUserText').innerText = res.claim;
+            document.getElementById('claimUnverifiedText').innerText = res.unverifiedInfo;
+
+            if (window.dataConfidenceEngine) {
+                document.getElementById('claimVerifyMetadata').innerHTML = window.dataConfidenceEngine.renderVerifyCard(res.sourceMetadata.source, res.sourceMetadata.asOfDate);
+            }
+        }
+    </script>
+</body>
+</html>

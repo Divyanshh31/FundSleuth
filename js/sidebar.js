@@ -13,6 +13,8 @@
         if (path.includes('top-funds.html')) return 'top-funds';
         if (path.includes('news.html')) return 'news';
         if (path.includes('fund-finder.html')) return 'fund-finder';
+        if (path.includes('safety-check.html')) return 'safety-check';
+        if (path.includes('scam-shield.html')) return 'scam-shield';
         if (path.includes('safety.html')) return 'safety';
         if (path.includes('demo.html')) return 'demo';
         if (path.includes('login') || path.includes('signup') || path.includes('forgot')) return 'auth';
@@ -36,6 +38,8 @@
         const activeTopFunds = route === 'top-funds' ? 'active' : '';
         const activeNews = route === 'news' ? 'active' : '';
         const activeFinder = route === 'fund-finder' ? 'active' : '';
+        const activeSafetyCheck = route === 'safety-check' ? 'active' : '';
+        const activeScamShield = route === 'scam-shield' ? 'active' : '';
         const activeSafety = route === 'safety' ? 'active' : '';
         const activeDemo = route === 'demo' ? 'active' : '';
 
@@ -88,11 +92,23 @@
 
                 <!-- Navigation Links -->
                 <nav class="sidebar-nav py-3 px-2 flex-grow-1 overflow-y-auto">
-                    <ul class="nav flex-column list-unstyled m-0" style="gap: 8px;">
+                    <ul class="nav flex-column list-unstyled m-0" style="gap: 6px;">
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeHome}" href="index.html" title="Home">
                                 <i class="fa-solid fa-house nav-icon"></i>
                                 <span class="nav-text">Home</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link ${activeSafetyCheck}" href="safety-check.html" title="Financial Safety Check">
+                                <i class="fa-solid fa-shield-cat nav-icon text-primary"></i>
+                                <span class="nav-text">Safety Check</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link ${activeScamShield}" href="scam-shield.html" title="Scam Shield">
+                                <i class="fa-solid fa-user-shield nav-icon text-danger"></i>
+                                <span class="nav-text">Scam Shield</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -120,9 +136,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link sidebar-link ${activeNews}" href="news.html" title="News">
+                            <a class="nav-link sidebar-link ${activeNews}" href="news.html" title="Safety Brief & News">
                                 <i class="fa-solid fa-newspaper nav-icon"></i>
-                                <span class="nav-text">News</span>
+                                <span class="nav-text">Safety Brief</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -132,7 +148,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link sidebar-link ${activeSafety}" href="safety.html" title="Safety Center & Scam Detector">
+                            <a class="nav-link sidebar-link ${activeSafety}" href="safety.html" title="Safety Center">
                                 <i class="fa-solid fa-shield-halved nav-icon text-warning"></i>
                                 <span class="nav-text">Safety Center</span>
                             </a>
@@ -150,9 +166,27 @@
                 <!-- Bottom Controls & CTA Section -->
                 <div class="sidebar-footer p-3 border-top d-flex flex-column gap-2">
                     
+                    <!-- Performance Mode Toggle Row -->
+                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3" onclick="if(window.performanceEngine) window.performanceEngine.setMode(window.performanceEngine.mode === 'LITE' ? 'FULL' : 'LITE')" title="Toggle Performance Mode">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-bolt text-warning nav-icon"></i>
+                            <span class="small font-semibold text-secondary nav-text">Performance</span>
+                        </div>
+                        <span id="performanceModeBadge" class="badge bg-primary text-white font-mono rounded-pill nav-text" style="font-size: 9px;">⚡ AUTO</span>
+                    </div>
+
+                    <!-- Simple Mode Toggle Row -->
+                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3" onclick="if(window.simpleModeManager) window.simpleModeManager.toggle()" title="Toggle Simple Mode (Beginner Terms)">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-font text-info nav-icon"></i>
+                            <span class="small font-semibold text-secondary nav-text">Aa Simple</span>
+                        </div>
+                        <span id="simpleModeBadge" class="badge bg-secondary bg-opacity-20 text-secondary font-mono rounded-pill nav-text" style="font-size: 9px;">OFF</span>
+                    </div>
+
                     <!-- Dark Mode Toggle Switch Row -->
-                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-2 rounded-3" onclick="toggleTheme()" id="themeToggleRow" title="Toggle Dark/Light Mode">
-                        <div class="d-flex align-items-center gap-2.5">
+                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3" onclick="toggleTheme()" id="themeToggleRow" title="Toggle Dark/Light Mode">
+                        <div class="d-flex align-items-center gap-2">
                             <i class="fa-solid fa-moon text-primary nav-icon" id="themeToggleIcon"></i>
                             <span class="small font-semibold text-secondary nav-text">Dark Mode</span>
                         </div>

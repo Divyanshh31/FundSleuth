@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Safety Check | FundSleuth Intelligence</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Chart.js & Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        .safety-header-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 16px;
+            color: #ffffff;
+        }
+        .entry-point-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            background: #ffffff;
+        }
+        .entry-point-card:hover {
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+        }
+        .indicator-row {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 12px 0;
+        }
+        .indicator-row:last-child {
+            border-bottom: none;
+        }
+        .company-overlap-card {
+            border-left: 4px solid #f59e0b;
+            background: #fffbe6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <canvas id="hero-canvas"></canvas>
+
+    <div class="main-content-wrapper py-4 px-3 px-md-4">
+        <div class="container-fluid max-w-7xl">
+
+            <!-- Hero Header -->
+            <div class="safety-header-hero p-4 p-md-5 mb-4 shadow-sm position-relative">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-danger text-white rounded-pill px-3 py-1 font-mono small d-flex align-items-center gap-1">
+                                <i class="fa-solid fa-shield-cat"></i> Core Safety Hub
+                            </span>
+                            <span class="badge bg-warning text-dark rounded-pill px-3 py-1 font-mono x-small">
+                                Understand. Verify. Protect.
+                            </span>
+                        </div>
+                        <h1 class="display-6 fw-extrabold mb-2 text-white" data-i18n="safety_check_title">
+                            Financial Safety Check
+                        </h1>
+                        <p class="lead text-secondary mb-4" style="color: #cbd5e1 !important;" data-i18n="safety_check_subtitle">
+                            Check your portfolio, investment claims, and financial information for potential warning signs.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <div class="p-3 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-10 text-center backdrop-blur">
+                            <i class="fa-solid fa-user-shield text-warning display-4 mb-2"></i>
+                            <h6 class="fw-bold text-white mb-1">Empirical Safety Layer</h6>
+                            <p class="x-small text-secondary mb-0" style="color: #94a3b8 !important;">Non-commercial research & risk detection. No stock tips or advice.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PART 2: 3 ENTRY POINTS -->
+            <h4 class="fw-extrabold text-dark mb-3">Select Safety Check Routine</h4>
+            <div class="row g-3 mb-5">
+                <div class="col-md-4">
+                    <div class="entry-point-card p-4 h-100" onclick="showSafetyTab('portfolio')">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="brand-icon-box bg-primary text-white rounded-3 p-3 fs-4">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold text-dark mb-0">1. Check My Portfolio</h5>
+                                <span class="x-small text-muted">Overlap, sector risk & costs</span>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-0">
+                            Scan your mutual fund holdings for hidden stock concentration, sector drag, and fee leaks.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="entry-point-card p-4 h-100" onclick="showSafetyTab('message')">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="brand-icon-box bg-danger text-white rounded-3 p-3 fs-4">
+                                <i class="fa-solid fa-shield-cat"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold text-dark mb-0">2. Check a Message</h5>
+                                <span class="x-small text-muted">WhatsApp & Telegram scams</span>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-0">
+                            Paste text or upload screenshot of investment messages to detect guaranteed return red flags.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="entry-point-card p-4 h-100" onclick="showSafetyTab('claim')">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="brand-icon-box bg-warning text-dark rounded-3 p-3 fs-4">
+                                <i class="fa-solid fa-file-circle-check"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold text-dark mb-0">3. Verify a Claim</h5>
+                                <span class="x-small text-muted">Fact vs Claim vs Evidence</span>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-0">
+                            Test any investment claim against official SEBI historical data and regulatory facts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION CONTAINER: PORTFOLIO SAFETY ANALYSIS -->
+            <div id="safety-portfolio-tab" class="safety-tab-content">
+
+                <!-- PART 3: SAFETY INDICATORS -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-header bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="brand-icon-box bg-dark text-white rounded-3 p-2">
+                                <i class="fa-solid fa-list-check fs-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="fw-bold mb-0 text-dark">Portfolio Safety Indicators</h4>
+                                <p class="x-small text-muted mb-0">Multi-dimensional risk analysis grounded in actual portfolio holdings</p>
+                            </div>
+                        </div>
+                        <span id="dataConfidenceContainer"></span>
+                    </div>
+                    <div class="card-body p-4">
+
+                        <div class="indicator-row d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="fs-5">🟢</span>
+                                <div>
+                                    <strong class="text-dark d-block">Diversification</strong>
+                                    <span class="x-small text-muted" data-simple-term="Diversification">Asset distribution across Large, Mid & Flexi Cap funds is balanced.</span>
+                                </div>
+                            </div>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 font-mono">Good</span>
+                        </div>
+
+                        <div class="indicator-row d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="fs-5">🟠</span>
+                                <div>
+                                    <strong class="text-dark d-block">Fund Overlap</strong>
+                                    <span class="x-small text-muted" data-simple-term="Portfolio Overlap">3 funds share significant exposure to HDFC Bank and Reliance Industries.</span>
+                                </div>
+                            </div>
+                            <span class="badge bg-warning bg-opacity-10 text-dark border border-warning rounded-pill px-3 py-1 font-mono">Needs Attention</span>
+                        </div>
+
+                        <div class="indicator-row d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="fs-5">🟠</span>
+                                <div>
+                                    <strong class="text-dark d-block">Sector Concentration</strong>
+                                    <span class="x-small text-muted" data-simple-term="Sector Concentration">Financial Services comprises 42% of total portfolio exposure.</span>
+                                </div>
+                            </div>
+                            <span class="badge bg-warning bg-opacity-10 text-dark border border-warning rounded-pill px-3 py-1 font-mono">Needs Attention</span>
+                        </div>
+
+                        <div class="indicator-row d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="fs-5">🟢</span>
+                                <div>
+                                    <strong class="text-dark d-block">Cost Structure</strong>
+                                    <span class="x-small text-muted" data-simple-term="Expense Ratio">Portfolio is invested in Zero-Commission Direct Growth schemes.</span>
+                                </div>
+                            </div>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 font-mono">Good</span>
+                        </div>
+
+                        <div class="indicator-row d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="fs-5">🟢</span>
+                                <div>
+                                    <strong class="text-dark d-block">Data Verification</strong>
+                                    <span class="x-small text-muted">All NAV and portfolio holdings verified against AMFI releases.</span>
+                                </div>
+                            </div>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 font-mono">Verified</span>
+                        </div>
+
+                        <div class="indicator-row d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="fs-5">🟡</span>
+                                <div>
+                                    <strong class="text-dark d-block">Goal/Horizon Alignment</strong>
+                                    <span class="x-small text-muted">High equity ratio compared to selected 1–3 year short horizon.</span>
+                                </div>
+                            </div>
+                            <span class="badge bg-warning bg-opacity-10 text-dark border border-warning rounded-pill px-3 py-1 font-mono">Review</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- PART 4 & 5: OVERLAP SAFETY & SECTOR CONCENTRATION -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 p-4">
+                            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-code-branch text-warning me-2"></i> Company Overlap & Concentration</h5>
+                            <p class="x-small text-muted mb-3">Click an underlying company stock to inspect portfolio fund exposure:</p>
+
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <button class="btn btn-sm btn-outline-dark active" onclick="inspectCompanyOverlap('HDFC Bank')">HDFC Bank</button>
+                                <button class="btn btn-sm btn-outline-dark" onclick="inspectCompanyOverlap('Reliance Industries')">Reliance Industries</button>
+                                <button class="btn btn-sm btn-outline-dark" onclick="inspectCompanyOverlap('Infosys Ltd')">Infosys Ltd</button>
+                                <button class="btn btn-sm btn-outline-dark" onclick="inspectCompanyOverlap('ICICI Bank')">ICICI Bank</button>
+                            </div>
+
+                            <div class="company-overlap-card p-3 rounded-3 mb-3" id="overlapInspectionBox">
+                                <h6 class="fw-bold text-dark mb-1" id="overlapCompanyName">HDFC Bank</h6>
+                                <p class="small text-danger fw-bold mb-2">3 of your funds have exposure to this company.</p>
+                                <div class="x-small text-secondary vstack gap-1 font-mono mb-2" id="overlapFundBreakdown">
+                                    <div>• Parag Parikh Flexi Cap: 8.5%</div>
+                                    <div>• Mirae Asset Large Cap: 7.2%</div>
+                                    <div>• SBI Bluechip Fund: 6.1%</div>
+                                </div>
+                                <div class="badge bg-danger text-white rounded-pill px-2.5 py-1 font-mono x-small">
+                                    ⚠️ Potential concentration detected.
+                                </div>
+                            </div>
+
+                            <div class="x-small text-muted">
+                                <i class="fa-solid fa-shield me-1"></i> FundSleuth does not issue buy or sell directives. Inspect concentration to align with your personal risk preferences.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 p-4">
+                            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-chart-pie text-primary me-2"></i> Portfolio Sector Exposure</h5>
+                            
+                            <div class="vstack gap-3 mb-3">
+                                <div>
+                                    <div class="d-flex justify-content-between x-small font-mono fw-bold mb-1">
+                                        <span>Financial Services</span>
+                                        <span>42%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-primary" style="width: 42%;"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="d-flex justify-content-between x-small font-mono fw-bold mb-1">
+                                        <span>Technology</span>
+                                        <span>18%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-info" style="width: 18%;"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="d-flex justify-content-between x-small font-mono fw-bold mb-1">
+                                        <span>Energy & Power</span>
+                                        <span>12%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-warning" style="width: 12%;"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="d-flex justify-content-between x-small font-mono fw-bold mb-1">
+                                        <span>Healthcare & Pharma</span>
+                                        <span>9%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-success" style="width: 9%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-3 bg-warning bg-opacity-10 border border-warning rounded-3">
+                                <h6 class="fw-bold text-dark small mb-1">⚠️ High Sector Concentration Detected</h6>
+                                <p class="x-small text-secondary mb-0">
+                                    A large portion (42%) of your portfolio is exposed to Financial Services. Sector-specific macroeconomic news or regulatory shifts in banking could significantly impact overall performance.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PART 6: COST LEAK DETECTOR -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 p-4">
+                    <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+                        <h4 class="fw-bold text-dark mb-0"><i class="fa-solid fa-coins text-warning me-2"></i> Cost Leak Detector</h4>
+                        <button class="btn btn-sm btn-outline-secondary font-mono" onclick="showCalculationModal()">How this was calculated</button>
+                    </div>
+
+                    <div class="row g-3 text-center mb-3">
+                        <div class="col-md-3">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <span class="x-small text-muted font-mono d-block">Fund Expense Ratio</span>
+                                <strong class="fs-5 text-dark font-mono">₹ 7,800 / yr</strong>
+                                <span class="x-small text-muted d-block mt-1">Direct Plan TER (~0.65%)</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <span class="x-small text-muted font-mono d-block">Platform-Related Cost</span>
+                                <strong class="fs-5 text-success font-mono">₹ 0 / yr</strong>
+                                <span class="x-small text-muted d-block mt-1">Zero Broker Commission</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <span class="x-small text-muted font-mono d-block">Exit Load / Charges</span>
+                                <strong class="fs-5 text-success font-mono">₹ 0</strong>
+                                <span class="x-small text-muted d-block mt-1">Units Held > 1 Year</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="p-3 bg-dark text-white rounded-3 border">
+                                <span class="x-small text-secondary font-mono d-block">Estimated Total Cost</span>
+                                <strong class="fs-5 text-warning font-mono">₹ 7,800 / yr</strong>
+                                <span class="x-small text-secondary d-block mt-1">Transparent Total</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PART 12: INVESTMENT STRESS TEST -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 p-4">
+                    <h4 class="fw-bold text-dark mb-1"><i class="fa-solid fa-chart-line-down text-danger me-2"></i> Investment Stress Test: What If Markets Fall?</h4>
+                    <p class="x-small text-muted mb-3">Illustrative portfolio impact based on hypothetical market corrections (Not a prediction):</p>
+
+                    <div class="d-flex gap-2 mb-3">
+                        <button class="btn btn-outline-danger active fw-bold font-mono" onclick="runStressTest(-10, this)">-10% Fall</button>
+                        <button class="btn btn-outline-danger fw-bold font-mono" onclick="runStressTest(-20, this)">-20% Fall</button>
+                        <button class="btn btn-outline-danger fw-bold font-mono" onclick="runStressTest(-30, this)">-30% Fall</button>
+                        <button class="btn btn-outline-danger fw-bold font-mono" onclick="runStressTest(-40, this)">-40% Fall</button>
+                    </div>
+
+                    <div class="p-4 bg-danger bg-opacity-10 border border-danger rounded-4" id="stressTestResultBox">
+                        <h5 class="fw-bold text-danger mb-2" id="stressTestTitle">Hypothetical Scenario: -10% Market Correction</h5>
+                        <p class="small text-dark mb-2" id="stressTestDesc">
+                            In a broad -10% equity market decline, your portfolio’s estimated value change would be approximately <strong>-9.4%</strong> (a drawdown of ~₹47,000 on a ₹5,000,000 portfolio).
+                        </p>
+                        <span class="badge bg-secondary bg-opacity-20 text-dark font-mono x-small">
+                            Hypothetical scenario — not a prediction. Illustrative impact only.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- PART 13: GOAL / HORIZON CHECK -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 p-4">
+                    <h4 class="fw-bold text-dark mb-2"><i class="fa-solid fa-hourglass-half text-warning me-2"></i> Investment Goal & Horizon Alignment</h4>
+                    <label class="form-label x-small font-mono text-muted text-uppercase fw-bold">Select Your Planned Time Horizon:</label>
+                    <select class="form-select w-auto mb-3 font-mono text-dark" id="horizonSelect" onchange="checkHorizonAlignment()">
+                        <option value="<1 year">&lt; 1 Year (Short Term)</option>
+                        <option value="1-3 years">1–3 Years (Medium Term)</option>
+                        <option value="3-5 years">3–5 Years (Growth Horizon)</option>
+                        <option value="5-10 years" selected>5–10 Years (Long Term)</option>
+                        <option value="10+ years">10+ Years (Wealth Creation)</option>
+                    </select>
+
+                    <div id="horizonAlertBox" class="p-3 rounded-3 border bg-success bg-opacity-10 border-success">
+                        <strong class="text-success d-block small">✅ Goal Horizon Aligned</strong>
+                        <span class="x-small text-secondary">A 5-10 year horizon matches the long-term compounding nature and equity volatility profile of your portfolio.</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/voice-engine.js"></script>
+    <script src="/js/accessibility.js"></script>
+    <script src="/js/performance-engine.js"></script>
+    <script src="/js/simple-mode.js"></script>
+    <script src="/js/scam-shield.js"></script>
+    <script src="/js/data-confidence.js"></script>
+    <script src="/js/sidebar.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.dataConfidenceEngine) {
+                document.getElementById('dataConfidenceContainer').innerHTML = window.dataConfidenceEngine.renderBadge('verified');
+            }
+        });
+
+        function showSafetyTab(tab) {
+            if (tab === 'message') {
+                window.location.href = 'safety.html#scam-analyzer-section';
+            } else if (tab === 'claim') {
+                window.location.href = 'safety.html';
+            }
+        }
+
+        const overlapData = {
+            'HDFC Bank': { count: 3, funds: ['Parag Parikh Flexi Cap: 8.5%', 'Mirae Asset Large Cap: 7.2%', 'SBI Bluechip Fund: 6.1%'] },
+            'Reliance Industries': { count: 2, funds: ['Mirae Asset Large Cap: 9.1%', 'Axis Bluechip Fund: 5.4%'] },
+            'Infosys Ltd': { count: 2, funds: ['Parag Parikh Flexi Cap: 6.2%', 'UTI Nifty 50 Index: 5.8%'] },
+            'ICICI Bank': { count: 3, funds: ['SBI Bluechip Fund: 7.4%', 'Mirae Asset Large Cap: 6.8%', 'Axis Bluechip: 4.9%'] }
+        };
+
+        function inspectCompanyOverlap(company) {
+            const data = overlapData[company];
+            if (!data) return;
+
+            document.getElementById('overlapCompanyName').innerText = company;
+            document.getElementById('overlapInspectionBox').querySelector('p').innerText = `${data.count} of your funds have exposure to this company.`;
+            document.getElementById('overlapFundBreakdown').innerHTML = data.funds.map(f => `<div>• ${f}</div>`).join('');
+        }
+
+        function showCalculationModal() {
+            alert("How Cost Drag was calculated:\n\n1. Fund Expense Ratio: Weighted average TER of portfolio holdings (0.65%).\n2. Platform Cost: Zero platform fee for Direct Mutual Fund plans.\n3. Exit Load: Exit load is 0% as units are held beyond the 365-day exit load period.");
+        }
+
+        function runStressTest(dropPct, btn) {
+            document.querySelectorAll('#stressTestResultBox button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const impactPct = (dropPct * 0.94).toFixed(1);
+            const lossAmt = Math.abs(dropPct * 4700).toLocaleString('en-IN');
+
+            document.getElementById('stressTestTitle').innerText = `Hypothetical Scenario: ${dropPct}% Market Correction`;
+            document.getElementById('stressTestDesc').innerHTML = `In a broad ${dropPct}% market decline, your portfolio's estimated value change would be approximately <strong>${impactPct}%</strong> (drawdown of ~₹${lossAmt} on a ₹5,000,000 portfolio).`;
+        }
+
+        function checkHorizonAlignment() {
+            const val = document.getElementById('horizonSelect').value;
+            const box = document.getElementById('horizonAlertBox');
+
+            if (val === '<1 year' || val === '1-3 years') {
+                box.className = 'p-3 rounded-3 border bg-warning bg-opacity-10 border-warning';
+                box.innerHTML = `
+                    <strong class="text-dark d-block small">⚠️ Review Your Investment Horizon</strong>
+                    <span class="x-small text-secondary">Your selected horizon (${val}) is relatively short compared with the long-term nature and historical volatility associated with equity mutual funds.</span>
+                `;
+            } else {
+                box.className = 'p-3 rounded-3 border bg-success bg-opacity-10 border-success';
+                box.innerHTML = `
+                    <strong class="text-success d-block small">✅ Goal Horizon Aligned</strong>
+                    <span class="x-small text-secondary">A ${val} horizon matches the long-term compounding nature and equity volatility profile of your portfolio.</span>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
