@@ -198,24 +198,47 @@ function initTheme() {
 }
 
 function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('fundsleuth-theme', theme);
+    const isDark = (theme === 'dark');
+    const targetTheme = isDark ? 'dark' : 'light';
+
+    // Set attributes on html element
+    document.documentElement.setAttribute('data-theme', targetTheme);
+    document.documentElement.setAttribute('data-bs-theme', targetTheme);
+
+    // Set attributes & class on body if present
+    if (document.body) {
+        document.body.setAttribute('data-theme', targetTheme);
+        document.body.setAttribute('data-bs-theme', targetTheme);
+        if (isDark) {
+            document.body.classList.add('dark-theme');
+            document.body.classList.remove('light-theme');
+        } else {
+            document.body.classList.add('light-theme');
+            document.body.classList.remove('dark-theme');
+        }
+    }
+
+    localStorage.setItem('fundsleuth-theme', targetTheme);
 
     const btnText = document.getElementById('themeToggleText');
     const btnIcon = document.getElementById('themeToggleIcon');
+    const mobileIcon = document.getElementById('mobileThemeIcon');
     const checkbox = document.getElementById('themeSwitchCheckbox');
 
-    if (theme === 'dark') {
-        if (btnText) btnText.innerText = 'Light';
+    if (isDark) {
+        if (btnText) btnText.innerText = 'Light Mode';
         if (btnIcon) btnIcon.className = 'fa-solid fa-sun orange-highlight';
+        if (mobileIcon) mobileIcon.className = 'fa-solid fa-sun text-warning';
         if (checkbox) checkbox.checked = true;
     } else {
-        if (btnText) btnText.innerText = 'Dark';
+        if (btnText) btnText.innerText = 'Dark Mode';
         if (btnIcon) btnIcon.className = 'fa-solid fa-moon';
+        if (mobileIcon) mobileIcon.className = 'fa-solid fa-moon';
         if (checkbox) checkbox.checked = false;
     }
 
     if (window.syncSidebarThemeState) window.syncSidebarThemeState();
+    if (window.updateThemeWebGLColors) window.updateThemeWebGLColors();
 
     // Refresh active charts/graphs if available
     if (typeof currentAnalysisData !== 'undefined' && currentAnalysisData) {
