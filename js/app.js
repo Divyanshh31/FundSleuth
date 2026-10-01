@@ -525,29 +525,25 @@ function resetGraphView() {
 }
 
 function toggleVoiceSummary() {
-    if (synth.speaking) {
-        synth.cancel();
-        setSafeText('voiceBtnText', "Voice Audio Summary");
-        return;
+    if (window.VoiceEngine) {
+        if (window.VoiceEngine.isPlaying) {
+            window.VoiceEngine.stop();
+        } else {
+            const data = currentAnalysisData || {
+                overlapAnalytics: { overlapPercentage: 38 },
+                expenseAnalytics: { regularPlansCount: 3, averageExpenseRatio: 1.45 }
+            };
+            const overlap = (data.overlapAnalytics || {}).overlapPercentage || 38;
+            const regCount = (data.expenseAnalytics || {}).regularPlansCount || 3;
+            const expRatio = (data.expenseAnalytics || {}).averageExpenseRatio || 1.45;
+
+            const lang = window.I18nEngine ? window.I18nEngine.currentLang : 'en';
+            const summaryFn = window.VoiceEngine.summaries[lang] || window.VoiceEngine.summaries['en'];
+            const summaryText = summaryFn(overlap, regCount, expRatio);
+
+            window.VoiceEngine.speak(summaryText, lang);
+        }
     }
-
-    if (!currentAnalysisData) {
-        showToast("Run an X-Ray analysis first to listen to the audio summary!", "warning");
-        return;
-    }
-
-    const overlap = (currentAnalysisData.overlapAnalytics || {}).overlapPercentage || 0;
-    const regCount = (currentAnalysisData.expenseAnalytics || {}).regularPlansCount || 0;
-    const text = `Portfolio X-Ray Summary. Your mutual fund portfolio has a ${overlap} percent overlap score. You hold ${regCount} regular plans incurring distributor commission drag. Switching to direct plans will save your long term wealth.`;
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
-    utterance.onend = () => {
-        setSafeText('voiceBtnText', "Voice Audio Summary");
-    };
-
-    setSafeText('voiceBtnText', "Stop Audio...");
-    synth.speak(utterance);
 }
 
 function animateCounter(id, start, end, suffix = '') {

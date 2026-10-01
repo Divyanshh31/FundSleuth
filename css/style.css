@@ -1121,3 +1121,43 @@ html[data-theme="dark"] .dropdown-menu,
     background: #FF6B00 !important;
     color: #FFFFFF !important;
 }
+
+/* ==========================================================================
+   RTL MODE SUPPORT (Urdu i18n & Right-to-Left Layout)
+   ========================================================================== */
+[dir="rtl"], body.rtl-mode {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .sidebar-panel {
+    left: auto !important;
+    right: 1.5rem !important;
+    border-right: none !important;
+    border-left: 1px solid var(--border-light, #E2E8F0) !important;
+}
+
+@media (max-width: 991.98px) {
+    [dir="rtl"] .sidebar-panel {
+        right: 0 !important;
+        transform: translateX(100%);
+    }
+    [dir="rtl"] .sidebar-panel.show-mobile {
+        transform: translateX(0);
+    }
+}
+
+[dir="rtl"] .ms-1, [dir="rtl"] .ms-2, [dir="rtl"] .ms-3, [dir="rtl"] .ms-auto {
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
+}
+
+[dir="rtl"] .me-1, [dir="rtl"] .me-2, [dir="rtl"] .me-3, [dir="rtl"] .me-auto {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+}
+
+[dir="rtl"] .dropdown-menu-end {
+    right: auto !important;
+    left: 0 !important;
+}

@@ -1,6 +1,7 @@
 /* ==========================================================================
    FUNDSLEUTH REUSABLE SIDEBAR COMPONENT (DESKTOP & MOBILE DRAWER)
    Unified architecture for all 12 pages with centered header branding grid
+   and multi-language (i18n) support.
    ========================================================================== */
 
 (function () {
@@ -25,8 +26,13 @@
     function renderSidebar() {
         const route = getActiveRoute();
 
-        // Check if sidebar panel already exists
-        if (document.getElementById('sidebarPanel')) return;
+        // If sidebar already exists, just update its translations and return
+        if (document.getElementById('sidebarPanel')) {
+            if (window.I18nEngine) {
+                window.I18nEngine.applyTranslations();
+            }
+            return;
+        }
 
         // If page has legacy navbar-custom, replace it
         const legacyNav = document.querySelector('.navbar-custom');
@@ -96,67 +102,67 @@
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeHome}" href="index.html" title="Home">
                                 <i class="fa-solid fa-house nav-icon"></i>
-                                <span class="nav-text">Home</span>
+                                <span class="nav-text" data-i18n="navHome">Home</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeSafetyCheck}" href="safety-check.html" title="Financial Safety Check">
                                 <i class="fa-solid fa-shield-cat nav-icon text-primary"></i>
-                                <span class="nav-text">Safety Check</span>
+                                <span class="nav-text" data-i18n="navSafetyCheck">Safety Check</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeScamShield}" href="scam-shield.html" title="Scam Shield">
                                 <i class="fa-solid fa-user-shield nav-icon text-danger"></i>
-                                <span class="nav-text">Scam Shield</span>
+                                <span class="nav-text" data-i18n="navScamShield">Scam Shield</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeFunds}" href="funds.html" title="Explore Funds">
                                 <i class="fa-solid fa-magnifying-glass nav-icon"></i>
-                                <span class="nav-text">Explore Funds</span>
+                                <span class="nav-text" data-i18n="navExplore">Explore Funds</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeCompareFunds}" href="compare-funds.html" title="Compare Funds">
                                 <i class="fa-solid fa-code-compare nav-icon"></i>
-                                <span class="nav-text">Compare Funds</span>
+                                <span class="nav-text" data-i18n="navCompareFunds">Compare Funds</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeComparePlatforms}" href="compare-platforms.html" title="Compare Platforms">
                                 <i class="fa-solid fa-layer-group nav-icon"></i>
-                                <span class="nav-text">Compare Platforms</span>
+                                <span class="nav-text" data-i18n="navComparePlatforms">Compare Platforms</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeTopFunds}" href="top-funds.html" title="Top Research">
                                 <i class="fa-solid fa-award nav-icon"></i>
-                                <span class="nav-text">Top Research</span>
+                                <span class="nav-text" data-i18n="navTopResearch">Top Research</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeNews}" href="news.html" title="Safety Brief & News">
                                 <i class="fa-solid fa-newspaper nav-icon"></i>
-                                <span class="nav-text">Safety Brief</span>
+                                <span class="nav-text" data-i18n="navNews">Safety Brief</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeFinder}" href="fund-finder.html" title="Fund Finder">
                                 <i class="fa-solid fa-compass nav-icon"></i>
-                                <span class="nav-text">Fund Finder</span>
+                                <span class="nav-text" data-i18n="navFinder">Fund Finder</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeSafety}" href="safety.html" title="Safety Center">
                                 <i class="fa-solid fa-shield-halved nav-icon text-warning"></i>
-                                <span class="nav-text">Safety Center</span>
+                                <span class="nav-text" data-i18n="navSafety">Safety Center</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeDemo}" href="demo.html" title="Hackathon Judge Demo">
                                 <i class="fa-solid fa-award nav-icon text-success"></i>
-                                <span class="nav-text">Judge Demo</span>
+                                <span class="nav-text" data-i18n="navDemo">Judge Demo</span>
                                 <span class="badge bg-success text-white font-mono ms-auto nav-text" style="font-size: 9px; padding: 2px 6px;">5/5</span>
                             </a>
                         </li>
@@ -170,7 +176,7 @@
                     <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3" onclick="if(window.performanceEngine) window.performanceEngine.setMode(window.performanceEngine.mode === 'LITE' ? 'FULL' : 'LITE')" title="Toggle Performance Mode">
                         <div class="d-flex align-items-center gap-2">
                             <i class="fa-solid fa-bolt text-warning nav-icon"></i>
-                            <span class="small font-semibold text-secondary nav-text">Performance</span>
+                            <span class="small font-semibold text-secondary nav-text" data-i18n="performance">Performance</span>
                         </div>
                         <span id="performanceModeBadge" class="badge bg-primary text-white font-mono rounded-pill nav-text" style="font-size: 9px;">⚡ AUTO</span>
                     </div>
@@ -179,7 +185,7 @@
                     <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3" onclick="if(window.simpleModeManager) window.simpleModeManager.toggle()" title="Toggle Simple Mode (Beginner Terms)">
                         <div class="d-flex align-items-center gap-2">
                             <i class="fa-solid fa-font text-info nav-icon"></i>
-                            <span class="small font-semibold text-secondary nav-text">Aa Simple</span>
+                            <span class="small font-semibold text-secondary nav-text" data-i18n="simpleMode">Simple Mode</span>
                         </div>
                         <span id="simpleModeBadge" class="badge bg-secondary bg-opacity-20 text-secondary font-mono rounded-pill nav-text" style="font-size: 9px;">OFF</span>
                     </div>
@@ -188,7 +194,7 @@
                     <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3" onclick="toggleTheme()" id="themeToggleRow" title="Toggle Dark/Light Mode">
                         <div class="d-flex align-items-center gap-2">
                             <i class="fa-solid fa-moon text-primary nav-icon" id="themeToggleIcon"></i>
-                            <span class="small font-semibold text-secondary nav-text">Dark Mode</span>
+                            <span class="small font-semibold text-secondary nav-text" data-i18n="darkMode">Dark Mode</span>
                         </div>
                         <div class="form-check form-switch m-0 pointer-events-none">
                             <input class="form-check-input" type="checkbox" id="themeSwitchCheckbox" role="switch" onclick="event.stopPropagation();">
@@ -199,7 +205,7 @@
                     <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-2 rounded-3" onclick="toggleVoiceSummary()" id="audioToggleRow" title="Toggle Audio Voice Summary">
                         <div class="d-flex align-items-center gap-2.5">
                             <i class="fa-solid fa-volume-high orange-highlight nav-icon"></i>
-                            <span class="small font-semibold text-secondary nav-text">Audio Overview</span>
+                            <span class="small font-semibold text-secondary nav-text" data-i18n="audioOverview">Audio Overview</span>
                         </div>
                         <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill font-mono x-small nav-text" id="voiceBtnText">OFF</span>
                     </div>
@@ -213,7 +219,7 @@
                             <div class="account-info overflow-hidden nav-text">
                                 <div class="fw-bold small text-dark text-truncate" id="sidebarAccountName" style="white-space: nowrap;">Google Investor</div>
                                 <div class="x-small text-success font-mono d-flex align-items-center gap-1" id="sidebarAccountStatus">
-                                    <span class="online-indicator"></span> Signed in
+                                    <span class="online-indicator"></span> <span data-i18n="signedIn">Signed in</span>
                                 </div>
                             </div>
                         </div>
@@ -225,7 +231,7 @@
                     <!-- Launch X-Ray Primary CTA Button -->
                     <a href="index.html#xray-tool-section" class="btn btn-taste-primary w-100 py-2.5 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 btn-xray-cta shadow-sm">
                         <i class="fa-solid fa-bolt orange-highlight"></i>
-                        <span class="nav-text">Launch X-Ray</span>
+                        <span class="nav-text" data-i18n="launchXray">Launch X-Ray</span>
                     </a>
 
                 </div>
@@ -240,9 +246,13 @@
             document.body.insertAdjacentHTML('afterbegin', sidebarHTML);
         }
 
-        // Initialize event handlers & initial states
+        // Initialize event handlers, theme state, and translations
         setupSidebarEvents();
         syncSidebarThemeState();
+
+        if (window.I18nEngine) {
+            window.I18nEngine.applyTranslations();
+        }
     }
 
     function setupSidebarEvents() {
@@ -305,6 +315,7 @@
     }
 
     window.syncSidebarThemeState = syncSidebarThemeState;
+    window.renderSidebar = renderSidebar;
 
     // Run on DOM ready
     if (document.readyState === 'loading') {

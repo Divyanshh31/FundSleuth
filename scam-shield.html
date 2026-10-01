@@ -59,18 +59,18 @@
                                 Screenshot OCR & Pattern Parser
                             </span>
                         </div>
-                        <h1 class="display-6 fw-extrabold mb-2 text-white">
+                        <h1 class="display-6 fw-extrabold mb-2 text-white" data-i18n="scamShieldTitle">
                             Scam Shield & Investment Claim Checker
                         </h1>
-                        <p class="lead text-secondary mb-4" style="color: #cbd5e1 !important;">
+                        <p class="lead text-secondary mb-4" style="color: #cbd5e1 !important;" data-i18n="scamAnalyzer">
                             Check investment messages, stock tips, and financial claims for common warning signs.
                         </p>
                     </div>
                     <div class="col-lg-4 text-center">
                         <div class="p-3 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-10 backdrop-blur">
                             <i class="fa-solid fa-user-shield text-warning display-4 mb-2"></i>
-                            <h6 class="fw-bold text-white mb-0">Empirical Verification</h6>
-                            <p class="x-small text-secondary mb-0" style="color: #94a3b8 !important;">Detects high-risk patterns & guaranteed return traps.</p>
+                            <h6 class="fw-bold text-white mb-0" data-i18n="dataVerificationTitle">Empirical Verification</h6>
+                            <p class="x-small text-secondary mb-0" style="color: #94a3b8 !important;" data-i18n="explainOverlap">Detects high-risk patterns & guaranteed return traps.</p>
                         </div>
                     </div>
                 </div>
@@ -78,25 +78,25 @@
 
             <!-- SECTION 1: SCAM SHIELD ANALYZER -->
             <div class="card border-0 shadow-sm rounded-4 mb-4 p-4">
-                <h4 class="fw-bold text-dark mb-3"><i class="fa-solid fa-magnifying-glass-chart text-danger me-2"></i> Analyze Investment Message / Screenshot</h4>
+                <h4 class="fw-bold text-dark mb-3"><i class="fa-solid fa-magnifying-glass-chart text-danger me-2"></i> <span data-i18n="analyzeScamBtn">Analyze Investment Message / Screenshot</span></h4>
                 
                 <!-- Input Mode Buttons -->
                 <div class="d-flex gap-2 mb-3">
                     <button class="btn btn-outline-primary active rounded-3 text-dark fw-bold" onclick="toggleInputMode('text')">
-                        <i class="fa-solid fa-align-left me-1"></i> Paste Message Text
+                        <i class="fa-solid fa-align-left me-1"></i> <span data-i18n="pasteMsgBtn">Paste Message Text</span>
                     </button>
                     <label class="btn btn-outline-secondary rounded-3 text-dark fw-bold m-0 pointer">
-                        <i class="fa-solid fa-image me-1"></i> Upload Screenshot (OCR)
+                        <i class="fa-solid fa-image me-1"></i> <span data-i18n="uploadScreenshotBtn">Upload Screenshot (OCR)</span>
                         <input type="file" id="screenshotUpload" accept="image/*" class="d-none" onchange="handleScreenshotUpload(event)">
                     </label>
                 </div>
 
                 <!-- Text Area -->
-                <textarea class="form-control rounded-3 p-3 font-mono text-dark mb-3" id="scamInputText" rows="4" placeholder="Paste WhatsApp message, Telegram tip, SMS, or Instagram ad text here..."></textarea>
+                <textarea class="form-control rounded-3 p-3 font-mono text-dark mb-3" id="scamInputText" rows="4" placeholder="Paste WhatsApp message, Telegram tip, SMS, or Instagram ad text here..." data-i18n-placeholder="pasteMsgBtn"></textarea>
 
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <button class="btn btn-danger btn-taste-primary px-4 py-2.5 rounded-3 fw-bold d-flex align-items-center gap-2" onclick="runScamShield()">
-                        <i class="fa-solid fa-shield-halved"></i> Run Scam Shield Analysis
+                        <i class="fa-solid fa-shield-halved"></i> <span data-i18n="analyzeScamBtn">Run Scam Shield Analysis</span>
                     </button>
                     <span class="x-small text-muted font-mono"><i class="fa-solid fa-lock me-1"></i> In-Memory OCR Processing</span>
                 </div>
