@@ -611,3 +611,25 @@ footer {
     background: #090D16;
     border-top-color: rgba(255, 255, 255, 0.1) !important;
 }
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .input-group-text {
+    background-color: #1E293B !important;
+    color: #F8FAFC !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .form-control::placeholder {
+    color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .list-group-item {
+    background-color: rgba(30, 41, 59, 0.75) !important;
+    color: #F8FAFC !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] section {
+    background-color: transparent !important;
+}

@@ -177,7 +177,39 @@ const AuthManager = {
     }
 };
 
+// GLOBAL THEME CONTROLLER
+function initTheme() {
+    const savedTheme = localStorage.getItem('fundsleuth-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('fundsleuth-theme', theme);
+
+    const btnText = document.getElementById('themeToggleText');
+    const btnIcon = document.getElementById('themeToggleIcon');
+
+    if (theme === 'dark') {
+        if (btnText) btnText.innerText = 'Light';
+        if (btnIcon) btnIcon.className = 'fa-solid fa-sun orange-highlight';
+    } else {
+        if (btnText) btnText.innerText = 'Dark';
+        if (btnIcon) btnIcon.className = 'fa-solid fa-moon';
+    }
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+}
+
+// Immediately set attribute on parse to avoid flash
+initTheme();
+
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     AuthManager.checkRouteGuard();
     AuthManager.updateNavUI();
 });
