@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Safety & Scam Prevention Center | FundSleuth</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Three.js & GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .safety-hero-card {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.08) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 16px;
+        }
+        .scam-preset-btn {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .scam-preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .risk-gauge-container {
+            position: relative;
+            width: 100%;
+            height: 16px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .risk-gauge-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease;
+        }
+        .rule-card {
+            border-radius: 12px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .rule-card:hover {
+            transform: translateY(-3px);
+            border-color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Main Page Wrapper -->
+    <div class="main-content-wrapper py-4 px-3 px-md-4">
+        <div class="container-fluid max-w-7xl">
+
+            <!-- Hero Section -->
+            <div class="safety-hero-card p-4 p-md-5 mb-4 shadow-sm position-relative">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-danger text-white rounded-pill px-3 py-1 font-mono small d-flex align-items-center gap-1">
+                                <i class="fa-solid fa-shield-cat"></i> Investor Protection Module
+                            </span>
+                            <span class="badge bg-warning text-dark rounded-pill px-3 py-1 font-mono x-small">
+                                SEBI Guardrails Compliant
+                            </span>
+                        </div>
+                        <h1 class="display-6 fw-extrabold mb-3 text-gradient-danger" data-i18n="safety_title">
+                            Investor Safety & Scam Prevention Center
+                        </h1>
+                        <p class="lead text-secondary mb-4" style="max-width: 700px;" data-i18n="safety_subtitle">
+                            Protect your family's hard-earned savings. Detect fraudulent WhatsApp stock tips, fake Telegram schemes, hidden commission traps, and high-risk portfolio concentration.
+                        </p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-danger btn-taste-primary px-4 py-2.5 rounded-3 fw-bold d-flex align-items-center gap-2" onclick="scrollToScamAnalyzer()">
+                                <i class="fa-solid fa-microscope"></i> Test Investment Message
+                            </button>
+                            <button class="btn btn-outline-secondary px-4 py-2.5 rounded-3 fw-bold d-flex align-items-center gap-2" onclick="speakSafetyOverview()">
+                                <i class="fa-solid fa-volume-high text-warning"></i>
+                                <span>Listen in Selected Language</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center mt-4 mt-lg-0">
+                        <div class="p-4 bg-white rounded-4 border shadow-sm text-center">
+                            <i class="fa-solid fa-shield-halved text-danger display-3 mb-2"></i>
+                            <h5 class="fw-bold text-dark mb-1">100% Unbiased</h5>
+                            <p class="x-small text-muted mb-0">No commissions, no sponsored funds, no stock tips. Pure empirical financial intelligence.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1: INTERACTIVE SCAM MESSAGE ANALYZER -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden" id="scam-analyzer-section">
+                <div class="card-header bg-dark text-white p-4 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="brand-icon-box bg-danger text-white rounded-3 p-2">
+                            <i class="fa-solid fa-user-shield fs-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-0 text-white">Suspicious Message & Tip Analyzer</h4>
+                            <p class="x-small text-muted mb-0">Paste any WhatsApp message, Telegram tip, or SMS to verify its legitimacy</p>
+                        </div>
+                    </div>
+                    <span class="badge bg-danger bg-opacity-20 text-danger border border-danger rounded-pill px-3 py-1 font-mono x-small">
+                        AI NLP Scam Engine
+                    </span>
+                </div>
+                <div class="card-body p-4">
+
+                    <!-- Presets -->
+                    <div class="mb-3">
+                        <label class="form-label x-small font-mono text-muted text-uppercase fw-bold mb-2">Try Sample Scams vs Safe Messages:</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-sm btn-outline-danger scam-preset-btn text-start" onclick="loadScamPreset(1)">
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i> "35% Monthly Guaranteed" Telegram Scam
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger scam-preset-btn text-start" onclick="loadScamPreset(2)">
+                                <i class="fa-solid fa-bolt me-1"></i> "Insider Stock Tip" WhatsApp Group
+                            </button>
+                            <button class="btn btn-sm btn-outline-success scam-preset-btn text-start" onclick="loadScamPreset(3)">
+                                <i class="fa-solid fa-circle-check me-1"></i> SEBI Regulated Mutual Fund Disclaimer
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Input Box -->
+                    <div class="mb-3">
+                        <textarea class="form-control rounded-3 p-3 font-mono text-dark" id="scamMessageInput" rows="4" placeholder="Paste WhatsApp message, Telegram tip, SMS, or YouTube video description here (e.g. 'Join VIP group for 100% guaranteed daily option trading returns...')" style="font-size: 14px; background: #f8fafc;"></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <button class="btn btn-taste-primary btn-danger px-4 py-2.5 rounded-3 fw-bold d-flex align-items-center gap-2" onclick="analyzeScamMessage()">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Message Safety
+                        </button>
+                        <button class="btn btn-link text-muted p-0 x-small text-decoration-none" onclick="clearScamInput()">
+                            <i class="fa-solid fa-rotate-left me-1"></i> Clear text
+                        </button>
+                    </div>
+
+                    <!-- Analysis Output Container -->
+                    <div id="scamAnalysisOutput" style="display: none;">
+                        <div class="p-4 rounded-3 border" id="scamResultBox">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fs-4" id="scamResultIcon"></i>
+                                    <h5 class="fw-bold mb-0" id="scamResultTitle">Analysis Result</h5>
+                                </div>
+                                <span class="badge rounded-pill px-3 py-1 font-mono fs-6" id="scamRiskBadge">0% Risk</span>
+                            </div>
+
+                            <!-- Risk Meter -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between x-small font-mono mb-1 text-muted">
+                                    <span>SAFE</span>
+                                    <span>MODERATE RISK</span>
+                                    <span>CRITICAL SCAM</span>
+                                </div>
+                                <div class="risk-gauge-container">
+                                    <div class="risk-gauge-bar" id="riskGaugeBar"></div>
+                                </div>
+                            </div>
+
+                            <!-- Detected Flags -->
+                            <div class="mb-3">
+                                <h6 class="fw-bold small text-uppercase font-mono text-secondary mb-2">Detected Red Flags & Signals:</h6>
+                                <div class="d-flex flex-column gap-2" id="scamRedFlagsList"></div>
+                            </div>
+
+                            <!-- AI Advice & Explanation -->
+                            <div class="p-3 bg-white rounded-3 border mb-3">
+                                <h6 class="fw-bold small text-dark mb-1 d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-robot text-primary"></i> FundSleuth Safety Advice:
+                                </h6>
+                                <p class="small text-secondary mb-0" id="scamAdviceText"></p>
+                            </div>
+
+                            <!-- Voice Button -->
+                            <div class="d-flex align-items-center justify-content-between">
+                                <button class="btn btn-sm btn-outline-primary rounded-3 d-flex align-items-center gap-2" onclick="speakScamAnalysis()">
+                                    <i class="fa-solid fa-volume-high"></i> Listen to Advice in Native Language
+                                </button>
+                                <span class="x-small text-muted font-mono"><i class="fa-solid fa-shield-check me-1 text-success"></i> Powered by SEBI Compliance Rules</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SECTION 2: COST DRAG & EXPENSE RATIO TRAP CALCULATOR -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+                <div class="card-header bg-white p-4 border-bottom d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="brand-icon-box bg-warning text-dark rounded-3 p-2">
+                            <i class="fa-solid fa-calculator fs-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-0 text-dark">Direct vs Regular Fund Cost Trap Calculator</h4>
+                            <p class="x-small text-muted mb-0">Discover how much money bank distributors & brokers take from your mutual fund returns</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-6">
+                            <div class="mb-4">
+                                <label class="form-label font-semibold d-flex justify-content-between">
+                                    <span>Monthly SIP Investment:</span>
+                                    <strong class="text-primary font-mono" id="sipAmountLabel">₹10,000 / month</strong>
+                                </label>
+                                <input type="range" class="form-range" id="sipAmountRange" min="1000" max="100000" step="1000" value="10000" oninput="updateCostCalculator()">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label font-semibold d-flex justify-content-between">
+                                    <span>Investment Horizon:</span>
+                                    <strong class="text-primary font-mono" id="sipHorizonLabel">15 Years</strong>
+                                </label>
+                                <input type="range" class="form-range" id="sipHorizonRange" min="3" max="30" step="1" value="15" oninput="updateCostCalculator()">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label font-semibold d-flex justify-content-between">
+                                    <span>Expected Annual Growth:</span>
+                                    <strong class="text-primary font-mono" id="sipReturnLabel">12% p.a.</strong>
+                                </label>
+                                <input type="range" class="form-range" id="sipReturnRange" min="6" max="18" step="0.5" value="12" oninput="updateCostCalculator()">
+                            </div>
+
+                            <div class="p-3 bg-light rounded-3 border">
+                                <div class="d-flex justify-content-between x-small text-muted font-mono mb-1">
+                                    <span>Direct Plan Fee: 0.65%</span>
+                                    <span>Regular Plan Fee: 1.75%</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-success" style="width: 37%;"></div>
+                                    <div class="progress-bar bg-danger" style="width: 63%;"></div>
+                                </div>
+                                <div class="x-small text-muted mt-2 text-center">
+                                    Regular plans charge ~1.1% extra every year to pay agent commissions!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="p-4 rounded-4 border bg-dark text-white text-center shadow-sm">
+                                <span class="badge bg-warning text-dark rounded-pill px-3 py-1 font-mono x-small text-uppercase mb-2">Hidden Fee Drag</span>
+                                <h6 class="text-secondary small text-uppercase font-mono mb-2">Total Wealth Lost to Commissions:</h6>
+                                <h2 class="display-5 fw-extrabold text-danger mb-3 font-mono" id="lostWealthDisplay">₹ 14,82,450</h2>
+
+                                <div class="row g-2 text-start mt-3">
+                                    <div class="col-6">
+                                        <div class="p-2.5 rounded-3 bg-secondary bg-opacity-20 border border-secondary border-opacity-20">
+                                            <div class="x-small text-secondary font-mono">Direct Plan Value</div>
+                                            <div class="fw-bold text-success fs-5 font-mono" id="directValueDisplay">₹ 50,45,000</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2.5 rounded-3 bg-secondary bg-opacity-20 border border-secondary border-opacity-20">
+                                            <div class="x-small text-secondary font-mono">Regular Plan Value</div>
+                                            <div class="fw-bold text-muted fs-5 font-mono" id="regularValueDisplay">₹ 35,62,550</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="x-small text-secondary mt-3 mb-0">
+                                    <i class="fa-solid fa-lightbulb text-warning me-1"></i> Always choose <strong>"DIRECT - GROWTH"</strong> plans on Zero-Commission platforms like Coin, Groww, or Kuvera to retain 100% of your gains.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: 5 GOLDEN RULES OF INVESTOR SAFETY IN BHARAT -->
+            <h4 class="fw-extrabold text-dark mb-3 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-award text-warning"></i> 5 Golden Rules of Safe Mutual Fund Investing
+            </h4>
+
+            <div class="row g-3 mb-5">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4 rule-card bg-white shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="badge bg-primary text-white rounded-circle p-2 fs-5" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">1</div>
+                            <h5 class="fw-bold text-dark mb-0">No Fixed Guarantees</h5>
+                        </div>
+                        <p class="small text-secondary mb-0">
+                            SEBI regulations strictly prohibit mutual funds or advisors from guaranteeing fixed monthly or yearly returns. Any scheme offering guaranteed 20-30% return is illegal fraud.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4 rule-card bg-white shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="badge bg-warning text-dark rounded-circle p-2 fs-5" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">2</div>
+                            <h5 class="fw-bold text-dark mb-0">Always Choose Direct</h5>
+                        </div>
+                        <p class="small text-secondary mb-0">
+                            Regular funds deduct up to 1.5% annual distributor commissions from your fund's NAV. Direct plans have zero commission, yielding significantly higher long-term compounding.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4 rule-card bg-white shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="badge bg-danger text-white rounded-circle p-2 fs-5" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">3</div>
+                            <h5 class="fw-bold text-dark mb-0">Check Stock Overlap</h5>
+                        </div>
+                        <p class="small text-secondary mb-0">
+                            Buying 10 different Large Cap funds doesn't reduce risk if all 10 hold Reliance, HDFC, and ICICI Bank. Use FundSleuth's Portfolio X-Ray to spot hidden concentration.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4 rule-card bg-white shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="badge bg-info text-white rounded-circle p-2 fs-5" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">4</div>
+                            <h5 class="fw-bold text-dark mb-0">Direct AMC Payments</h5>
+                        </div>
+                        <p class="small text-secondary mb-0">
+                            Mutual fund SIP payments should ONLY be made directly to official AMC bank accounts or SEBI-registered RTAs (CAMS/KFintech). Never send funds to individual agent UPI handles.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4 rule-card bg-white shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="badge bg-success text-white rounded-circle p-2 fs-5" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">5</div>
+                            <h5 class="fw-bold text-dark mb-0">Verify SEBI Registration</h5>
+                        </div>
+                        <p class="small text-secondary mb-0">
+                            Before accepting advisory services, check if the entity holds a valid SEBI RIA (Registered Investment Adviser) or Research Analyst registration on the official SEBI portal.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4 rule-card bg-dark text-white shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="badge bg-light text-dark rounded-circle p-2 fs-5" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <h5 class="fw-bold text-white mb-0">Report Cyber Fraud</h5>
+                        </div>
+                        <p class="small text-secondary mb-2">
+                            Fell victim to an investment scam? Contact National Cyber Crime Helpline immediately:
+                        </p>
+                        <a href="tel:1930" class="btn btn-outline-danger btn-sm rounded-pill fw-bold text-white">
+                            <i class="fa-solid fa-phone me-1"></i> Call 1930 (Helpline)
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/canvas-bg.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/voice-engine.js"></script>
+    <script src="/js/accessibility.js"></script>
+    <script src="/js/sidebar.js"></script>
+    
+    <script>
+        function scrollToScamAnalyzer() {
+            document.getElementById('scam-analyzer-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        const scamPresets = {
+            1: "URGENT: Join VIP Telegram Channel! Earn 35% monthly guaranteed returns in SEBI registered automated algorithm trading scheme. 100% risk free. Transfer money via UPI now!",
+            2: "Exclusive insider stock tip: Buy HDFC stock tomorrow morning at 9:15 AM! Double your investment in 7 days guaranteed. Secret group link: t.me/insider_stock_tips_fast",
+            3: "Mutual fund investments are subject to market risks, read all scheme related documents carefully before investing. Past performance is not an indicator of future returns."
+        };
+
+        function loadScamPreset(id) {
+            const input = document.getElementById('scamMessageInput');
+            input.value = scamPresets[id];
+            analyzeScamMessage();
+        }
+
+        function clearScamInput() {
+            document.getElementById('scamMessageInput').value = '';
+            document.getElementById('scamAnalysisOutput').style.display = 'none';
+        }
+
+        let currentAnalysisText = '';
+
+        function analyzeScamMessage() {
+            const text = document.getElementById('scamMessageInput').value.trim();
+            if (!text) {
+                alert('Please enter or paste a message to analyze.');
+                return;
+            }
+
+            const lower = text.toLowerCase();
+            let riskScore = 0;
+            const redFlags = [];
+
+            // Pattern Checks
+            if (lower.includes('guarantee') || lower.includes('assured') || lower.includes('100% risk free') || lower.includes('fixed return')) {
+                riskScore += 45;
+                redFlags.push('🚩 <strong>Guaranteed Return Promise:</strong> SEBI strictly prohibits guaranteeing equity/MF returns. 100% illegal.');
+            }
+            if (lower.includes('telegram') || lower.includes('vip group') || lower.includes('whatsapp group') || lower.includes('t.me')) {
+                riskScore += 25;
+                redFlags.push('🚩 <strong>Unregulated Messaging Group Link:</strong> Telegram/WhatsApp tip groups are unauthorized pump-and-dump schemes.');
+            }
+            if (lower.includes('double') || lower.includes('35%') || lower.includes('50%') || lower.includes('20% monthly')) {
+                riskScore += 25;
+                redFlags.push('🚩 <strong>Unrealistic Return Target:</strong> Promising 20-50% short term gains is a classic Ponzi/scam indicator.');
+            }
+            if (lower.includes('urgent') || lower.includes('secret') || lower.includes('insider') || lower.includes('fast money')) {
+                riskScore += 15;
+                redFlags.push('🚩 <strong>Artificial Urgency & Fear of Missing Out (FOMO):</strong> Scammers use pressure tactics to bypass logical thinking.');
+            }
+            if (lower.includes('upi') || lower.includes('transfer money') || lower.includes('personal account')) {
+                riskScore += 20;
+                redFlags.push('🚩 <strong>Direct Personal Transfer Request:</strong> Genuine AMCs never request money to personal UPI IDs or individual bank accounts.');
+            }
+
+            if (riskScore > 100) riskScore = 100;
+
+            // UI Render
+            const output = document.getElementById('scamAnalysisOutput');
+            const resultBox = document.getElementById('scamResultBox');
+            const resultIcon = document.getElementById('scamResultIcon');
+            const resultTitle = document.getElementById('scamResultTitle');
+            const riskBadge = document.getElementById('scamRiskBadge');
+            const gaugeBar = document.getElementById('riskGaugeBar');
+            const flagsList = document.getElementById('scamRedFlagsList');
+            const adviceText = document.getElementById('scamAdviceText');
+
+            output.style.display = 'block';
+            gaugeBar.style.width = riskScore + '%';
+
+            if (riskScore >= 50) {
+                resultBox.className = 'p-4 rounded-3 border border-danger bg-danger bg-opacity-10';
+                resultIcon.className = 'fa-solid fa-triangle-exclamation text-danger';
+                resultTitle.innerText = '🚨 HIGH-RISK SCAM DETECTED';
+                resultTitle.className = 'fw-bold mb-0 text-danger';
+                riskBadge.className = 'badge bg-danger text-white rounded-pill px-3 py-1 font-mono fs-6';
+                riskBadge.innerText = riskScore + '% RISK INDEX (DANGEROUS)';
+                gaugeBar.style.backgroundColor = '#ef4444';
+
+                currentAnalysisText = "Warning! This message shows severe signs of an illegal investment scam. SEBI strictly bans guaranteed returns and unauthorized Telegram tips. Do not transfer any money.";
+                adviceText.innerHTML = currentAnalysisText;
+            } else if (riskScore >= 20) {
+                resultBox.className = 'p-4 rounded-3 border border-warning bg-warning bg-opacity-10';
+                resultIcon.className = 'fa-solid fa-circle-exclamation text-warning';
+                resultTitle.innerText = '⚠️ MODERATE RISK ALERT';
+                resultTitle.className = 'fw-bold mb-0 text-warning';
+                riskBadge.className = 'badge bg-warning text-dark rounded-pill px-3 py-1 font-mono fs-6';
+                riskBadge.innerText = riskScore + '% RISK INDEX';
+                gaugeBar.style.backgroundColor = '#f59e0b';
+
+                currentAnalysisText = "Proceed with extreme caution. Verify whether this advisor is registered with SEBI on the official portal before taking any financial action.";
+                adviceText.innerHTML = currentAnalysisText;
+            } else {
+                resultBox.className = 'p-4 rounded-3 border border-success bg-success bg-opacity-10';
+                resultIcon.className = 'fa-solid fa-circle-check text-success';
+                resultTitle.innerText = '✅ SAFE / REGULATED DISCLAIMER';
+                resultTitle.className = 'fw-bold mb-0 text-success';
+                riskBadge.className = 'badge bg-success text-white rounded-pill px-3 py-1 font-mono fs-6';
+                riskBadge.innerText = '0% SCAM RISK';
+                gaugeBar.style.backgroundColor = '#10b981';
+
+                currentAnalysisText = "This text appears to be a standard regulatory disclaimer or informational message without red-flag scam patterns.";
+                adviceText.innerHTML = currentAnalysisText;
+                flagsList.innerHTML = '<div class="x-small text-success font-mono"><i class="fa-solid fa-check me-1"></i> No suspicious keywords or scam triggers detected.</div>';
+                return;
+            }
+
+            // Render flags
+            flagsList.innerHTML = redFlags.map(f => `<div class="p-2 bg-white rounded-2 border border-danger border-opacity-20 x-small text-dark">${f}</div>`).join('');
+        }
+
+        function speakScamAnalysis() {
+            if (window.voiceEngine && currentAnalysisText) {
+                window.voiceEngine.speak(currentAnalysisText);
+            }
+        }
+
+        function speakSafetyOverview() {
+            const overview = "Welcome to FundSleuth Investor Safety Center. Our mission is to protect you from fraudulent stock tips, telegram scams, and hidden cost traps. Always verify SEBI registration and choose Direct mutual fund plans.";
+            if (window.voiceEngine) {
+                window.voiceEngine.speak(overview);
+            }
+        }
+
+        // Cost Drag Calculator Logic
+        function updateCostCalculator() {
+            const sip = parseInt(document.getElementById('sipAmountRange').value);
+            const years = parseInt(document.getElementById('sipHorizonRange').value);
+            const annualReturn = parseFloat(document.getElementById('sipReturnRange').value);
+
+            document.getElementById('sipAmountLabel').innerText = '₹' + sip.toLocaleString('en-IN') + ' / month';
+            document.getElementById('sipHorizonLabel').innerText = years + ' Years';
+            document.getElementById('sipReturnLabel').innerText = annualReturn + '% p.a.';
+
+            const months = years * 12;
+            const rDirect = (annualReturn - 0.65) / 12 / 100;
+            const rRegular = (annualReturn - 1.75) / 12 / 100;
+
+            const fvDirect = sip * ((Math.pow(1 + rDirect, months) - 1) / rDirect) * (1 + rDirect);
+            const fvRegular = sip * ((Math.pow(1 + rRegular, months) - 1) / rRegular) * (1 + rRegular);
+
+            const lost = fvDirect - fvRegular;
+
+            document.getElementById('lostWealthDisplay').innerText = '₹ ' + Math.round(lost).toLocaleString('en-IN');
+            document.getElementById('directValueDisplay').innerText = '₹ ' + Math.round(fvDirect).toLocaleString('en-IN');
+            document.getElementById('regularValueDisplay').innerText = '₹ ' + Math.round(fvRegular).toLocaleString('en-IN');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCostCalculator();
+        });
+    </script>
+</body>
+</html>

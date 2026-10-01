@@ -13,6 +13,8 @@
         if (path.includes('top-funds.html')) return 'top-funds';
         if (path.includes('news.html')) return 'news';
         if (path.includes('fund-finder.html')) return 'fund-finder';
+        if (path.includes('safety.html')) return 'safety';
+        if (path.includes('demo.html')) return 'demo';
         if (path.includes('login') || path.includes('signup') || path.includes('forgot')) return 'auth';
         return 'home';
     }
@@ -34,6 +36,8 @@
         const activeTopFunds = route === 'top-funds' ? 'active' : '';
         const activeNews = route === 'news' ? 'active' : '';
         const activeFinder = route === 'fund-finder' ? 'active' : '';
+        const activeSafety = route === 'safety' ? 'active' : '';
+        const activeDemo = route === 'demo' ? 'active' : '';
 
         const sidebarHTML = `
             <!-- Mobile Top Header (< 992px) -->
@@ -125,6 +129,19 @@
                             <a class="nav-link sidebar-link ${activeFinder}" href="fund-finder.html" title="Fund Finder">
                                 <i class="fa-solid fa-compass nav-icon"></i>
                                 <span class="nav-text">Fund Finder</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link ${activeSafety}" href="safety.html" title="Safety Center & Scam Detector">
+                                <i class="fa-solid fa-shield-halved nav-icon text-warning"></i>
+                                <span class="nav-text">Safety Center</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link ${activeDemo}" href="demo.html" title="Hackathon Judge Demo">
+                                <i class="fa-solid fa-award nav-icon text-success"></i>
+                                <span class="nav-text">Judge Demo</span>
+                                <span class="badge bg-success text-white font-mono ms-auto nav-text" style="font-size: 9px; padding: 2px 6px;">5/5</span>
                             </a>
                         </li>
                     </ul>
