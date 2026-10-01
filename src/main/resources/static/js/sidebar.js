@@ -1,6 +1,6 @@
 /* ==========================================================================
    FUNDSLEUTH REUSABLE SIDEBAR COMPONENT (DESKTOP & MOBILE DRAWER)
-   Unified architecture for all 12 pages in FundSleuth
+   Unified architecture for all 12 pages with centered header branding grid
    ========================================================================== */
 
 (function () {
@@ -42,7 +42,7 @@
                     <i class="fa-solid fa-bars fs-5"></i>
                 </button>
                 <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none">
-                    <div class="brand-icon-box p-1.5 rounded-3 text-white">
+                    <div class="brand-icon-box p-1.5 rounded-3 text-white" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
                         <i class="fa-solid fa-chart-pie fs-6"></i>
                     </div>
                     <span class="fs-5 fw-extrabold gradient-text">FundSleuth</span>
@@ -59,27 +59,32 @@
             <!-- Left Floating Vertical Sidebar Drawer -->
             <aside class="sidebar-panel" id="sidebarPanel" aria-label="Main Navigation Sidebar">
                 
-                <!-- Logo Area Header -->
-                <div class="sidebar-header d-flex align-items-center justify-content-between px-3 py-3">
-                    <a href="index.html" class="d-flex align-items-center gap-2.5 text-decoration-none brand-logo-link">
-                        <div class="brand-icon-box p-2 rounded-3 text-white flex-shrink-0 shadow-sm">
+                <!-- Header (3-Column Grid: Left Logo, Center Title+Badge, Right Collapse Button) -->
+                <div class="sidebar-header-grid">
+                    <!-- Left: Logo Box -->
+                    <a href="index.html" class="sidebar-logo-box text-decoration-none" title="FundSleuth Home">
+                        <div class="brand-icon-box rounded-3 text-white d-flex align-items-center justify-content-center shadow-sm">
                             <i class="fa-solid fa-chart-pie fs-5"></i>
                         </div>
-                        <div class="brand-text-wrapper overflow-hidden">
-                            <div class="d-flex align-items-center gap-1.5">
-                                <span class="fs-4 fw-extrabold gradient-text lh-1">FundSleuth</span>
-                            </div>
-                            <span class="badge bg-dark text-white rounded-pill px-2.5 py-0.5 font-mono x-small mt-1 d-inline-block">v2.0 AI</span>
-                        </div>
                     </a>
-                    <button class="btn btn-taste-soft btn-sm p-1.5 rounded-circle sidebar-collapse-btn d-none d-lg-flex align-items-center justify-content-center" id="sidebarCollapseBtn" title="Toggle Sidebar">
-                        <i class="fa-solid fa-chevron-left small" id="collapseIcon"></i>
+
+                    <!-- Center: Title & Badge -->
+                    <div class="sidebar-center-brand text-center">
+                        <a href="index.html" class="text-decoration-none d-block">
+                            <span class="brand-title">FundSleuth</span>
+                            <span class="brand-badge badge bg-dark text-white rounded-pill font-mono">v2.0 AI</span>
+                        </a>
+                    </div>
+
+                    <!-- Right: Collapse Button -->
+                    <button class="sidebar-collapse-btn d-none d-lg-flex align-items-center justify-content-center" id="sidebarCollapseBtn" title="Toggle Sidebar">
+                        <i class="fa-solid fa-chevron-left" id="collapseIcon"></i>
                     </button>
                 </div>
 
                 <!-- Navigation Links -->
-                <nav class="sidebar-nav py-2 px-2 flex-grow-1 overflow-y-auto">
-                    <ul class="nav flex-column gap-1 list-unstyled m-0">
+                <nav class="sidebar-nav py-3 px-2 flex-grow-1 overflow-y-auto">
+                    <ul class="nav flex-column list-unstyled m-0" style="gap: 8px;">
                         <li class="nav-item">
                             <a class="nav-link sidebar-link ${activeHome}" href="index.html" title="Home">
                                 <i class="fa-solid fa-house nav-icon"></i>
@@ -129,8 +134,8 @@
                 <div class="sidebar-footer p-3 border-top d-flex flex-column gap-2">
                     
                     <!-- Dark Mode Toggle Switch Row -->
-                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-2.5 py-2 rounded-3" onclick="toggleTheme()" id="themeToggleRow" title="Toggle Dark/Light Mode">
-                        <div class="d-flex align-items-center gap-2">
+                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-2 rounded-3" onclick="toggleTheme()" id="themeToggleRow" title="Toggle Dark/Light Mode">
+                        <div class="d-flex align-items-center gap-2.5">
                             <i class="fa-solid fa-moon text-primary nav-icon" id="themeToggleIcon"></i>
                             <span class="small font-semibold text-secondary nav-text">Dark Mode</span>
                         </div>
@@ -140,22 +145,22 @@
                     </div>
 
                     <!-- Audio Overview Control Row -->
-                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-2.5 py-2 rounded-3" onclick="toggleVoiceSummary()" id="audioToggleRow" title="Toggle Audio Voice Summary">
-                        <div class="d-flex align-items-center gap-2">
+                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-2 rounded-3" onclick="toggleVoiceSummary()" id="audioToggleRow" title="Toggle Audio Voice Summary">
+                        <div class="d-flex align-items-center gap-2.5">
                             <i class="fa-solid fa-volume-high orange-highlight nav-icon"></i>
                             <span class="small font-semibold text-secondary nav-text">Audio Overview</span>
                         </div>
                         <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill font-mono x-small nav-text" id="voiceBtnText">OFF</span>
                     </div>
 
-                    <!-- Compact Account Card (Google Investor / Signed In User) -->
+                    <!-- Compact Account Card -->
                     <div class="sidebar-account-card p-2.5 rounded-3 border d-flex align-items-center justify-content-between" id="sidebarAccountCard">
-                        <div class="d-flex align-items-center gap-2 overflow-hidden">
-                            <div class="avatar-circle rounded-circle bg-dark text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; font-size: 13px;">
+                        <div class="d-flex align-items-center gap-2.5 overflow-hidden">
+                            <div class="avatar-circle rounded-circle bg-dark text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 34px; height: 34px; font-size: 13px;">
                                 <i class="fa-solid fa-user" id="accountAvatarIcon"></i>
                             </div>
                             <div class="account-info overflow-hidden nav-text">
-                                <div class="fw-bold small text-dark text-truncate" id="sidebarAccountName">Google Investor</div>
+                                <div class="fw-bold small text-dark text-truncate" id="sidebarAccountName" style="white-space: nowrap;">Google Investor</div>
                                 <div class="x-small text-success font-mono d-flex align-items-center gap-1" id="sidebarAccountStatus">
                                     <span class="online-indicator"></span> Signed in
                                 </div>
@@ -176,7 +181,7 @@
             </aside>
         `;
 
-        // Inject sidebar HTML at the top of <body>
+        // Inject sidebar HTML at top of <body>
         if (legacyNav) {
             legacyNav.insertAdjacentHTML('beforebegin', sidebarHTML);
             legacyNav.remove();
@@ -201,7 +206,7 @@
         if (isCollapsed && window.innerWidth >= 992 && panel) {
             panel.classList.add('collapsed');
             document.body.classList.add('sidebar-collapsed');
-            if (collapseIcon) collapseIcon.className = 'fa-solid fa-chevron-right small';
+            if (collapseIcon) collapseIcon.className = 'fa-solid fa-chevron-right';
         }
 
         // Desktop Collapse Button Handler
@@ -211,7 +216,7 @@
                 document.body.classList.toggle('sidebar-collapsed', nowCollapsed);
                 localStorage.setItem('fundsleuth-sidebar-collapsed', nowCollapsed ? 'true' : 'false');
                 if (collapseIcon) {
-                    collapseIcon.className = nowCollapsed ? 'fa-solid fa-chevron-right small' : 'fa-solid fa-chevron-left small';
+                    collapseIcon.className = nowCollapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left';
                 }
             });
         }
@@ -248,7 +253,6 @@
         if (checkbox) checkbox.checked = (theme === 'dark');
     }
 
-    // Expose helper to update theme checkbox when toggled elsewhere
     window.syncSidebarThemeState = syncSidebarThemeState;
 
     // Run on DOM ready
