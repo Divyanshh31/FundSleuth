@@ -20,122 +20,184 @@
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-<body>
+<body class="dashboard-body">
 
-    <!-- Noise Overlay -->
+    <!-- Noise Texture Overlay -->
     <div class="noise-overlay" aria-hidden="true"></div>
 
-    <!-- WebGL Background -->
+    <!-- WebGL Background Canvas -->
     <canvas id="hero-canvas"></canvas>
 
-    <!-- Floating Nav -->
-    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
-        <div class="container-fluid px-2 px-md-3">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-                <div class="brand-icon-box p-2 rounded-3 text-white">
-                    <i class="fa-solid fa-chart-pie fs-5"></i>
-                </div>
-                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
-                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
-            </a>
-            
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
-                    <li class="nav-item"><a class="nav-link active text-dark fw-bold" href="dashboard.html">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="funds.html">Explore Funds</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-funds.html">Compare Funds</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html">Compare Platforms</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="top-funds.html">Top Research</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="news.html">News</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="fund-finder.html">Fund Finder</a></li>
-                </ul>
-
-                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
-                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn">
-                        <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
-                    </button>
-                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="#" id="navAuthBtn">
-                        <span id="navAuthText"><i class="fa-solid fa-circle-user text-success me-1"></i> Account</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content Container -->
-    <main class="container py-4">
-        
-        <!-- Welcome Banner Card -->
-        <div class="bento-card p-4 p-md-5 mb-4 shadow-sm">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                <div>
-                    <span class="v2-pill-badge mb-2"><i class="fa-solid fa-circle-user"></i> PERSONALIZED RESEARCH HUB</span>
-                    <h1 class="hero-heading fs-2 text-dark mb-1" id="dashWelcomeTitle">Welcome Back</h1>
-                    <p class="text-secondary small mb-0">Track your watchlisted schemes, portfolio X-Ray status, and goal recommendations.</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="index.html#xray-tool-section" class="btn btn-taste-primary btn-sm px-4 fw-bold">
-                        <i class="fa-solid fa-bolt orange-highlight me-1"></i> Launch Portfolio X-Ray
-                    </a>
-                </div>
-            </div>
-        </div>
-
+    <div class="container-fluid py-4 px-3 px-md-4 position-relative" style="z-index: 10; max-width: 1440px;">
         <div class="row g-4">
             
-            <!-- LEFT COLUMN: Watchlist & Research Activity -->
-            <div class="col-lg-7">
+            <!-- LEFT SIDEBAR DASHBOARD NAVIGATION PANEL -->
+            <div class="col-lg-3 col-xl-3">
+                <div class="bento-card p-4 h-100 shadow-lg d-flex flex-column justify-content-between position-sticky" style="top: 1.5rem; min-height: 85vh;">
+                    <div>
+                        <!-- Brand Logo -->
+                        <a class="navbar-brand d-flex align-items-center gap-2 mb-4 pb-3 border-bottom" href="index.html">
+                            <div class="brand-icon-box p-2 rounded-3 text-white">
+                                <i class="fa-solid fa-chart-pie fs-5"></i>
+                            </div>
+                            <div>
+                                <span class="fs-4 fw-extrabold gradient-text d-block">FundSleuth</span>
+                                <span class="badge bg-dark text-white rounded-pill px-2 py-0 font-mono small">v2.0 AI</span>
+                            </div>
+                        </a>
+
+                        <!-- User Profile Card -->
+                        <div class="p-3 bg-light bg-opacity-75 rounded-3 border mb-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="brand-icon-box p-2 rounded-circle text-white fs-6">
+                                    <i class="fa-solid fa-user text-primary"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h6 class="fw-bold text-dark mb-0 text-truncate" id="sidebarUserName">Investor Account</h6>
+                                    <span class="small text-success font-mono d-block" id="sidebarUserStatus"><i class="fa-solid fa-circle-check me-1"></i> Active Session</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Left Sidebar Navigation Menu -->
+                        <div class="nav flex-column gap-1 sidebar-nav-menu">
+                            <a href="dashboard.html" class="btn btn-taste-primary text-start w-100 py-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between mb-1">
+                                <span><i class="fa-solid fa-gauge me-2 orange-highlight"></i> Dashboard</span>
+                                <i class="fa-solid fa-chevron-right small opacity-50"></i>
+                            </a>
+                            <a href="index.html#xray-tool-section" class="btn btn-taste-soft text-start w-100 py-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between mb-1">
+                                <span><i class="fa-solid fa-bolt me-2 orange-highlight"></i> Launch X-Ray</span>
+                            </a>
+                            <a href="funds.html" class="btn btn-taste-soft text-start w-100 py-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between mb-1">
+                                <span><i class="fa-solid fa-magnifying-glass me-2 text-primary"></i> Explore Funds</span>
+                            </a>
+                            <a href="compare-funds.html" class="btn btn-taste-soft text-start w-100 py-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between mb-1">
+                                <span><i class="fa-solid fa-scale-balanced me-2 text-primary"></i> Compare Funds</span>
+                            </a>
+                            <a href="compare-platforms.html" class="btn btn-taste-soft text-start w-100 py-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between mb-1">
+                                <span><i class="fa-solid fa-wallet me-2 text-primary"></i> Compare Platforms</span>
+                            </a>
+                            <a href="top-funds.html" class="btn btn-taste-soft text-start w-100 py-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between mb-1">
+                                <span><i class="fa-solid fa-award me-2 text-primary"></i> Top Research</span>
+                            </a>
+                            <a href="news.html" class="btn btn-taste-soft text-start w-100 py-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between mb-1">
+                                <span><i class="fa-solid fa-newspaper me-2 text-primary"></i> Daily News</span>
+                            </a>
+                            <a href="fund-finder.html" class="btn btn-taste-soft text-start w-100 py-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between">
+                                <span><i class="fa-solid fa-wand-magic-sparkles me-2 text-primary"></i> Fund Finder</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Footer Controls -->
+                    <div class="pt-3 border-top mt-4">
+                        <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                            <button class="btn btn-taste-soft btn-sm px-3 rounded-pill flex-grow-1" onclick="toggleTheme()" id="themeToggleBtn">
+                                <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
+                            </button>
+                            <button class="btn btn-taste-soft btn-sm px-3 rounded-pill text-danger" onclick="AuthManager.logout()" title="Sign Out">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </button>
+                        </div>
+                        <a href="index.html" class="small text-secondary text-decoration-none text-center d-block font-mono">
+                            <i class="fa-solid fa-arrow-left me-1"></i> Back to Landing Page
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT MAIN DASHBOARD CONTENT AREA -->
+            <div class="col-lg-9 col-xl-9">
                 
-                <!-- Watchlist Card -->
-                <div class="card card-custom p-4 mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-heart text-danger me-2"></i> Saved Watchlist Schemes</h5>
-                        <a href="funds.html" class="small orange-highlight fw-bold text-decoration-none">+ Add Funds</a>
-                    </div>
-                    <div id="dashboardWatchlist">
-                        <!-- Dynamically populated -->
+                <!-- Welcome Banner Card -->
+                <div class="bento-card p-4 p-md-5 mb-4 shadow-sm">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                        <div>
+                            <span class="v2-pill-badge mb-2"><i class="fa-solid fa-gauge"></i> DASHBOARD OVERVIEW</span>
+                            <h1 class="hero-heading fs-2 text-dark mb-1" id="dashWelcomeTitle">Welcome Back</h1>
+                            <p class="text-secondary small mb-0">Track saved schemes, research history, and personalized fund recommendations.</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="index.html#xray-tool-section" class="btn btn-taste-primary btn-sm px-4 fw-bold">
+                                <i class="fa-solid fa-bolt orange-highlight me-1"></i> Run Portfolio X-Ray
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Recent Searches & View History -->
-                <div class="card card-custom p-4">
-                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-clock-rotate-left orange-highlight me-2"></i> Recent Search &amp; Research History</h5>
-                    <div id="dashboardHistory">
-                        <!-- Dynamically populated -->
+                <!-- KPI Metric Summary Row -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-custom p-3 text-center h-100">
+                            <span class="small text-muted font-mono fw-bold">WATCHLISTED FUNDS</span>
+                            <h3 class="fw-bold text-dark my-1" id="kpiWatchlistCount">0</h3>
+                            <span class="small text-secondary">Saved schemes</span>
+                        </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="card card-custom p-3 text-center h-100">
+                            <span class="small text-muted font-mono fw-bold">SEARCH QUERIES</span>
+                            <h3 class="fw-bold orange-highlight my-1" id="kpiHistoryCount">0</h3>
+                            <span class="small text-secondary">Recent research logs</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-custom p-3 text-center h-100 border-primary">
+                            <span class="small text-muted font-mono fw-bold">GOAL MATCHED CANDIDATES</span>
+                            <h3 class="fw-bold text-success my-1" id="kpiMatchedCount">3</h3>
+                            <span class="small text-secondary">Explainable suggestions</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Row -->
+                <div class="row g-4">
+                    
+                    <!-- Watchlist & Search History Column -->
+                    <div class="col-lg-7">
+                        
+                        <!-- Watchlist Card -->
+                        <div class="card card-custom p-4 mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-heart text-danger me-2"></i> Saved Watchlist Schemes</h5>
+                                <a href="funds.html" class="small orange-highlight fw-bold text-decoration-none">+ Add Funds</a>
+                            </div>
+                            <div id="dashboardWatchlist">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+
+                        <!-- Recent Searches & View History -->
+                        <div class="card card-custom p-4">
+                            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-clock-rotate-left orange-highlight me-2"></i> Recent Search &amp; Research History</h5>
+                            <div id="dashboardHistory">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Personalized Discovery Feed Column -->
+                    <div class="col-lg-5">
+                        <div class="card card-custom p-4 h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-wand-magic-sparkles text-primary me-2"></i> For You: Goal Research</h5>
+                                <a href="fund-finder.html" class="small text-secondary fw-semibold">Retake Questionnaire</a>
+                            </div>
+
+                            <div id="dashboardForYouFeed">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
 
-            <!-- RIGHT COLUMN: Personalized Discovery Feed -->
-            <div class="col-lg-5">
-                <div class="card card-custom p-4 h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-wand-magic-sparkles text-primary me-2"></i> For You: Goal Research</h5>
-                        <a href="fund-finder.html" class="small text-secondary fw-semibold">Retake Questionnaire</a>
-                    </div>
-
-                    <div id="dashboardForYouFeed">
-                        <!-- Dynamically populated -->
-                    </div>
-                </div>
-            </div>
-
         </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
-        <div class="container">
-            <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
-            <p class="mb-0 text-muted small"><i class="fa-solid fa-shield-halved me-1"></i> Isolated user session &amp; data privacy guaranteed.</p>
-        </div>
-    </footer>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -153,6 +215,7 @@
             }
 
             document.getElementById('dashWelcomeTitle').innerText = `Welcome back, ${user.name || user.email}`;
+            document.getElementById('sidebarUserName').innerText = user.name || user.email.split('@')[0];
 
             renderWatchlist(user.id);
             renderHistory(user.id);
@@ -164,6 +227,8 @@
             if (!container) return;
 
             const funds = FundDB.getUserWatchlistFunds(userId);
+            document.getElementById('kpiWatchlistCount').innerText = funds.length;
+
             if (funds.length === 0) {
                 container.innerHTML = `
                     <div class="p-3 text-center text-muted small bg-light rounded-3">
@@ -177,7 +242,7 @@
                 <div class="p-3 bg-white rounded-3 border d-flex justify-content-between align-items-center">
                     <div>
                         <h6 class="fw-bold text-dark mb-0">${f.schemeName}</h6>
-                        <span class="small text-secondary font-mono">${f.subCategory} • Expense: ${f.expenseRatio}%</span>
+                        <span class="small text-secondary font-mono">${f.subCategory} • TER: ${f.expenseRatio}%</span>
                     </div>
                     <div class="d-flex align-items-center gap-3">
                         <span class="fw-bold text-success font-mono">+${f.return3Y}% 3Y</span>
@@ -192,6 +257,8 @@
             if (!container) return;
 
             const searches = FundDB.getUserSearches(userId);
+            document.getElementById('kpiHistoryCount').innerText = searches.length;
+
             if (searches.length === 0) {
                 container.innerHTML = `<p class="small text-muted m-0">No recent search activity logged yet.</p>`;
                 return;
@@ -211,6 +278,7 @@
 
             const prefs = FundDB.getUserPreferences(userId) || { goal: 'Wealth creation', horizon: '5-10 years', risk: 'High' };
             const matches = RecommendationEngine.generateRecommendations(prefs).slice(0, 3);
+            document.getElementById('kpiMatchedCount').innerText = matches.length;
 
             container.innerHTML = matches.map(m => `
                 <div class="p-3 bg-light rounded-3 border mb-3">
