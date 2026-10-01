@@ -35,12 +35,27 @@ const AuthManager = {
             showToast('Logged out successfully.', 'info');
         }
         setTimeout(() => {
-            if (window.location.pathname.includes('login') || window.location.pathname.includes('signup')) {
-                window.location.href = 'index.html';
-            } else {
-                window.location.reload();
-            }
-        }, 800);
+            window.location.href = 'login.html';
+        }, 500);
+    },
+
+    // Check route authorization state
+    checkRouteGuard() {
+        const path = window.location.pathname.toLowerCase();
+        const isAuthPage = path.includes('login') || path.includes('signup') || path.includes('forgot-password');
+        const user = this.getUser();
+
+        // 1. If unauthenticated user tries to view home/app pages -> redirect to login.html
+        if (!user && !isAuthPage) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // 2. If authenticated user tries to view login/signup -> redirect to index.html
+        if (user && isAuthPage && !path.includes('forgot-password')) {
+            window.location.href = 'index.html';
+            return;
+        }
     },
 
     // Update Navbar UI across pages based on auth state
@@ -163,5 +178,6 @@ const AuthManager = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    AuthManager.checkRouteGuard();
     AuthManager.updateNavUI();
 });
