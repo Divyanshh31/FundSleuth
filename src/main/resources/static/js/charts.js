@@ -5,14 +5,10 @@
 let sectorChartInstance = null;
 let compoundingChartInstance = null;
 
-/**
- * Render Sector Allocation Donut/Bar Chart
- */
 function renderSectorChart(stocks) {
     const ctx = document.getElementById('sectorChart');
     if (!ctx) return;
 
-    // Aggregate holdings by sector
     const sectorWeights = {};
     stocks.forEach(stock => {
         const sector = stock.sector || 'Uncategorized';
@@ -31,6 +27,10 @@ function renderSectorChart(stocks) {
         '#F59E0B', '#EC4899', '#6366F1', '#14B8A6'
     ];
 
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#CBD5E1' : '#404040';
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : '#F1F5F9';
+
     sectorChartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -39,7 +39,7 @@ function renderSectorChart(stocks) {
                 data: data,
                 backgroundColor: colorPalette.slice(0, labels.length),
                 borderWidth: 2,
-                borderColor: '#FFFFFF',
+                borderColor: isDark ? '#1E293B' : '#FFFFFF',
                 hoverOffset: 6
             }]
         },
@@ -50,6 +50,7 @@ function renderSectorChart(stocks) {
                 legend: {
                     position: 'bottom',
                     labels: {
+                        color: textColor,
                         usePointStyle: true,
                         font: { family: 'Plus Jakarta Sans', size: 12 },
                         padding: 15
@@ -77,12 +78,13 @@ function renderSectorChart(stocks) {
     });
 }
 
-/**
- * Render 10-Year Compounding Expense Drag & Direct Plan Savings Area Chart
- */
 function renderCompoundingChart(initialInvestment, assumedReturnRate, regularExpenseRatio, directExpenseRatio) {
     const ctx = document.getElementById('compoundingChart');
     if (!ctx) return;
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#CBD5E1' : '#404040';
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : '#F1F5F9';
 
     const years = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const r = assumedReturnRate / 100.0;
@@ -111,7 +113,7 @@ function renderCompoundingChart(initialInvestment, assumedReturnRate, regularExp
                 {
                     label: 'Gross Portfolio Growth (0% Fee)',
                     data: grossValue,
-                    borderColor: '#94A3B8',
+                    borderColor: isDark ? '#64748B' : '#94A3B8',
                     borderDash: [5, 5],
                     borderWidth: 2,
                     fill: false,
@@ -148,6 +150,7 @@ function renderCompoundingChart(initialInvestment, assumedReturnRate, regularExp
                 legend: {
                     position: 'top',
                     labels: {
+                        color: textColor,
                         usePointStyle: true,
                         font: { family: 'Plus Jakarta Sans', size: 12 }
                     }
@@ -164,11 +167,13 @@ function renderCompoundingChart(initialInvestment, assumedReturnRate, regularExp
             },
             scales: {
                 x: {
-                    grid: { display: false }
+                    grid: { display: false },
+                    ticks: { color: textColor }
                 },
                 y: {
-                    grid: { color: '#F1F5F9' },
+                    grid: { color: gridColor },
                     ticks: {
+                        color: textColor,
                         callback: function(value) {
                             return '₹' + (value / 1000).toFixed(0) + 'k';
                         }

@@ -65,8 +65,11 @@
                     <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn" aria-label="Toggle Dark Mode">
                         <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
                     </button>
+                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="login.html" id="navAuthBtn">
+                        <span id="navAuthText"><i class="fa-solid fa-right-to-bracket text-primary me-1"></i> Sign In</span>
+                    </a>
                     <button class="btn btn-taste-soft btn-sm px-3 rounded-pill" onclick="toggleVoiceSummary()">
-                        <i class="fa-solid fa-volume-high me-1 orange-highlight"></i> <span id="voiceBtnText">Audio Overview</span>
+                        <i class="fa-solid fa-volume-high me-1 orange-highlight"></i> <span id="voiceBtnText">Audio</span>
                     </button>
                     <a class="btn btn-taste-primary btn-sm px-4 rounded-pill fw-bold" href="#xray-tool-section">
                         <i class="fa-solid fa-bolt me-1 orange-highlight"></i> Launch X-Ray
@@ -580,7 +583,7 @@
     <footer class="bg-white border-top py-4 mt-5 text-center text-secondary small">
         <div class="container">
             <p class="mb-1">© 2026 <strong>FundSleuth</strong> — Portfolio Intelligence &amp; Financial Analytics.</p>
-            <p class="mb-0 text-muted">Inspired by Taste-Skill, GSAP, and ThreeUI WebGL Engine.</p>
+            <p class="mb-0 text-muted small"><i class="fa-solid fa-shield-halved me-1"></i> Disclaimer: FundSleuth provides informational portfolio analysis and is not financial advice.</p>
         </div>
     </footer>
 
@@ -592,6 +595,7 @@
 
     <!-- Custom Visualizations & Application Logic -->
     <script src="/js/charts.js"></script>
+    <script src="/js/auth.js"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>
