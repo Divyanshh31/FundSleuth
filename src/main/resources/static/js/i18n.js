@@ -1,7 +1,8 @@
 /* ==========================================================================
-   FUNDSLEUTH GLOBAL MULTILINGUAL i18N ENGINE (12 INDIAN LANGUAGES)
-   Single source of truth for entire application UI, state, dynamic strings,
-   RTL layout (Urdu), fallback system, and user preference persistence.
+   FUNDSLEUTH GLOBAL MULTILINGUAL i18N ENGINE & AUDIT SYSTEM (12 INDIAN LANGUAGES)
+   Single source of truth for application UI, state, dynamic strings,
+   RTL layout (Urdu), fallback system, user preference persistence, and
+   automated runtime translation audit logging.
    ========================================================================== */
 
 const I18nEngine = {
@@ -158,7 +159,16 @@ const I18nEngine = {
             viewDetails: 'View Details',
             backToTop: 'Back to Top',
             fundsFound: 'Found {{count}} funds',
-            voiceUnavailable: 'Voice synthesis is unavailable for {{lang}} on your browser. You can read the translated summary instead.'
+            voiceUnavailable: 'Voice synthesis is unavailable for {{lang}} on your browser. You can read the translated summary instead.',
+            verifiedData: 'Verified / Recent',
+            olderData: 'Older Data (30+ Days)',
+            unverifiedData: 'Unable to Verify',
+            recentSearches: 'Recent Searches',
+            noSearchResults: 'No matching funds or platforms found for "{{query}}"',
+            platformsHeader: 'Platforms',
+            highRiskLabel: 'HIGH RISK',
+            moderateRiskLabel: 'MODERATE RISK',
+            lowRiskLabel: 'LOW RISK'
         },
 
         hi: {
@@ -188,7 +198,7 @@ const I18nEngine = {
             navFinder: 'फंड फाइंडर',
             navSafety: 'सुरक्षा केंद्र',
             navDemo: 'जज डेमो',
-            performance: 'परफॉर्मेंस',
+            performance: 'परफॉर्मन्स',
             simpleMode: 'सरल भाषा (Simple)',
             darkMode: 'डार्क मोड',
             audioOverview: 'ऑडियो सारांश',
@@ -296,7 +306,16 @@ const I18nEngine = {
             viewDetails: 'विवरण देखें',
             backToTop: 'ऊपर जाएं',
             fundsFound: '{{count}} फंड मिले',
-            voiceUnavailable: 'आपके ब्राउज़र में {{lang}} के लिए वॉयस उपलब्ध नहीं है। आप अनुवादित सारांश पढ़ सकते हैं।'
+            voiceUnavailable: 'आपके ब्राउज़र में {{lang}} के लिए वॉयस उपलब्ध नहीं है। आप अनुवादित सारांश पढ़ सकते हैं।',
+            verifiedData: 'सत्यापित / नवीनतम डेटा',
+            olderData: 'पुराना डेटा (30+ दिन)',
+            unverifiedData: 'सत्यापित करने में असमर्थ',
+            recentSearches: 'हाल की खोजें',
+            noSearchResults: '"{{query}}" के लिए कोई फंड या प्लेटफॉर्म नहीं मिला',
+            platformsHeader: 'प्लेटफॉर्म',
+            highRiskLabel: 'उच्च जोखिम (HIGH RISK)',
+            moderateRiskLabel: 'मध्यम जोखिम (MODERATE RISK)',
+            lowRiskLabel: 'कम जोखिम (LOW RISK)'
         },
 
         bn: {
@@ -434,7 +453,16 @@ const I18nEngine = {
             viewDetails: 'বিস্তারিত দেখুন',
             backToTop: 'উপরে যান',
             fundsFound: '{{count}} টি ফান্ড পাওয়া গেছে',
-            voiceUnavailable: 'আপনার ব্রাউজারে {{lang}} এর জন্য ভয়েস সমর্থিত নয়। আপনি অনুবাদ করা সারসংক্ষেপ পড়তে পারেন।'
+            voiceUnavailable: 'আপনার ব্রাউজারে {{lang}} এর জন্য ভয়েস সমর্থিত নয়। আপনি অনুবাদ করা সারসংক্ষেপ পড়তে পারেন।',
+            verifiedData: 'যাচাইকৃত / সাম্প্রতিক তথ্য',
+            olderData: 'পুরানো তথ্য (৩০+ দিন)',
+            unverifiedData: 'যাচাই করতে ব্যর্থ',
+            recentSearches: 'সাম্প্রতিক অনুসন্ধান',
+            noSearchResults: '"{{query}}" এর জন্য কোনো ফান্ড বা প্ল্যাটফর্ম পাওয়া যায়নি',
+            platformsHeader: 'প্ল্যাটফর্ম',
+            highRiskLabel: 'উচ্চ ঝুঁকি (HIGH RISK)',
+            moderateRiskLabel: 'মাঝারি ঝুঁকি (MODERATE RISK)',
+            lowRiskLabel: 'কম ঝুঁকি (LOW RISK)'
         },
 
         mr: {
@@ -572,7 +600,16 @@ const I18nEngine = {
             viewDetails: 'तपशील पहा',
             backToTop: 'वर जा',
             fundsFound: '{{count}} फंड सापडले',
-            voiceUnavailable: 'तुमच्या ब्राउझरमध्ये {{lang}} साठी आवाज उपलब्ध नाही. तुम्ही भाषांतरित सारांश वाचू शकता.'
+            voiceUnavailable: 'तुमच्या ब्राउझरमध्ये {{lang}} साठी आवाज उपलब्ध नाही. तुम्ही भाषांतरित सारांश वाचू शकता।',
+            verifiedData: 'पडताळलेला / अलीकडील डेटा',
+            olderData: 'जुना डेटा (30+ दिवस)',
+            unverifiedData: 'पडताळणी करण्यात अपयशी',
+            recentSearches: 'अलीकडील शोध',
+            noSearchResults: '"{{query}}" साठी कोणतेही फंड किंवा प्लॅटफॉर्म सापडले नाहीत',
+            platformsHeader: 'प्लॅटफॉर्म',
+            highRiskLabel: 'उच्च जोखीम (HIGH RISK)',
+            moderateRiskLabel: 'मध्यम जोखीम (MODERATE RISK)',
+            lowRiskLabel: 'कमी जोखीम (LOW RISK)'
         },
 
         te: {
@@ -710,7 +747,16 @@ const I18nEngine = {
             viewDetails: 'వివరాలు చూడండి',
             backToTop: 'పైకి వెళ్లండి',
             fundsFound: '{{count}} ఫండ్లు కనుగొనబడ్డాయి',
-            voiceUnavailable: 'మీ బ్రౌజర్‌లో {{lang}} కోసం వాయిస్ అందుబాటులో లేదు. మీరు అనువదించిన సారాంశాన్ని చదవవచ్చు.'
+            voiceUnavailable: 'మీ బ్రౌజర్‌లో {{lang}} కోసం వాయిస్ అందుబాటులో లేదు. మీరు అనువదించిన సారాంశాన్ని చదవవచ్చు.',
+            verifiedData: 'ధృవీకరించబడిన / తాజా సమాచారం',
+            olderData: 'పాత సమాచారం (30+ రోజులు)',
+            unverifiedData: 'ధృవీకరించలేకపోయింది',
+            recentSearches: 'ఇటీవలి శోధనలు',
+            noSearchResults: '"{{query}}" కోసం ఎలాంటి ఫండ్లు లేదా ప్లాట్‌ఫారమ్‌లు లభించలేదు',
+            platformsHeader: 'ప్లాట్‌ఫారమ్‌లు',
+            highRiskLabel: 'అధిక ప్రమాదం (HIGH RISK)',
+            moderateRiskLabel: 'మధ్యస్థ ప్రమాదం (MODERATE RISK)',
+            lowRiskLabel: 'తక్కువ ప్రమాదం (LOW RISK)'
         },
 
         ta: {
@@ -848,7 +894,16 @@ const I18nEngine = {
             viewDetails: 'விவரங்களை காண்க',
             backToTop: 'மேலே செல்',
             fundsFound: '{{count}} நிதிகள் கண்டறியப்பட்டன',
-            voiceUnavailable: 'உங்கள் உலாவியில் {{lang}} குரல் வசதி இல்லை. மொழிபெயர்க்கப்பட்ட சுருக்கத்தை நீங்கள் படிக்கலாம்.'
+            voiceUnavailable: 'உங்கள் உலாவியில் {{lang}} குரல் வசதி இல்லை. மொழிபெயர்க்கப்பட்ட சுருக்கத்தை நீங்கள் படிக்கலாம்.',
+            verifiedData: 'சரிபார்க்கப்பட்டது / புதிய தரவு',
+            olderData: 'பழைய தரவு (30+ நாட்கள்)',
+            unverifiedData: 'சரிபார்க்க முடியவில்லை',
+            recentSearches: 'சமீபத்திய தேடல்கள்',
+            noSearchResults: '"{{query}}" க்கான நிதிகள் அல்லது தளங்கள் எதுவும் கண்டறியப்படவில்லை',
+            platformsHeader: 'தளங்கள்',
+            highRiskLabel: 'அதிக ஆபத்து (HIGH RISK)',
+            moderateRiskLabel: 'மிதமான ஆபத்து (MODERATE RISK)',
+            lowRiskLabel: 'குறைந்த ஆபத்து (LOW RISK)'
         },
 
         gu: {
@@ -986,7 +1041,16 @@ const I18nEngine = {
             viewDetails: 'વિગતો જુઓ',
             backToTop: 'ઉપર જાઓ',
             fundsFound: '{{count}} ફંડ મળ્યા',
-            voiceUnavailable: 'તમારા બ્રાઉઝરમાં {{lang}} માટે અવાજ ઉપલબ્ધ નથી. તમે અનુવાદિત સારાંશ વાંચી શકો છો.'
+            voiceUnavailable: 'તમારા બ્રાઉઝરમાં {{lang}} માટે અવાજ ઉપલબ્ધ નથી. તમે અનુવાદિત સારાંશ વાંચી શકો છો.',
+            verifiedData: 'ચકાસાયેલ / તાજેતરના ડેટા',
+            olderData: 'જૂના ડેટા (30+ દિવસ)',
+            unverifiedData: 'ચકાસવામાં અસમર્થ',
+            recentSearches: 'તાજેતરની શોધો',
+            noSearchResults: '"{{query}}" માટે કોઈ ફંડ કે પ્લેટફોર્મ મળ્યા નથી',
+            platformsHeader: 'પ્લેટફોર્મ',
+            highRiskLabel: 'ઉચ્ચ જોખમ (HIGH RISK)',
+            moderateRiskLabel: 'મધ્યમ જોખમ (MODERATE RISK)',
+            lowRiskLabel: 'ઓછું જોખમ (LOW RISK)'
         },
 
         ur: {
@@ -1124,7 +1188,16 @@ const I18nEngine = {
             viewDetails: 'تفصیلات دیکھیں',
             backToTop: 'اوپر جائیں',
             fundsFound: '{{count}} فنڈز مل گئے',
-            voiceUnavailable: 'آپ کے براؤزر میں {{lang}} کے لیے آواز کی سہولت دستیاب نہیں ہے۔ آپ ترجمہ شدہ خلاصہ پڑھ سکتے ہیں۔'
+            voiceUnavailable: 'آپ کے براؤزر میں {{lang}} کے لیے آواز کی سہولت دستیاب نہیں ہے۔ آپ ترجمہ شدہ خلاصہ پڑھ سکتے ہیں۔',
+            verifiedData: 'تصدیق شدہ / تازہ ترین ڈیٹا',
+            olderData: 'پرانا ڈیٹا (30+ دن)',
+            unverifiedData: 'تصدیق کرنے میں ناکام',
+            recentSearches: 'حالیہ تلاشیں',
+            noSearchResults: '"{{query}}" کے لیے کوئی فنڈ یا پلیٹ فارم نہیں ملا',
+            platformsHeader: 'پلیٹ فارمز',
+            highRiskLabel: 'زیادہ خطرہ (HIGH RISK)',
+            moderateRiskLabel: 'معتدل خطرہ (MODERATE RISK)',
+            lowRiskLabel: 'کم خطرہ (LOW RISK)'
         },
 
         kn: {
@@ -1262,7 +1335,16 @@ const I18nEngine = {
             viewDetails: 'ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ',
             backToTop: 'ಮೇಲಕ್ಕೆ ಹೋಗಿ',
             fundsFound: '{{count}} ಫಂಡ್‌ಗಳು ಸಿಕ್ಕಿವೆ',
-            voiceUnavailable: 'ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ {{lang}} ಗಾಗಿ ಧ್ವನಿ ಸೌಲಭ್ಯ ಲಭ್ಯವಿಲ್ಲ. ನೀವು ಅನುವಾದಿಸಿದ ಸಾರಾಂಶವನ್ನು ಓದಬಹುದು.'
+            voiceUnavailable: 'ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ {{lang}} ಗಾಗಿ ಧ್ವನಿ ಸೌಲಭ್ಯ ಲಭ್ಯವಿಲ್ಲ. ನೀವು ಅನುವಾದಿಸಿದ ಸಾರಾಂಶವನ್ನು ಓದಬಹುದು.',
+            verifiedData: 'ದೃಢೀಕರಿಸಿದ / ಇತ್ತೀಚಿನ ಡೇಟಾ',
+            olderData: 'ಹಳೆಯ ಡೇಟಾ (30+ ದಿನಗಳು)',
+            unverifiedData: 'ದೃಢೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ',
+            recentSearches: 'ಇತ್ತೀಚಿನ ಹುಡುಕಾಟಗಳು',
+            noSearchResults: '"{{query}}" ಗಾಗಿ ಯಾವುದೇ ಫಂಡ್‌ಗಳು ಅಥವಾ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗಳು ಸಿಗಲಿಲ್ಲ',
+            platformsHeader: 'ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗಳು',
+            highRiskLabel: 'ಹೆಚ್ಚಿನ ಅಪಾಯ (HIGH RISK)',
+            moderateRiskLabel: 'ಮಧ್ಯಮ ಅಪಾಯ (MODERATE RISK)',
+            lowRiskLabel: 'ಕಡಿಮೆ ಅಪಾಯ (LOW RISK)'
         },
 
         or: {
@@ -1400,7 +1482,16 @@ const I18nEngine = {
             viewDetails: 'ବିବରଣୀ ଦେଖନ୍ତୁ',
             backToTop: 'ଉପରକୁ ଯାଆନ୍ତୁ',
             fundsFound: '{{count}} ଟି ଫଣ୍ଡ ମିଳିଲା',
-            voiceUnavailable: 'ଆପଣଙ୍କ ବ୍ରାଉଜରରେ {{lang}} ପାଇଁ ଭଏସ୍ ଉପଲବ୍ଧ ନାହିଁ। ଆପଣ ଅନୁବାଦିତ ସାରାଂଶ ପଢିପାରିବେ।'
+            voiceUnavailable: 'ଆପଣଙ୍କ ବ୍ରାଉଜରରେ {{lang}} ପାଇଁ ଭଏସ୍ ଉପଲବ୍ଧ ନାହିଁ। ଆପଣ ଅନୁବାଦିତ ସାରାଂଶ ପଢିପାରିବେ।',
+            verifiedData: 'ଯାଞ୍ଚ ହୋଇଥିବା / ନିକଟତର ଡାଟା',
+            olderData: 'ପୁରୁଣା ଡାଟା (30+ ଦିନ)',
+            unverifiedData: 'ଯାଞ୍ଚ କରିବାରେ ଅସମର୍ଥ',
+            recentSearches: 'ନିକଟତର ଖୋଜ',
+            noSearchResults: '"{{query}}" ପାଇଁ କୌଣସି ଫଣ୍ଡ କିମ୍ବା ପ୍ଲାଟଫର୍ମ ମିଳିଲା ନାହିଁ',
+            platformsHeader: 'ପ୍ଲାଟଫର୍ମ',
+            highRiskLabel: 'ଉଚ୍ଚ ବିପଦ (HIGH RISK)',
+            moderateRiskLabel: 'ମଧ୍ୟମ ବିପଦ (MODERATE RISK)',
+            lowRiskLabel: 'କମ୍ ବିପଦ (LOW RISK)'
         },
 
         ml: {
@@ -1538,7 +1629,16 @@ const I18nEngine = {
             viewDetails: 'വിശദാംശങ്ങൾ കാണുക',
             backToTop: 'മുകളിലേക്ക് പോവുക',
             fundsFound: '{{count}} ഫണ്ടുകൾ കണ്ടെത്തി',
-            voiceUnavailable: 'നിങ്ങളുടെ ബ്രൗസറിൽ {{lang}} ഭാഷയ്ക്കുള്ള വോയ്സ് ലഭ്യമല്ല. തർജ്ജമ ചെയ്ത സംഗ്രഹം നിങ്ങൾക്ക് വായിക്കാം.'
+            voiceUnavailable: 'നിങ്ങളുടെ ബ്രൗസറിൽ {{lang}} ഭാഷയ്ക്കുള്ള വോയ്സ് ലഭ്യമല്ല. തർജ്ജമ ചെയ്ത സംഗ്രഹം നിങ്ങൾക്ക് വായിക്കാം.',
+            verifiedData: 'പരിശോധിച്ചു / പുതിയ ഡാറ്റ',
+            olderData: 'പഴയ ഡാറ്റ (30+ ദിവസങ്ങൾ)',
+            unverifiedData: 'പരിശോധിക്കാൻ കഴിഞ്ഞില്ല',
+            recentSearches: 'സമീപകാല തിരച്ചിലുകൾ',
+            noSearchResults: '"{{query}}" എന്നതിനായി ഫണ്ടുകളോ പ്ലാറ്റ്‌ഫോമുകളോ കണ്ടെത്താനായില്ല',
+            platformsHeader: 'പ്ലാറ്റ്‌ഫോമുകൾ',
+            highRiskLabel: 'ഉയർന്ന റിസ്ക് (HIGH RISK)',
+            moderateRiskLabel: 'മിതമായ റിസ്ക് (MODERATE RISK)',
+            lowRiskLabel: 'കുറഞ്ഞ റിസ്ക് (LOW RISK)'
         },
 
         pa: {
@@ -1676,7 +1776,16 @@ const I18nEngine = {
             viewDetails: 'ਵੇਰਵੇ ਦੇਖੋ',
             backToTop: 'ਉੱਪਰ ਜਾਓ',
             fundsFound: '{{count}} ਫੰਡ ਮਿਲੇ',
-            voiceUnavailable: 'ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ {{lang}} ਲਈ ਆਵਾਜ਼ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਤੁਸੀਂ ਅਨੁਵਾਦਿਤ ਸਾਰਾਂਸ਼ ਪੜ੍ਹ ਸਕਦੇ ਹੋ।'
+            voiceUnavailable: 'ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ {{lang}} ਲਈ ਆਵਾਜ਼ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਤੁਸੀਂ ਅਨੁਵਾਦਿਤ ਸਾਰਾਂਸ਼ ਪੜ੍ਹ ਸਕਦੇ ਹੋ।',
+            verifiedData: 'ਤਸਦੀਕਸ਼ੁਦਾ / ਨਵੀਨਤਮ ਡੇਟਾ',
+            olderData: 'ਪੁਰਾਣਾ ਡੇਟਾ (30+ ਦਿਨ)',
+            unverifiedData: 'ਤਸਦੀਕ ਕਰਨ ਵਿੱਚ ਅਸਮਰੱਥ',
+            recentSearches: 'ਹਾਲੀਆ ਖੋਜਾਂ',
+            noSearchResults: '"{{query}}" ਲਈ ਕੋਈ ਫੰਡ ਜਾਂ ਪਲੇਟਫਾਰਮ ਨਹੀਂ ਮਿਲਿਆ',
+            platformsHeader: 'ਪਲੇਟਫਾਰਮ',
+            highRiskLabel: 'ਉੱਚ ਜੋਖਮ (HIGH RISK)',
+            moderateRiskLabel: 'ਦਰਮਿਆਨਾ ਜੋਖਮ (MODERATE RISK)',
+            lowRiskLabel: 'ਘੱਟ ਜੋਖਮ (LOW RISK)'
         }
     },
 
@@ -1735,12 +1844,23 @@ const I18nEngine = {
 
         // Dispatch global custom event for language changes
         window.dispatchEvent(new CustomEvent('fundsleuth:languageChanged', { detail: { lang: langCode } }));
+
+        if (window.__FUNDSLEUTH_TRANSLATION_DEBUG__) {
+            this.runAudit();
+        }
     },
 
     // Translate key with fallback and optional parameter interpolation
     t(key, params = {}) {
         const langMap = this.translations[this.currentLang] || this.translations['en'];
-        let text = langMap[key] || (this.translations['en'] && this.translations['en'][key]) || key;
+        let text = langMap[key];
+
+        if (!text) {
+            if (this.currentLang !== 'en' && window.__FUNDSLEUTH_TRANSLATION_DEBUG__) {
+                console.warn(`[MISSING TRANSLATION] lang: ${this.currentLang}, key: ${key}`);
+            }
+            text = (this.translations['en'] && this.translations['en'][key]) || key;
+        }
 
         if (typeof text !== 'string') return key;
 
@@ -1794,6 +1914,42 @@ const I18nEngine = {
         }
     },
 
+    // Automated Runtime Translation Coverage Audit Tool
+    runAudit() {
+        const masterKeys = Object.keys(this.translations.en);
+        const report = {
+            totalMasterKeys: masterKeys.length,
+            languageParity: {},
+            missingKeysByLang: {}
+        };
+
+        this.languages.forEach(l => {
+            const langKeys = Object.keys(this.translations[l.code] || {});
+            const missing = masterKeys.filter(k => !langKeys.includes(k));
+            report.languageParity[l.code] = {
+                keysPresent: langKeys.length,
+                parityPercentage: Math.round((langKeys.length / masterKeys.length) * 100) + '%',
+                missingCount: missing.length
+            };
+            if (missing.length > 0) {
+                report.missingKeysByLang[l.code] = missing;
+            }
+        });
+
+        console.log("==========================================");
+        console.log("🌐 FUNDSLEUTH TRANSLATION PARITY AUDIT");
+        console.log("==========================================");
+        console.table(report.languageParity);
+
+        if (Object.keys(report.missingKeysByLang).length > 0) {
+            console.warn("Missing keys by language:", report.missingKeysByLang);
+        } else {
+            console.log("✅ 100% KEY PARITY ACHIEVED ACROSS ALL 12 LANGUAGES!");
+        }
+
+        return report;
+    },
+
     // Render Global Language Selector Dropdown HTML
     renderLanguageDropdownHTML() {
         const current = this.currentLang;
@@ -1819,6 +1975,8 @@ const I18nEngine = {
         `;
     }
 };
+
+window.runTranslationAudit = () => I18nEngine.runAudit();
 
 // Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {

@@ -6,17 +6,18 @@
 (function () {
     class DataConfidenceEngine {
         static renderBadge(status = 'verified') {
+            const t = (k, fb) => (window.I18nEngine ? window.I18nEngine.t(k) : fb);
             if (status === 'verified') {
                 return `<span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-20 rounded-pill font-mono x-small pointer" onclick="window.dataConfidenceEngine.showModal('verified')" title="Click to inspect verification metadata">
-                    🟢 Verified / Recent
+                    🟢 ${t('verifiedData', 'Verified / Recent')}
                 </span>`;
             } else if (status === 'older') {
                 return `<span class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-30 rounded-pill font-mono x-small pointer" onclick="window.dataConfidenceEngine.showModal('older')" title="Click to inspect verification metadata">
-                    🟡 Older Data (30+ Days)
+                    🟡 ${t('olderData', 'Older Data (30+ Days)')}
                 </span>`;
             } else {
                 return `<span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-20 rounded-pill font-mono x-small pointer" onclick="window.dataConfidenceEngine.showModal('unverified')" title="Click to inspect verification metadata">
-                    🔴 Unable to Verify
+                    🔴 ${t('unverifiedData', 'Unable to Verify')}
                 </span>`;
             }
         }

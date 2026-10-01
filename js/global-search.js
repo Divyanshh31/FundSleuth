@@ -41,10 +41,11 @@ const GlobalSearch = {
             // Show User Recent Searches if logged in
             const user = window.AuthManager ? window.AuthManager.getUser() : null;
             const recent = user && window.FundDB ? window.FundDB.getUserSearches(user.id) : [];
+            const t = (k, fb) => (window.I18nEngine ? window.I18nEngine.t(k) : fb);
 
             if (recent.length > 0) {
                 dropdown.innerHTML = `
-                    <div class="px-3 py-2 small text-muted font-mono fw-bold text-uppercase border-bottom">Recent Searches</div>
+                    <div class="px-3 py-2 small text-muted font-mono fw-bold text-uppercase border-bottom">${t('recentSearches', 'Recent Searches')}</div>
                     <div class="list-group list-group-flush">
                         ${recent.map(item => `
                             <a href="funds.html?search=${encodeURIComponent(item.query)}" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-2 border-0 rounded-2">
@@ -64,11 +65,12 @@ const GlobalSearch = {
         // Search Funds and Platforms
         const funds = window.FundDB ? window.FundDB.searchFunds(query).slice(0, 5) : [];
         const platforms = window.FundDB ? (window.FundDB.platforms || []).filter(p => p.name.toLowerCase().includes(query.toLowerCase())).slice(0, 2) : [];
+        const t = (k, fb, opts) => (window.I18nEngine ? window.I18nEngine.t(k, opts) : fb);
 
         if (funds.length === 0 && platforms.length === 0) {
             dropdown.innerHTML = `
                 <div class="p-3 text-center text-muted small">
-                    <i class="fa-solid fa-magnifying-glass me-1"></i> No matching funds or platforms found for "${query}".
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> ${t('noSearchResults', `No matching funds or platforms found for "${query}".`, { query })}
                 </div>
             `;
             dropdown.style.display = 'block';
@@ -78,7 +80,7 @@ const GlobalSearch = {
         let html = '';
 
         if (funds.length > 0) {
-            html += `<div class="px-3 py-1 small text-muted font-mono fw-bold text-uppercase border-bottom">Mutual Funds</div><div class="list-group list-group-flush mb-2">`;
+            html += `<div class="px-3 py-1 small text-muted font-mono fw-bold text-uppercase border-bottom">${t('navFunds', 'Mutual Funds')}</div><div class="list-group list-group-flush mb-2">`;
             funds.forEach(f => {
                 html += `
                     <a href="fund-detail.html?id=${f.id}" class="list-group-item list-group-item-action border-0 rounded-2 py-2 px-3 search-result-item" onclick="GlobalSearch.recordSearch('${query}')">
@@ -97,7 +99,7 @@ const GlobalSearch = {
         }
 
         if (platforms.length > 0) {
-            html += `<div class="px-3 py-1 small text-muted font-mono fw-bold text-uppercase border-bottom border-top">Platforms</div><div class="list-group list-group-flush">`;
+            html += `<div class="px-3 py-1 small text-muted font-mono fw-bold text-uppercase border-bottom border-top">${t('platformsHeader', 'Platforms')}</div><div class="list-group list-group-flush">`;
             platforms.forEach(p => {
                 html += `
                     <a href="compare-platforms.html" class="list-group-item list-group-item-action border-0 rounded-2 py-2 px-3 search-result-item">

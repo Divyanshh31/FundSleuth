@@ -113,8 +113,8 @@
                             <div class="brand-icon-box p-3 d-inline-flex rounded-4 text-white mb-3 shadow">
                                 <i class="fa-solid fa-user-plus fs-3"></i>
                             </div>
-                            <h3 class="fw-bold text-dark mb-1">Create an account</h3>
-                            <p class="text-secondary small">Get started with FundSleuth AI Portfolio Intelligence</p>
+                            <h3 class="fw-bold text-dark mb-1" data-i18n="createAccount">Create an account</h3>
+                            <p class="text-secondary small" data-i18n="signupSubtitle">Get started with FundSleuth AI Portfolio Intelligence</p>
                         </div>
 
                         <!-- Alert Container -->
@@ -123,7 +123,7 @@
                         <!-- Sign Up Form -->
                         <form id="signupForm" onsubmit="handleSignupSubmit(event)" novalidate>
                             <div class="mb-3">
-                                <label for="nameInput" class="form-label text-dark fw-semibold small">Full Name</label>
+                                <label for="nameInput" class="form-label text-dark fw-semibold small" data-i18n="fullNameLabel">Full Name</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-user"></i></span>
                                     <input type="text" class="form-control bg-light border-start-0 ps-0 text-dark" id="nameInput" placeholder="Divyansh Thakur" required autocomplete="name">
@@ -131,15 +131,15 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="emailInput" class="form-label text-dark fw-semibold small">Email Address</label>
+                                <label for="emailInput" class="form-label text-dark fw-semibold small" data-i18n="emailLabel">Email Address</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-envelope"></i></span>
-                                    <input type="email" class="form-control bg-light border-start-0 ps-0 text-dark" id="emailInput" placeholder="name@example.com" required autocomplete="email">
+                                    <input type="email" class="form-control bg-light border-start-0 ps-0 text-dark" id="emailInput" placeholder="name@example.com" required autocomplete="email" data-i18n-placeholder="emailPlaceholder">
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="passwordInput" class="form-label text-dark fw-semibold small">Password</label>
+                                <label for="passwordInput" class="form-label text-dark fw-semibold small" data-i18n="passwordLabel">Password</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-lock"></i></span>
                                     <input type="password" class="form-control bg-light border-start-0 border-end-0 ps-0 text-dark" id="passwordInput" placeholder="At least 6 characters" required oninput="checkPasswordStrength(this.value)">
@@ -155,7 +155,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="confirmPasswordInput" class="form-label text-dark fw-semibold small">Confirm Password</label>
+                                <label for="confirmPasswordInput" class="form-label text-dark fw-semibold small" data-i18n="confirmPasswordLabel">Confirm Password</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-shield-check"></i></span>
                                     <input type="password" class="form-control bg-light border-start-0 border-end-0 ps-0 text-dark" id="confirmPasswordInput" placeholder="Re-enter password" required>
@@ -174,7 +174,7 @@
 
                             <button type="submit" class="btn btn-taste-primary btn-lg w-100 py-3 mb-3 fw-bold" id="submitBtn">
                                 <span id="btnSpinner" class="spinner-border spinner-border-sm me-2 d-none" role="status"></span>
-                                <span id="btnText">Create Free Account</span>
+                                <span id="btnText" data-i18n="createFreeAccount">Create Free Account</span>
                             </button>
                         </form>
 

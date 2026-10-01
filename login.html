@@ -128,8 +128,8 @@
                             <div class="brand-icon-box p-3 d-inline-flex rounded-4 text-white mb-3 shadow">
                                 <i class="fa-solid fa-chart-pie fs-3"></i>
                             </div>
-                            <h3 class="fw-bold text-dark mb-1">Welcome back</h3>
-                            <p class="text-secondary small">Sign in to continue to your Portfolio X-Ray</p>
+                            <h3 class="fw-bold text-dark mb-1" data-i18n="loginTitle">Welcome back</h3>
+                            <p class="text-secondary small" data-i18n="loginSubtitle">Sign in to continue to your Portfolio X-Ray</p>
                         </div>
 
                         <!-- Alert Container -->
@@ -138,21 +138,21 @@
                         <!-- Sign In Form -->
                         <form id="loginForm" onsubmit="handleLoginSubmit(event)" novalidate>
                             <div class="mb-3">
-                                <label for="emailInput" class="form-label text-dark fw-semibold small">Email Address</label>
+                                <label for="emailInput" class="form-label text-dark fw-semibold small" data-i18n="emailLabel">Email Address</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-envelope"></i></span>
-                                    <input type="email" class="form-control bg-light border-start-0 ps-0 text-dark" id="emailInput" placeholder="name@example.com" required autocomplete="email">
+                                    <input type="email" class="form-control bg-light border-start-0 ps-0 text-dark" id="emailInput" placeholder="name@example.com" required autocomplete="email" data-i18n-placeholder="emailPlaceholder">
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <label for="passwordInput" class="form-label text-dark fw-semibold small m-0">Password</label>
-                                    <a href="forgot-password.html" class="small orange-highlight text-decoration-none fw-semibold">Forgot password?</a>
+                                    <label for="passwordInput" class="form-label text-dark fw-semibold small m-0" data-i18n="passwordLabel">Password</label>
+                                    <a href="forgot-password.html" class="small orange-highlight text-decoration-none fw-semibold" data-i18n="forgotPassword">Forgot password?</a>
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-lock"></i></span>
-                                    <input type="password" class="form-control bg-light border-start-0 border-end-0 ps-0 text-dark" id="passwordInput" placeholder="••••••••" required autocomplete="current-password">
+                                    <input type="password" class="form-control bg-light border-start-0 border-end-0 ps-0 text-dark" id="passwordInput" placeholder="••••••••" required autocomplete="current-password" data-i18n-placeholder="passwordPlaceholder">
                                     <button class="btn btn-light border border-start-0 text-muted" type="button" onclick="togglePasswordVisibility('passwordInput', 'togglePasswordIcon')">
                                         <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
                                     </button>
@@ -164,8 +164,8 @@
                                 <div class="d-flex align-items-center gap-2">
                                     <i class="fa-solid fa-clock-rotate-left orange-highlight"></i>
                                     <div>
-                                        <label class="form-check-label text-dark fw-semibold small d-block mb-0" for="rememberMe">Remember me</label>
-                                        <span class="small text-muted" style="font-size: 0.75rem;">Keep session active on this device</span>
+                                        <label class="form-check-label text-dark fw-semibold small d-block mb-0" for="rememberMe" data-i18n="rememberMe">Remember me</label>
+                                        <span class="small text-muted" style="font-size: 0.75rem;" data-i18n="rememberMeDesc">Keep session active on this device</span>
                                     </div>
                                 </div>
                                 <div class="form-check form-switch m-0">
@@ -175,24 +175,24 @@
 
                             <button type="submit" class="btn btn-taste-primary btn-lg w-100 py-3 mb-3 fw-bold" id="submitBtn">
                                 <span id="btnSpinner" class="spinner-border spinner-border-sm me-2 d-none" role="status"></span>
-                                <span id="btnText">Sign In</span>
+                                <span id="btnText" data-i18n="navSignIn">Sign In</span>
                             </button>
                         </form>
 
                         <div class="d-flex align-items-center my-3">
                             <hr class="flex-grow-1 m-0 opacity-25">
-                            <span class="px-3 text-muted font-mono small">OR</span>
+                            <span class="px-3 text-muted font-mono small" data-i18n="orDivider">OR</span>
                             <hr class="flex-grow-1 m-0 opacity-25">
                         </div>
 
                         <button type="button" class="btn btn-taste-soft btn-lg w-100 py-2 fs-6 fw-semibold d-flex align-items-center justify-content-center gap-2 mb-4" onclick="handleGoogleSignIn()">
                             <i class="fa-brands fa-google text-danger fs-5"></i>
-                            <span>Continue with Google</span>
+                            <span data-i18n="continueGoogle">Continue with Google</span>
                         </button>
 
                         <div class="text-center">
-                            <span class="text-secondary small">Don't have an account? </span>
-                            <a href="signup.html" class="fw-bold text-dark text-decoration-underline ms-1">Create one</a>
+                            <span class="text-secondary small" data-i18n="dontHaveAccount">Don't have an account? </span>
+                            <a href="signup.html" class="fw-bold text-dark text-decoration-underline ms-1" data-i18n="createOne">Create one</a>
                         </div>
                     </div>
                 </div>

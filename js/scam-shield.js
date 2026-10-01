@@ -6,8 +6,10 @@
 (function () {
     class ScamShieldEngine {
         static analyzeMessage(text) {
+            const t = (key, fallback) => (window.I18nEngine ? window.I18nEngine.t(key) : fallback);
+
             if (!text || !text.trim()) {
-                return { error: 'Please enter or upload an investment message.' };
+                return { error: t('scamInputPlaceholder', 'Please enter or upload an investment message.') };
             }
 
             const cleanText = text.trim();
@@ -22,8 +24,8 @@
                 riskScore += 45;
                 warningSigns.push({
                     level: 'critical',
-                    title: '🔴 Guaranteed-Return Language Detected',
-                    detail: 'SEBI regulations strictly prohibit mutual funds or advisors from offering guaranteed equity returns. All equity investments carry market risk.'
+                    title: '🔴 ' + t('rule1Title', 'Guaranteed-Return Language Detected'),
+                    detail: t('rule1Detail', 'SEBI regulations strictly prohibit mutual funds or advisors from offering guaranteed equity returns. All equity investments carry market risk.')
                 });
             }
 
@@ -32,8 +34,8 @@
                 riskScore += 30;
                 warningSigns.push({
                     level: 'high',
-                    title: '🔴 Unrealistic / Exaggerated Return Claim',
-                    detail: 'Promising 20% to 50% short-term profits is a classic indicator of Ponzi or fraudulent stock schemes.'
+                    title: '🔴 ' + t('rule2Title', 'Unrealistic / Exaggerated Return Claim'),
+                    detail: t('rule2Detail', 'Promising 20% to 50% short-term profits is a classic indicator of Ponzi or fraudulent stock schemes.')
                 });
             }
 
@@ -42,8 +44,8 @@
                 riskScore += 25;
                 warningSigns.push({
                     level: 'medium',
-                    title: '🟠 Unverified Telegram/WhatsApp Group Link',
-                    detail: 'Illegal stock tip channels use messaging groups to conduct unauthorized pump-and-dump operations.'
+                    title: '🟠 ' + t('rule3Title', 'Unverified Telegram/WhatsApp Group Link'),
+                    detail: t('rule3Detail', 'Illegal stock tip channels use messaging groups to conduct unauthorized pump-and-dump operations.')
                 });
             }
 
@@ -52,8 +54,8 @@
                 riskScore += 15;
                 warningSigns.push({
                     level: 'medium',
-                    title: '🟠 Artificial Urgency & High-Pressure Tactics',
-                    detail: 'Scammers create panic to prevent victims from independently verifying credentials with official regulators.'
+                    title: '🟠 ' + t('rule4Title', 'Artificial Urgency & High-Pressure Tactics'),
+                    detail: t('rule4Detail', 'Scammers create panic to prevent victims from independently verifying credentials with official regulators.')
                 });
             }
 
@@ -62,8 +64,8 @@
                 riskScore += 35;
                 warningSigns.push({
                     level: 'critical',
-                    title: '🔴 Request to Transfer Funds to Personal Account',
-                    detail: 'Genuine mutual fund investments are ONLY made to official AMC bank accounts or SEBI-registered RTAs (CAMS/KFintech).'
+                    title: '🔴 ' + t('rule5Title', 'Request to Transfer Funds to Personal Account'),
+                    detail: t('rule5Detail', 'Genuine mutual fund investments are ONLY made to official AMC bank accounts or SEBI-registered RTAs (CAMS/KFintech).')
                 });
             }
 
@@ -72,27 +74,27 @@
                 riskScore += 10;
                 warningSigns.push({
                     level: 'info',
-                    title: '🟡 No Official SEBI Registration Code Identified',
-                    detail: 'No verified SEBI RIA (Registered Investment Adviser) or Research Analyst registration ID was found in the message.'
+                    title: '🟡 ' + t('rule6Title', 'No Official SEBI Registration Code Identified'),
+                    detail: t('rule6Detail', 'No verified SEBI RIA (Registered Investment Adviser) or Research Analyst registration ID was found in the message.')
                 });
             }
 
             riskScore = Math.min(100, riskScore);
 
             // Generate Verification Checklist
-            verificationSteps.push('1. Check official entity registration on the SEBI portal (sebi.gov.in).');
-            verificationSteps.push('2. Verify payment destination — ensure funds go directly to SEBI-registered AMCs.');
-            verificationSteps.push('3. Verify fund scheme SID/KIM documents on official RTA portals (CAMS / KFintech).');
-            verificationSteps.push('4. Report suspicious fraudulent channels to the National Cyber Crime Helpline (Call 1930).');
+            verificationSteps.push(t('step1', '1. Check official entity registration on the SEBI portal (sebi.gov.in).'));
+            verificationSteps.push(t('step2', '2. Verify payment destination — ensure funds go directly to SEBI-registered AMCs.'));
+            verificationSteps.push(t('step3', '3. Verify fund scheme SID/KIM documents on official RTA portals (CAMS / KFintech).'));
+            verificationSteps.push(t('step4', '4. Report suspicious fraudulent channels to the National Cyber Crime Helpline (Call 1930).'));
 
             return {
                 riskScore,
-                riskLabel: riskScore >= 50 ? 'HIGH RISK' : riskScore >= 20 ? 'MODERATE RISK' : 'LOW RISK',
+                riskLabel: riskScore >= 50 ? t('highRisk', 'HIGH RISK') : riskScore >= 20 ? t('moderateRisk', 'MODERATE RISK') : t('lowRisk', 'LOW RISK'),
                 warningSigns,
                 verificationSteps,
                 verdictMessage: riskScore >= 30 
-                    ? 'Potential warning signs detected. Verify independently before taking any financial action.' 
-                    : 'No critical scam patterns detected. Always verify fund facts independently.'
+                    ? t('highRiskVerdict', 'Potential warning signs detected. Verify independently before taking any financial action.') 
+                    : t('lowRiskVerdict', 'No critical scam patterns detected. Always verify fund facts independently.')
             };
         }
 
