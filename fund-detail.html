@@ -29,38 +29,43 @@
     <!-- WebGL Background -->
     <canvas id="hero-canvas"></canvas>
 
-    <!-- Floating Nav -->
-    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-2">
-        <div class="container-fluid px-2 px-md-3">
+    <!-- Glassmorphic Left Vertical Taskbar Nav -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-                <div class="brand-icon-box p-2 rounded-3 text-white">
-                    <i class="fa-solid fa-chart-pie fs-5"></i>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="brand-icon-box p-2 rounded-3 text-white">
+                        <i class="fa-solid fa-chart-pie fs-5"></i>
+                    </div>
+                    <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
                 </div>
-                <span class="fs-4 fw-extrabold gradient-text">FundSleuth</span>
-                <span class="badge bg-dark text-white rounded-pill ms-2 px-3 py-1 font-mono small">v2.0 AI</span>
+                <span class="badge bg-dark text-white rounded-pill px-3 py-1 font-mono small">v2.0 AI</span>
             </a>
             
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav me-auto ms-lg-4 font-semibold small">
-                    <li class="nav-item"><a class="nav-link text-secondary" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="funds.html">Explore Funds</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-funds.html">Compare Funds</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html">Compare Platforms</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="top-funds.html">Top Research</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="news.html">News</a></li>
-                    <li class="nav-item"><a class="nav-link text-secondary" href="fund-finder.html">Fund Finder</a></li>
+                <ul class="navbar-nav font-semibold small">
+                    <li class="nav-item"><a class="nav-link text-secondary" href="index.html"><i class="fa-solid fa-house me-2"></i>Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="funds.html"><i class="fa-solid fa-magnifying-glass me-2 orange-highlight"></i>Explore Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-funds.html"><i class="fa-solid fa-code-compare me-2"></i>Compare Funds</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="compare-platforms.html"><i class="fa-solid fa-layer-group me-2"></i>Compare Platforms</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="top-funds.html"><i class="fa-solid fa-award me-2"></i>Top Research</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="news.html"><i class="fa-solid fa-newspaper me-2"></i>News</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary" href="fund-finder.html"><i class="fa-solid fa-compass me-2"></i>Fund Finder</a></li>
                 </ul>
 
-                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
-                    <button class="btn btn-taste-soft btn-sm px-3 rounded-pill d-flex align-items-center gap-1" onclick="toggleTheme()" id="themeToggleBtn">
+                <div class="navbar-actions d-flex flex-column gap-2 mt-3">
+                    <button class="btn btn-taste-soft btn-sm rounded-pill d-flex align-items-center justify-content-center gap-1 w-100" onclick="toggleTheme()" id="themeToggleBtn" aria-label="Toggle Dark Mode">
                         <i class="fa-solid fa-moon" id="themeToggleIcon"></i> <span id="themeToggleText">Dark</span>
                     </button>
-                    <a class="btn btn-taste-soft btn-sm px-3 rounded-pill" href="login.html" id="navAuthBtn">
+                    <a class="btn btn-taste-soft btn-sm rounded-pill d-flex align-items-center justify-content-center gap-1 w-100" href="login.html" id="navAuthBtn">
                         <span id="navAuthText"><i class="fa-solid fa-right-to-bracket text-primary me-1"></i> Sign In</span>
+                    </a>
+                    <a class="btn btn-taste-primary btn-sm rounded-pill fw-bold d-flex align-items-center justify-content-center gap-1 w-100" href="index.html#xray-tool-section">
+                        <i class="fa-solid fa-bolt me-1 orange-highlight"></i> Launch X-Ray
                     </a>
                 </div>
             </div>
