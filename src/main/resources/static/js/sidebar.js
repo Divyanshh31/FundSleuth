@@ -191,13 +191,13 @@
                     </div>
 
                     <!-- Dark Mode Toggle Switch Row -->
-                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3" onclick="toggleTheme()" id="themeToggleRow" title="Toggle Dark/Light Mode">
+                    <div class="sidebar-control-row d-flex align-items-center justify-content-between px-3 py-1.5 rounded-3" id="themeToggleRow" title="Toggle Dark/Light Mode" onclick="if(event.target.id !== 'themeSwitchCheckbox') { const cb = document.getElementById('themeSwitchCheckbox'); if(cb) { cb.checked = !cb.checked; applyTheme(cb.checked ? 'dark' : 'light'); } }">
                         <div class="d-flex align-items-center gap-2">
                             <i class="fa-solid fa-moon text-primary nav-icon" id="themeToggleIcon"></i>
                             <span class="small font-semibold text-secondary nav-text" data-i18n="darkMode">Dark Mode</span>
                         </div>
-                        <div class="form-check form-switch m-0 pointer-events-none">
-                            <input class="form-check-input" type="checkbox" id="themeSwitchCheckbox" role="switch" onclick="event.stopPropagation();">
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input" type="checkbox" id="themeSwitchCheckbox" role="switch" onchange="applyTheme(this.checked ? 'dark' : 'light')" aria-label="Toggle Dark Mode">
                         </div>
                     </div>
 

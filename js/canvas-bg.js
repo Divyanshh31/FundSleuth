@@ -198,6 +198,30 @@
         const particlesSystem = new THREE.Points(pGeom, pMat);
         scene.add(particlesSystem);
 
+        window.updateThemeWebGLColors = function(theme) {
+            const currentTheme = theme || document.documentElement.getAttribute('data-theme') || 'light';
+            const isDark = (currentTheme === 'dark');
+
+            if (gridHelper && gridHelper.material) {
+                gridHelper.material.opacity = isDark ? 0.20 : 0.28;
+                if (gridHelper.material.color) {
+                    gridHelper.material.color.setHex(isDark ? 0x312E81 : 0x4F46E5);
+                }
+            }
+            if (linesMat) {
+                linesMat.color.setHex(isDark ? 0x818CF8 : 0x6366F1);
+                linesMat.opacity = isDark ? 0.35 : 0.20;
+            }
+            if (pMat) {
+                pMat.opacity = isDark ? 0.65 : 0.40;
+            }
+            if (curveMat) {
+                curveMat.opacity = isDark ? 0.65 : 0.45;
+            }
+        };
+
+        window.updateThemeWebGLColors(document.documentElement.getAttribute('data-theme') || 'light');
+
         // ------------------------------------------------------------------
         // INTERACTION & PHYSICS: Smooth Pointer Lerping & Scroll Parallax
         // ------------------------------------------------------------------
@@ -234,6 +258,12 @@
 
         function renderLoop() {
             requestAnimationFrame(renderLoop);
+
+            // Pause rendering when tab is hidden or Lite Mode is active
+            if (document.hidden || (window.AccessibilityManager && window.AccessibilityManager.isLowBandwidth)) {
+                return;
+            }
+
             const delta = clock.getDelta();
             const time = clock.getElapsedTime();
 

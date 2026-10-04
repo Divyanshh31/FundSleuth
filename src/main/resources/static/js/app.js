@@ -12,44 +12,8 @@ const pageSize = 5;
 let filteredStocks = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
     setupDragAndDrop();
 });
-
-function initTheme() {
-    const savedTheme = localStorage.getItem('fundsleuth-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    applyTheme(savedTheme);
-}
-
-function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('fundsleuth-theme', theme);
-
-    const btnText = document.getElementById('themeToggleText');
-    const btnIcon = document.getElementById('themeToggleIcon');
-
-    if (theme === 'dark') {
-        if (btnText) btnText.innerText = 'Light';
-        if (btnIcon) btnIcon.className = 'fa-solid fa-sun orange-highlight';
-    } else {
-        if (btnText) btnText.innerText = 'Dark';
-        if (btnIcon) btnIcon.className = 'fa-solid fa-moon';
-    }
-
-    if (currentAnalysisData) {
-        if (typeof renderSectorChart === 'function') renderSectorChart(currentAnalysisData.allExtractedStocks || []);
-        const totalVal = (currentAnalysisData.expenseAnalytics || {}).totalPortfolioValue || 500000;
-        const slider = document.getElementById('returnSlider');
-        const returnRate = slider ? parseFloat(slider.value) : 12.0;
-        if (typeof renderCompoundingChart === 'function') renderCompoundingChart(totalVal, returnRate, 1.65, 0.90);
-    }
-}
-
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    applyTheme(newTheme);
-}
 
 function setupDragAndDrop() {
     const dropZone = document.getElementById('dropZone');
@@ -91,6 +55,16 @@ function setSafeHTML(id, html) {
     if (el) el.innerHTML = html;
 }
 
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 async function runDemoAnalysis() {
     showLoading(true);
     try {
@@ -102,11 +76,12 @@ async function runDemoAnalysis() {
         } catch (fetchErr) {
             data = generateClientSideFallbackData("demo.pdf");
         }
+        data.isDemo = true;
         currentAnalysisData = data;
         renderDashboard(data);
-        showToast('Demo Portfolio Analysis Loaded Successfully!', 'success');
+        showToast('Demo Portfolio Analysis Loaded (Sample Data)', 'info');
     } catch (err) {
-        showToast('Analysis Error: ' + err.message, 'danger');
+        showToast('Analysis Error: ' + escapeHtml(err.message), 'danger');
     } finally {
         showLoading(false);
     }
@@ -118,27 +93,45 @@ function handleFileSelect(event) {
 }
 
 async function handleFileUpload(file) {
+    if (!file) return;
+
+    // Client-side file validation
+    const maxSizeBytes = 10 * 1024 * 1024; // 10 MB
+    if (file.size > maxSizeBytes) {
+        showToast('File Error: File size exceeds the 10MB limit.', 'danger');
+        return;
+    }
+
+    const safeName = escapeHtml(file.name);
+    const lowerName = file.name.toLowerCase();
+    if (!lowerName.endsWith('.pdf') && !lowerName.endsWith('.png') && !lowerName.endsWith('.jpg') && !lowerName.endsWith('.jpeg')) {
+        showToast('File Error: Unsupported file format. Only PDF CAS statements and PNG/JPG images are supported.', 'danger');
+        return;
+    }
+
     showLoading(true);
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-        let data;
-        try {
-            const response = await fetch('/api/v1/xray/analyze', {
-                method: 'POST',
-                body: formData
-            });
-            if (!response.ok) throw new Error("Static Host Mode");
-            data = await response.json();
-        } catch (fetchErr) {
-            data = generateClientSideFallbackData(file.name);
+        const response = await fetch('/api/v1/xray/analyze', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            const errMsg = errData.message || `Server returned HTTP ${response.status}: ${response.statusText}`;
+            throw new Error(errMsg);
         }
+
+        const data = await response.json();
+        data.isDemo = false;
         currentAnalysisData = data;
         renderDashboard(data);
-        showToast(`Successfully analyzed ${file.name}!`, 'success');
+        showToast(`Successfully analyzed ${safeName}!`, 'success');
     } catch (err) {
-        showToast('File Processing Error: ' + err.message, 'danger');
+        showToast(`Analysis Failed for ${safeName}: ` + escapeHtml(err.message), 'danger');
     } finally {
         showLoading(false);
     }
@@ -233,6 +226,27 @@ function renderDashboard(data) {
     const resultsContainer = document.getElementById('resultsContainer');
     if (resultsContainer) {
         resultsContainer.classList.remove('d-none');
+        
+        let demoBanner = document.getElementById('demoBannerAlert');
+        if (data.isDemo) {
+            if (!demoBanner) {
+                demoBanner = document.createElement('div');
+                demoBanner.id = 'demoBannerAlert';
+                demoBanner.className = 'alert alert-warning border-warning rounded-4 shadow-sm p-3 mb-4 d-flex align-items-center justify-content-between';
+                demoBanner.innerHTML = `
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fa-solid fa-flask fs-4 text-warning"></i>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-dark">Sample Demo Mode Active</h6>
+                            <span class="small text-secondary">Displaying sample portfolio data — not your actual portfolio. Upload your CAS PDF for personalized portfolio analysis.</span>
+                        </div>
+                    </div>
+                `;
+                resultsContainer.insertBefore(demoBanner, resultsContainer.firstChild);
+            }
+        } else if (demoBanner) {
+            demoBanner.remove();
+        }
     }
 
     const overlap = data.overlapAnalytics || {};
@@ -525,25 +539,30 @@ function resetGraphView() {
 }
 
 function toggleVoiceSummary() {
-    if (window.VoiceEngine) {
-        if (window.VoiceEngine.isPlaying) {
-            window.VoiceEngine.stop();
-        } else {
-            const data = currentAnalysisData || {
-                overlapAnalytics: { overlapPercentage: 38 },
-                expenseAnalytics: { regularPlansCount: 3, averageExpenseRatio: 1.45 }
-            };
-            const overlap = (data.overlapAnalytics || {}).overlapPercentage || 38;
-            const regCount = (data.expenseAnalytics || {}).regularPlansCount || 3;
-            const expRatio = (data.expenseAnalytics || {}).averageExpenseRatio || 1.45;
+    if (!window.VoiceEngine) return;
 
-            const lang = window.I18nEngine ? window.I18nEngine.currentLang : 'en';
-            const summaryFn = window.VoiceEngine.summaries[lang] || window.VoiceEngine.summaries['en'];
-            const summaryText = summaryFn(overlap, regCount, expRatio);
-
-            window.VoiceEngine.speak(summaryText, lang);
-        }
+    if (window.VoiceEngine.isPlaying) {
+        window.VoiceEngine.stop();
+        return;
     }
+
+    if (!currentAnalysisData) {
+        const msg = window.I18nEngine 
+            ? (window.I18nEngine.t('noAnalysisForVoice') || "Please upload your CAS statement or run an analysis first to listen to your portfolio voice summary.") 
+            : "Please upload your CAS statement or run an analysis first to listen to your portfolio voice summary.";
+        showToast(msg, "warning");
+        return;
+    }
+
+    const overlap = (currentAnalysisData.overlapAnalytics || {}).overlapPercentage || 0;
+    const regCount = (currentAnalysisData.expenseAnalytics || {}).regularPlansCount || 0;
+    const expRatio = (currentAnalysisData.expenseAnalytics || {}).averageExpenseRatio || 0;
+
+    const lang = window.I18nEngine ? window.I18nEngine.currentLang : 'en';
+    const summaryFn = window.VoiceEngine.summaries[lang] || window.VoiceEngine.summaries['en'];
+    const summaryText = summaryFn(overlap, regCount, expRatio);
+
+    window.VoiceEngine.speak(summaryText, lang);
 }
 
 function animateCounter(id, start, end, suffix = '') {

@@ -1,14 +1,15 @@
 /* ==========================================================================
    FUNDSLEUTH MULTILINGUAL VOICE ENGINE & TTS PROVIDER ABSTRACTION
-   Integrates SpeechSynthesis & Bhashini Ecosystem abstraction layer
-   for Bharat-first voice explanations in 12 Indian languages.
+   Integrates SpeechSynthesis abstraction layer with voiceschanged loading,
+   fallback voice detection, dynamic language cancellation, and zero fake data.
    ========================================================================== */
 
 const VoiceEngine = {
-    synth: window.speechSynthesis,
+    synth: typeof window !== 'undefined' ? window.speechSynthesis : null,
     currentUtterance: null,
     isPlaying: false,
     currentSpeed: 1.0,
+    cachedVoices: [],
 
     voiceLangMap: {
         en: 'en-IN',
@@ -25,6 +26,32 @@ const VoiceEngine = {
         pa: 'pa-IN'
     },
 
+    init() {
+        if (!this.synth) return;
+        this.loadVoices();
+        if (typeof this.synth.addEventListener === 'function') {
+            this.synth.addEventListener('voiceschanged', () => this.loadVoices());
+        } else if ('onvoiceschanged' in this.synth) {
+            this.synth.onvoiceschanged = () => this.loadVoices();
+        }
+
+        // Cancel voice playback when switching language or leaving page
+        window.addEventListener('fundsleuth:languageChanged', () => this.stop());
+        window.addEventListener('beforeunload', () => this.stop());
+    },
+
+    loadVoices() {
+        if (!this.synth) return;
+        this.cachedVoices = this.synth.getVoices() || [];
+    },
+
+    getVoices() {
+        if (!this.cachedVoices || this.cachedVoices.length === 0) {
+            this.loadVoices();
+        }
+        return this.cachedVoices || [];
+    },
+
     // Multi-lingual Text Summary Generators
     summaries: {
         en: (overlap, regCount, expRatio) => 
@@ -34,7 +61,7 @@ const VoiceEngine = {
             `पोर्टफोलियो सुरक्षा एक्स-रे सारांश। आपके म्यूचुअल फंड पोर्टफोलियो में ${overlap} प्रतिशत दोहराव ओवरलैप है। आपके पास ${regCount} रेगुलर प्लान फंड हैं जिनमें कमीशन लागत लग रही है। आपका औसत व्यय अनुपात ${expRatio} प्रतिशत है। डायरेक्ट प्लान चुनने से आपकी लंबी अवधि की बचत बढ़ेगी।`,
 
         bn: (overlap, regCount, expRatio) => 
-            `পোর্টফোলিও নিরাপত্তা এক্স-রে সারসংক্ষেপ। আপনার মিউচুয়াল ফান্ড পোর্টফোলিওতে ${overlap} শতাংশ ওভারল্যাপ রয়েছে। আপনার কাছে ${regCount}টি রেগুলার প্ল্যান রয়েছে। আপনার গড় ব্যয় অনুপাত ${expRatio} শতাংশ। ഡাইরেক্ট প্ল্যানে স্থানান্তরিত হলে আপনার দীর্ঘমেয়াদী অর্থ সাশ্রয় হবে।`,
+            `পোর্টফোলিও নিরাপত্তা এক্স-রে সারসংক্ষেপ। আপনার মিউচুয়াল ফান্ড পোর্টফোলিওতে ${overlap} শতাংশ ওভারল্যাপ রয়েছে। আপনার কাছে ${regCount}টি রেগুলার প্ল্যান রয়েছে। আপনার গড় ব্যয় অনুপাত ${expRatio} শতাংশ। ডাইরেক্ট প্ল্যানে স্থানান্তরিত হলে আপনার দীর্ঘমেয়াদী অর্থ সাশ্রয় হবে।`,
 
         mr: (overlap, regCount, expRatio) => 
             `पोर्टफोलिओ सुरक्षा एक्स-रे सारांश. तुमच्या म्युच्युअल फंड पोर्टफोलिओमध्ये ${overlap} टक्के ओव्हरलॅप आहे. तुमच्याकडे ${regCount} रेग्युलर प्लॅन फंड आहेत ज्यावर कमिशन खर्च होत आहे. तुमचा सरासरी खर्च गुणोत्तर ${expRatio} टक्के आहे. डायरेक्ट प्लॅन निवडून तुमची बचत वाढवा.`,
@@ -65,7 +92,7 @@ const VoiceEngine = {
     },
 
     // Speak Text in Selected Language
-    speak(text, langCode = I18nEngine.currentLang, onEndCallback = null) {
+    speak(text, langCode = (window.I18nEngine ? window.I18nEngine.currentLang : 'en'), onEndCallback = null) {
         if (!this.synth) {
             if (typeof showToast === 'function') {
                 showToast("Speech synthesis is unavailable on this browser.", "warning");
@@ -75,14 +102,26 @@ const VoiceEngine = {
 
         this.stop();
 
-        const voiceLang = this.voiceLangMap[langCode] || 'en-IN';
+        const targetLang = langCode || 'en';
+        const voiceLang = this.voiceLangMap[targetLang] || 'en-IN';
+        const voices = this.getVoices();
+
+        // Check if browser has a voice for this language
+        const matchedVoice = voices.find(v => v.lang.startsWith(targetLang) || v.lang === voiceLang || v.lang.replace('_', '-').startsWith(targetLang));
+
+        if (!matchedVoice && targetLang !== 'en') {
+            const langObj = window.I18nEngine ? window.I18nEngine.languages.find(l => l.code === targetLang) : null;
+            const langName = langObj ? langObj.name : targetLang;
+            const msg = window.I18nEngine ? window.I18nEngine.t('voiceUnavailable', { lang: langName }) : `Voice synthesis is unavailable for ${langName} on your browser.`;
+            if (typeof showToast === 'function') {
+                showToast(msg, "warning");
+            }
+            return;
+        }
+
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = voiceLang;
         utterance.rate = this.currentSpeed;
-
-        // Try to pick native voice for locale if available
-        const voices = this.synth.getVoices();
-        const matchedVoice = voices.find(v => v.lang.startsWith(langCode) || v.lang === voiceLang);
         if (matchedVoice) {
             utterance.voice = matchedVoice;
         }
@@ -108,9 +147,8 @@ const VoiceEngine = {
         this.synth.speak(utterance);
     },
 
-    // Pause / Resume
     pause() {
-        if (this.synth.speaking && !this.synth.paused) {
+        if (this.synth && this.synth.speaking && !this.synth.paused) {
             this.synth.pause();
             this.isPlaying = false;
             this.updateVoiceUIState(false);
@@ -118,14 +156,13 @@ const VoiceEngine = {
     },
 
     resume() {
-        if (this.synth.paused) {
+        if (this.synth && this.synth.paused) {
             this.synth.resume();
             this.isPlaying = true;
             this.updateVoiceUIState(true);
         }
     },
 
-    // Stop Speech
     stop() {
         if (this.synth) {
             this.synth.cancel();
@@ -134,11 +171,9 @@ const VoiceEngine = {
         }
     },
 
-    // Set Speed
     setSpeed(speed) {
         this.currentSpeed = parseFloat(speed);
         if (this.isPlaying && this.currentUtterance) {
-            // Re-speak with new speed
             const text = this.currentUtterance.text;
             const lang = this.currentUtterance.lang;
             this.stop();
@@ -146,7 +181,6 @@ const VoiceEngine = {
         }
     },
 
-    // Update UI Indicators
     updateVoiceUIState(active) {
         const badge = document.getElementById('voiceBtnText');
         const playerBadge = document.getElementById('playerStatusBadge');
@@ -161,13 +195,11 @@ const VoiceEngine = {
         }
     },
 
-    // Explain Metric Voice Popup
     explainMetric(metricKey) {
-        const lang = I18nEngine.currentLang;
+        const lang = window.I18nEngine ? window.I18nEngine.currentLang : 'en';
         const textKey = 'explain' + metricKey.charAt(0).toUpperCase() + metricKey.slice(1);
-        const explanationText = I18nEngine.t(textKey) || I18nEngine.t('safetyDisclaimer');
+        const explanationText = window.I18nEngine ? (window.I18nEngine.t(textKey) || window.I18nEngine.t('safetyDisclaimer')) : "Metric explanation.";
 
-        // Show Modal Dialog
         let modalEl = document.getElementById('explainMetricModal');
         if (!modalEl) {
             modalEl = document.createElement('div');
@@ -187,7 +219,7 @@ const VoiceEngine = {
                             <p class="fs-6 text-secondary lh-lg mb-3" id="explainModalBody"></p>
                             <div class="d-flex align-items-center justify-content-between pt-2 border-top">
                                 <button class="btn btn-taste-primary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2" onclick="VoiceEngine.speakCurrentModalText()">
-                                    <i class="fa-solid fa-volume-high orange-highlight"></i> <span>Listen in ${I18nEngine.t('brandName')} Voice</span>
+                                    <i class="fa-solid fa-volume-high orange-highlight"></i> <span>Listen Voice Summary</span>
                                 </button>
                                 <button class="btn btn-taste-soft btn-sm rounded-pill px-3" onclick="VoiceEngine.stop()">
                                     <i class="fa-solid fa-stop text-danger me-1"></i> Stop
@@ -205,17 +237,18 @@ const VoiceEngine = {
         if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-lightbulb orange-highlight me-1"></i> ${metricKey.toUpperCase()} Explanation`;
         if (bodyEl) bodyEl.innerText = explanationText;
 
-        const bsModal = new bootstrap.Modal(modalEl);
-        bsModal.show();
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            const bsModal = new bootstrap.Modal(modalEl);
+            bsModal.show();
+        }
 
-        // Automatically Speak Explanation
         this.speak(explanationText, lang);
     },
 
     speakCurrentModalText() {
         const bodyEl = document.getElementById('explainModalBody');
         if (bodyEl && bodyEl.innerText) {
-            this.speak(bodyEl.innerText, I18nEngine.currentLang);
+            this.speak(bodyEl.innerText, window.I18nEngine ? window.I18nEngine.currentLang : 'en');
         }
     }
 };
@@ -227,18 +260,30 @@ function toggleVoiceSummary() {
         return;
     }
 
-    const data = window.currentAnalysisData || {
-        overlapAnalytics: { overlapPercentage: 38 },
-        expenseAnalytics: { regularPlansCount: 3, averageExpenseRatio: 1.45 }
-    };
+    const data = window.currentAnalysisData;
+    if (!data) {
+        const msg = window.I18nEngine 
+            ? (window.I18nEngine.t('noAnalysisForVoice') || "Please upload your CAS statement or run an analysis first to listen to your portfolio voice summary.") 
+            : "Please upload your CAS statement or run an analysis first to listen to your portfolio voice summary.";
+        if (typeof showToast === 'function') {
+            showToast(msg, "warning");
+        } else {
+            alert(msg);
+        }
+        return;
+    }
 
-    const overlap = (data.overlapAnalytics || {}).overlapPercentage || 38;
-    const regCount = (data.expenseAnalytics || {}).regularPlansCount || 3;
-    const expRatio = (data.expenseAnalytics || {}).averageExpenseRatio || 1.45;
+    const overlap = (data.overlapAnalytics || {}).overlapPercentage || 0;
+    const regCount = (data.expenseAnalytics || {}).regularPlansCount || 0;
+    const expRatio = (data.expenseAnalytics || {}).averageExpenseRatio || 0;
 
-    const lang = I18nEngine.currentLang;
+    const lang = window.I18nEngine ? window.I18nEngine.currentLang : 'en';
     const summaryFn = VoiceEngine.summaries[lang] || VoiceEngine.summaries['en'];
     const summaryText = summaryFn(overlap, regCount, expRatio);
 
     VoiceEngine.speak(summaryText, lang);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    VoiceEngine.init();
+});

@@ -43,10 +43,11 @@ const AuthManager = {
     checkRouteGuard() {
         const path = window.location.pathname.toLowerCase();
         const isAuthPage = path.includes('login') || path.includes('signup') || path.includes('forgot-password');
+        const isProtectedPage = path.includes('dashboard.html');
         const user = this.getUser();
 
-        // 1. If unauthenticated user tries to view home/app pages -> redirect to login.html
-        if (!user && !isAuthPage) {
+        // 1. If unauthenticated user tries to view protected pages -> redirect to login.html
+        if (!user && isProtectedPage) {
             window.location.href = 'login.html';
             return;
         }
@@ -220,32 +221,47 @@ function applyTheme(theme) {
 
     localStorage.setItem('fundsleuth-theme', targetTheme);
 
-    const btnText = document.getElementById('themeToggleText');
-    const btnIcon = document.getElementById('themeToggleIcon');
-    const mobileIcon = document.getElementById('mobileThemeIcon');
-    const checkbox = document.getElementById('themeSwitchCheckbox');
+    // Update ALL toggle switches on the page
+    const checkboxes = document.querySelectorAll('#themeSwitchCheckbox, .theme-switch-checkbox, input[role="switch"]');
+    checkboxes.forEach(cb => {
+        cb.checked = isDark;
+        cb.setAttribute('aria-checked', isDark ? 'true' : 'false');
+    });
 
-    if (isDark) {
-        if (btnText) btnText.innerText = 'Light Mode';
-        if (btnIcon) btnIcon.className = 'fa-solid fa-sun orange-highlight';
-        if (mobileIcon) mobileIcon.className = 'fa-solid fa-sun text-warning';
-        if (checkbox) checkbox.checked = true;
-    } else {
-        if (btnText) btnText.innerText = 'Dark Mode';
-        if (btnIcon) btnIcon.className = 'fa-solid fa-moon';
-        if (mobileIcon) mobileIcon.className = 'fa-solid fa-moon';
-        if (checkbox) checkbox.checked = false;
-    }
+    // Update ALL toggle icons on the page
+    const icons = document.querySelectorAll('#themeToggleIcon, .theme-toggle-icon, #mobileThemeIcon');
+    icons.forEach(icon => {
+        icon.className = isDark ? 'fa-solid fa-sun text-warning' : 'fa-solid fa-moon text-primary';
+    });
+
+    // Update ALL toggle text labels on the page
+    const texts = document.querySelectorAll('#themeToggleText, .theme-toggle-text');
+    texts.forEach(txt => {
+        txt.innerText = isDark ? 'Light' : 'Dark';
+    });
+
+    // Update ALL toggle buttons aria-labels
+    const btns = document.querySelectorAll('#themeToggleBtn, .theme-toggle-btn');
+    btns.forEach(btn => {
+        btn.setAttribute('aria-label', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    });
 
     if (window.syncSidebarThemeState) window.syncSidebarThemeState();
-    if (window.updateThemeWebGLColors) window.updateThemeWebGLColors();
+    if (window.updateThemeWebGLColors) window.updateThemeWebGLColors(targetTheme);
 
-    // Refresh active charts/graphs if available
+    // Refresh active analysis charts/graphs if available
     if (typeof currentAnalysisData !== 'undefined' && currentAnalysisData) {
         if (typeof renderSectorChart === 'function') renderSectorChart(currentAnalysisData.allExtractedStocks || []);
         const totalVal = (currentAnalysisData.expenseAnalytics || {}).totalPortfolioValue || 500000;
-        if (typeof renderCompoundingChart === 'function') renderCompoundingChart(totalVal, 12.0, 1.65, 0.90);
+        const slider = document.getElementById('returnSlider');
+        const returnRate = slider ? parseFloat(slider.value) : 12.0;
+        if (typeof renderCompoundingChart === 'function') renderCompoundingChart(totalVal, returnRate, 1.65, 0.90);
         if (typeof renderNetworkGraph === 'function') renderNetworkGraph(currentAnalysisData.funds || [], (currentAnalysisData.overlapAnalytics || {}).overlappingStocks || []);
+    }
+
+    // Refresh fund-detail charts if present
+    if (typeof renderFundDetailCharts === 'function') {
+        renderFundDetailCharts();
     }
 }
 
@@ -254,6 +270,13 @@ function toggleTheme() {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     applyTheme(newTheme);
 }
+
+// Sync theme across browser tabs
+window.addEventListener('storage', (e) => {
+    if (e.key === 'fundsleuth-theme' && e.newValue) {
+        applyTheme(e.newValue);
+    }
+});
 
 // Immediately set attribute on parse to avoid FOUC
 initTheme();

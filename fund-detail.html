@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <script>
+        (function() {
+            var saved = localStorage.getItem('fundsleuth-theme');
+            var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
     <title>Fund Research Terminal | FundSleuth</title>
 
     <!-- Google Fonts -->
@@ -287,11 +296,28 @@
             updateWatchlistBtnState();
         }
 
+        let navDetailChartInstance = null;
+        let sectorDetailChartInstance = null;
+
+        function renderFundDetailCharts() {
+            if (typeof currentFund !== 'undefined' && currentFund) {
+                renderNavChart(currentFund.navHistory || []);
+                renderSectorChart(currentFund.sectorAllocation || {});
+            }
+        }
+        window.renderFundDetailCharts = renderFundDetailCharts;
+
         function renderNavChart(history) {
             const ctx = document.getElementById('navDetailChart');
             if (!ctx) return;
 
-            new Chart(ctx, {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#CBD5E1' : '#404040';
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)';
+
+            if (navDetailChartInstance) navDetailChartInstance.destroy();
+
+            navDetailChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: history.map(h => h.date),
@@ -308,8 +334,11 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        x: { grid: { display: false } },
-                        y: { grid: { color: 'rgba(0, 0, 0, 0.05)' } }
+                        x: { grid: { display: false }, ticks: { color: textColor } },
+                        y: { grid: { color: gridColor }, ticks: { color: textColor } }
+                    },
+                    plugins: {
+                        legend: { labels: { color: textColor } }
                     }
                 }
             });
@@ -319,19 +348,25 @@
             const ctx = document.getElementById('sectorDetailChart');
             if (!ctx) return;
 
-            new Chart(ctx, {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#CBD5E1' : '#404040';
+
+            if (sectorDetailChartInstance) sectorDetailChartInstance.destroy();
+
+            sectorDetailChartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(sectors),
                     datasets: [{
                         data: Object.values(sectors),
-                        backgroundColor: ['#4F46E5', '#2563EB', '#0D9488', '#F59E0B', '#EC4899', '#94A3B8']
+                        backgroundColor: ['#4F46E5', '#2563EB', '#0D9488', '#F59E0B', '#EC4899', '#94A3B8'],
+                        borderColor: isDark ? '#1A202C' : '#FFFFFF'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom' } }
+                    plugins: { legend: { position: 'bottom', labels: { color: textColor } } }
                 }
             });
         }
